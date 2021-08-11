@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">JavascriptBridgeDemo</string>
+    <string name="app_name">FingerprintJS PRO Playground</string>
+    <string name="get_visitor_id_btn_text">Get visitor ID</string>
+    <string name="id_description_text">Your ID:</string>
+    <string name="endpoint_url_input_hint">endpointUrl</string>
+    <string name="api_token_input_hint">API token</string>
 </resources>

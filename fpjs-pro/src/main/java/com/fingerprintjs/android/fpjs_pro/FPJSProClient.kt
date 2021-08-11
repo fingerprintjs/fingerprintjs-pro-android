@@ -7,12 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.webkit.*
 import com.fingerprintjs.android.fingerprint.Configuration
-import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import java.lang.ref.WeakReference
-import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
 
 
 interface FPJSProClient {
@@ -42,7 +41,7 @@ class FPJSProFactory(
 }
 
 
-@SuppressLint("SetJavaScriptEnabled")
+@SuppressLint("SetJavaScriptEnabled", "InflateParams")
 class FPJSProClientImpl(
     applicationContext: Context,
     endpointUrl: String,
@@ -52,7 +51,8 @@ class FPJSProClientImpl(
     private val executor = Executors.newSingleThreadExecutor()
     private lateinit var webViewWeakRef: WeakReference<WebView>
 
-    private lateinit var visitorId: String
+    private val visitorIdIsReady = AtomicBoolean(false)
+    private var visitorId: String = ""
 
     private var client = object : WebChromeClient() {
 
@@ -67,7 +67,8 @@ class FPJSProClientImpl(
             message: String?,
             result: JsResult?
         ): Boolean {
-            visitorId = message ?: ""
+            visitorId = message ?: "error"
+            visitorIdIsReady.set(true)
             return true
         }
     }
@@ -83,49 +84,31 @@ class FPJSProClientImpl(
             webViewWeakRef.get()?.settings?.javaScriptEnabled = true
             webViewWeakRef.get()
                 ?.addJavascriptInterface(
-                    WebAppInterface(fingerprinter, endpointUrl, apiToken),
-                    "fingerprint-android"
+                    FPJSProInterface(fingerprinter, endpointUrl, apiToken),
+                    JS_NAMESPACE
                 )
-            webViewWeakRef.get()?.loadUrl("file:///android_asset/index.html")
+            webViewWeakRef.get()?.loadUrl(FPJS_ASSET_URL)
         }, null)
 
     }
 
     override fun getVisitorId(listener: (String) -> (Unit)) {
         executor.execute {
-            executeSafe({
-                if (::visitorId.isInitialized) {
-                    listener.invoke(visitorId)
-                } else {
-                    Thread.sleep(200)
-                    getVisitorId(listener)
-                }
-            }, null)
+            waitForVisitorId(listener)
         }
     }
 
-    class WebAppInterface internal constructor(
-        private val fingerprinter: Fingerprinter,
-        private val endpointUrl: String,
-        private val apiToken: String
-    ) {
-        @JavascriptInterface
-        fun getId(): String {
-            val countDownLatch = CountDownLatch(1)
-            var result = ""
-            fingerprinter.getDeviceId {
-                result = it.deviceId
-                countDownLatch.countDown()
+    private fun waitForVisitorId(listener: (String) -> (Unit)) {
+        executeSafe({
+            if (visitorIdIsReady.get()) {
+                listener.invoke(visitorId)
+            } else {
+                Thread.sleep(200)
+                getVisitorId(listener)
             }
-            countDownLatch.await()
-            return result
-        }
-
-        @JavascriptInterface
-        fun getEndpoint(): String = endpointUrl
-
-        @JavascriptInterface
-        fun getApiToken(): String = apiToken
+        }, null)
     }
 }
 
+private const val JS_NAMESPACE = "fingerprint-android"
+private const val FPJS_ASSET_URL = "file:///android_asset/index.html"
