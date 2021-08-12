@@ -33,7 +33,7 @@ class FPJSProFactory(
         )
     }
 
-    fun createInterface(configuration: Configuration): FPJSProInterface {
+    fun createInterface(configuration: Configuration = Configuration("")): FPJSProInterface {
         val fingerprinter = FingerprinterFactory.getInstance(
             applicationContext,
             com.fingerprintjs.android.fingerprint.Configuration(3)
