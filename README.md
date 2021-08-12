@@ -39,11 +39,12 @@ Kotlin
 
 ```kotlin
 // Initialization
+
 val factory = FPJSProFactory(applicationContext)
+val configuration(apiToken = "YOUR_API_TOKEN")
  
 val fpjsClient = factory.create(
-    endpointUrl,
-    apiToken
+    configuration
 )
 
 // Usage
@@ -61,9 +62,23 @@ This option requires the [fingerprint-android](https://github.com/fingerprintjs/
 
 The android device identifier should be passed to the JS SDK as a `deviceId` tag.
 
-#### 1. Create a JavaScript binding
+#### 1. Add a JavaScript interface to your webview
 
-TBD
+```kotlin
+
+// Init interface
+val factory = FPJSProFactory(webview.context.applicationContext)
+val configuration(apiToken = "YOUR_API_TOKEN")
+val interface = FPJSProFactory.createInterface(configuration)
+
+// Add it to your webview
+
+webview.addJavascriptInterface(
+                interface,
+                "fpjs-pro-android"
+            )
+```
+
 
 
 #### 2. Setup the JavaScript FPJS SDK in your webview
@@ -76,17 +91,21 @@ function initFingerprintJS() {
       endpoint: 'your-endpoint', // optional
       region: 'your-region' // optional
     });
+    
+    var androidDeviceId = window['fpjs-pro-android'].getDeviceId();
+
 
     // Get the visitor identifier when you need it.
     fpPromise
       .then(fp => fp.get({
        tag: {
-        deviceId: '',
+        deviceId: androidDeviceId,
         deviceType: 'android',
        }
       }))
       .then(result => console.log(result.visitorId));
   }
 ```
+
 
 [Read more.](https://dev.fingerprintjs.com/docs)
