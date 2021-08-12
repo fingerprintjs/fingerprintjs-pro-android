@@ -6,6 +6,7 @@ import android.view.View
 import android.webkit.URLUtil
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FPJSProClient
 import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
 
@@ -58,11 +59,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initFPJSClient() {
+        val configuration = Configuration(
+            apiTokenInput.text.toString(),
+            endpointUrl = endpointUrlInput.text.toString()
+        )
         fpjsClient = FPJSProFactory(
             applicationContext
-        ).create(
-            endpointUrlInput.text.toString(),
-            apiTokenInput.text.toString()
+        ).createInstance(
+            configuration
         )
     }
 
@@ -79,7 +83,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun validateInputs(endpointUrlInput: EditText) = URLUtil.isValidUrl(endpointUrlInput.text.toString())
+    private fun validateInputs(endpointUrlInput: EditText) =
+        (URLUtil.isValidUrl(endpointUrlInput.text.toString()) or endpointUrlInput.text.toString()
+            .isEmpty()) && (apiTokenInput.text.toString().isNotEmpty())
 
     private fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

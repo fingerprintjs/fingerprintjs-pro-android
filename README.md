@@ -109,3 +109,8 @@ function initFingerprintJS() {
 
 
 [Read more.](https://dev.fingerprintjs.com/docs)
+
+## License
+
+This library is MIT licensed.
+Copyright FingerprintJS, Inc. 2020-2021.

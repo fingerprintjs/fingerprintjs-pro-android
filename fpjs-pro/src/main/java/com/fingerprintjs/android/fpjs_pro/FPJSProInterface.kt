@@ -12,7 +12,7 @@ class FPJSProInterface internal constructor(
     private val endpointUrl: String,
 ) {
     @JavascriptInterface
-    fun getId(): String {
+    fun getDeviceId(): String {
         val countDownLatch = CountDownLatch(1)
         var result = ""
         fingerprinter.getDeviceId {
