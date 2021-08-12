@@ -2,7 +2,7 @@
 
 An example usage of FingerprintJS Pro inside a webview. The repo illustrates how to retrieve a FPJS visitor identifier in a mobile app.
 
-## Usage
+## Usage example
 
 Kotlin
 
@@ -50,3 +50,11 @@ dependencies {
   implementation "com.github.fingerprintjs:fingerprintjs-pro-android-webview-1.0"
 }
 ```
+
+## Re-using an existing webview
+
+TBD
+
+## JavaScript without native code
+
+TBD
