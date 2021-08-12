@@ -1,11 +1,36 @@
-# fingerprintjs-pro-android-webview
+# [FingerprintJS Pro](https://fingerprintjs.com/) Android Webview Integration
 
-## Quick start
+An example usage of FingerprintJS Pro inside a webview. The repo illustrates how to retrieve a FPJS visitor identifier in a mobile app.
 
-### Add repository
+## Usage
 
-Add these lines to your `build.gradle`.
+Kotlin
 
+```kotlin
+// Initialization
+val factory = FPJSProFactory(applicationContext)
+ 
+val fpjsClient = factory.create(
+    endpointUrl,
+    apiToken
+)
+
+// Usage
+fpjsClient.getVisitorId { visitorId ->
+    // Handle visitorId
+}
+```
+
+Note: the identification call is performed on the UI-thread, consider using it while the screen is static.
+
+
+## Installing as an external library
+
+The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/).
+
+If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
+
+#### 1. Add the jitpack repository to your `build.gradle` file.
 
 ```gradle
 allprojects {	
@@ -15,13 +40,7 @@ allprojects {
 }}
 ```
 
-### Add dependency
-
-Add these lines to `build.gradle` of a module.
-
-This library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/).
-
-If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
+#### 2. Add a dependency to your `build.gradle` file.
 
 ```gradle
 dependencies {
@@ -30,30 +49,4 @@ dependencies {
 
   implementation "com.github.fingerprintjs:fingerprintjs-pro-android-webview-1.0"
 }
-
-
 ```
-
-
-## Usage
-
-Kotlin
-
-```kotlin
-
-// Initialization
- val factory = FPJSProFactory(applicationContext)
- 
- val fpjsClient = factory.create(
-    endpointUrl,
-    apiToken
- )
-
-// Usage
-fpjsClient.getVisitorId { visitorId ->
-    // Handle visitorId
-}
-
-```
-
-Note: the call is performed on UI-thread, consider use it while screen is static.
