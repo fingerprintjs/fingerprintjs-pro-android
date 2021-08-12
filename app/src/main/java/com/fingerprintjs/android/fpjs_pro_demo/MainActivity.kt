@@ -12,7 +12,7 @@ import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var fpjsClient: FPJSProClient
+    private var fpjsClient: FPJSProClient? = null
 
     private lateinit var idTextView: TextView
     private lateinit var progressBar: ProgressBar
@@ -39,33 +39,49 @@ class MainActivity : AppCompatActivity() {
 
     private fun subscribeToView() {
         getVisitorIdButton.setOnClickListener {
-            if (!validateInputs(endpointUrlInput, apiTokenInput)) {
-                Toast.makeText(this, "Inputs are invalid", Toast.LENGTH_SHORT).show()
-            } else {
+            getVisitorId()
+        }
+    }
 
-                idTextView.visibility = View.INVISIBLE
-                progressBar.visibility = View.VISIBLE
+    private fun getVisitorId() {
+        if (!validateInputs(endpointUrlInput)) {
+            showMessage("Inputs are invalid")
+        } else {
+            initFPJSClient()
+            idTextView.visibility = View.INVISIBLE
+            progressBar.visibility = View.VISIBLE
 
-                fpjsClient = FPJSProFactory(
-                    applicationContext
-                ).create(
-                    endpointUrlInput.text.toString(),
-                    apiTokenInput.text.toString()
-                )
-
-                fpjsClient.getVisitorId {
-                    runOnUiThread {
-                        progressBar.visibility = View.GONE
-                        idTextView.visibility = View.VISIBLE
-                        idTextView.text = it
-                    }
-                }
+            fpjsClient?.getVisitorId {
+                handleId(it)
             }
         }
     }
 
-    private fun validateInputs(endpointUrlInput: EditText, apiTokenInput: EditText): Boolean {
-        val urlIsValid = URLUtil.isValidUrl(endpointUrlInput.text.toString())
-        return urlIsValid
+    private fun initFPJSClient() {
+        fpjsClient = FPJSProFactory(
+            applicationContext
+        ).create(
+            endpointUrlInput.text.toString(),
+            apiTokenInput.text.toString()
+        )
+    }
+
+    private fun clearFPJSClient() {
+        fpjsClient = null
+    }
+
+    private fun handleId(id: String) {
+        runOnUiThread {
+            progressBar.visibility = View.GONE
+            idTextView.visibility = View.VISIBLE
+            idTextView.text = id
+            clearFPJSClient()
+        }
+    }
+
+    private fun validateInputs(endpointUrlInput: EditText) = URLUtil.isValidUrl(endpointUrlInput.text.toString())
+
+    private fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

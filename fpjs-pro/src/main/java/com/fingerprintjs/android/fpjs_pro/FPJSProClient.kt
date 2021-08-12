@@ -42,54 +42,73 @@ class FPJSProClientImpl(
     private lateinit var webViewWeakRef: WeakReference<WebView>
 
     override fun getVisitorId(listener: (String) -> (Unit)) {
-        Handler(applicationContext.mainLooper).post {
-            runFPJS(listener)
+        runOnUiThread {
+            drawWebView()
+            init(listener)
+            executeFPJS()
         }
     }
 
-    private fun runFPJS(listener: (String) -> (Unit)) {
-        executeSafe({
-            val fingerprinter =
-                FingerprinterFactory.getInstance(applicationContext, Configuration(3))
-            val inflater = LayoutInflater.from(applicationContext)
-            val webView = inflater.inflate(R.layout.empty_webview, null) as WebView
-            webViewWeakRef = WeakReference(webView)
-            webViewWeakRef.get()?.webChromeClient = object : WebChromeClient() {
+    private fun init(listener: (String) -> (Unit)) {
+        val fingerprinter =
+            FingerprinterFactory.getInstance(applicationContext, Configuration(3))
 
-                override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-                    Log.d(this.javaClass.simpleName, consoleMessage.toString())
-                    return super.onConsoleMessage(consoleMessage)
-                }
+        webViewWeakRef.get()?.webChromeClient = object : WebChromeClient() {
 
-                override fun onJsAlert(
-                    view: WebView?,
-                    url: String?,
-                    message: String?,
-                    result: JsResult?
-                ): Boolean {
-                    listener.invoke(message ?: "error")
-                    webViewWeakRef.get()?.apply {
-                        removeJavascriptInterface(JS_INTERFACE_NAME)
-                        webChromeClient = null
-                        removeAllViews()
-                    }
-
-                    webViewWeakRef.clear()
-                    return true
-                }
+            override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
+                Log.d(this.javaClass.simpleName, consoleMessage.toString())
+                return super.onConsoleMessage(consoleMessage)
             }
 
-            webViewWeakRef.get()?.settings?.javaScriptEnabled = true
-            webViewWeakRef.get()
-                ?.addJavascriptInterface(
-                    FPJSProInterface(fingerprinter, endpointUrl, apiToken),
-                    JS_INTERFACE_NAME
-                )
+            override fun onJsAlert(
+                view: WebView?,
+                url: String?,
+                message: String?,
+                result: JsResult?
+            ): Boolean {
+                listener.invoke(message ?: "error")
+                clearWebView()
+                return true
+            }
+        }
 
-            webViewWeakRef.get()?.loadUrl(FPJS_ASSET_URL)
+        webViewWeakRef.get()?.settings?.javaScriptEnabled = true
+        webViewWeakRef.get()
+            ?.addJavascriptInterface(
+                FPJSProInterface(fingerprinter, apiToken, endpointUrl),
+                JS_INTERFACE_NAME
+            )
+    }
+
+    private fun drawWebView() {
+        val inflater = LayoutInflater.from(applicationContext)
+        val webView = inflater.inflate(R.layout.empty_webview, null) as WebView
+        webViewWeakRef = WeakReference(webView)
+    }
+
+    private fun executeFPJS() {
+        executeSafe({
+            webViewWeakRef.get()?.apply {
+                loadUrl(FPJS_ASSET_URL)
+            }
         }, null)
     }
 
+    private fun runOnUiThread(action: () -> (Unit)) {
+        Handler(applicationContext.mainLooper).post {
+            action.invoke()
+        }
+    }
+
+    private fun clearWebView() {
+        webViewWeakRef.get()?.apply {
+            removeJavascriptInterface(JS_INTERFACE_NAME)
+            webChromeClient = null
+            destroy()
+        }
+
+        webViewWeakRef.clear()
+    }
 }
 
 private const val JS_INTERFACE_NAME = "fingerprint-android"

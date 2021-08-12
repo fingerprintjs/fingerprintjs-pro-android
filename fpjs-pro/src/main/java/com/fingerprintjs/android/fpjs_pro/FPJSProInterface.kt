@@ -8,15 +8,15 @@ import java.util.concurrent.CountDownLatch
 
 class FPJSProInterface internal constructor(
     private val fingerprinter: Fingerprinter,
+    private val apiToken: String,
     private val endpointUrl: String,
-    private val apiToken: String
 ) {
     @JavascriptInterface
     fun getId(): String {
         val countDownLatch = CountDownLatch(1)
         var result = ""
         fingerprinter.getDeviceId {
-            result = "${it.androidId};${it.gsfId};${it.mediaDrmId}"
+            result = it.deviceId
             countDownLatch.countDown()
         }
         countDownLatch.await()
