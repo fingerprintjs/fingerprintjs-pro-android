@@ -2,9 +2,11 @@
 
 An example usage of FingerprintJS Pro inside a webview. The repo illustrates how to retrieve a FPJS visitor identifier in a mobile app.
 
-## Using as an external library
+There are two common use cases:
+1. Using an external library to retrieve a FPJS visitor identifier in the native code;
+2. Retriving a FPJS visitor identifier in the webivew on the JavaScript level.
 
-Consider using this option if your mobile application is written in the native code.
+## Using as an external library
 
 The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/).
 
@@ -55,7 +57,9 @@ Note: the identification call is performed on the UI-thread, consider using it w
 
 ## Using inside a webview (JavaScript)
 
-Consider using this option if your mobile application has a webview and you need a visitor identifier on the JavaScript level
+This option requires the [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) library to achive the better indetification accuracy. 
+
+The android device identifier should be passed to the JS SDK as a `deviceId` tag.
 
 #### 1. Create a JavaScript binding
 
@@ -70,7 +74,7 @@ function initFingerprintJS() {
     const fpPromise = FingerprintJS.load({
       token: 'your-browser-token',
       endpoint: 'your-endpoint', // optional
-      region: 'your-region', // optional
+      region: 'your-region' // optional
     });
 
     // Get the visitor identifier when you need it.
