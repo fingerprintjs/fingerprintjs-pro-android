@@ -66,7 +66,7 @@ The android device identifier should be passed to the JS SDK as a `deviceId` tag
 TBD
 
 
-#### 2. Setup the JavaScript FPJS SDK
+#### 2. Setup the JavaScript FPJS SDK in your webview
 
 ```js
 function initFingerprintJS() {
