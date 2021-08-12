@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.fingerprintjs.android.javascriptbridgedemo"
+        applicationId "com.fingerprintjs.android.fpjs_pro_demo"
         minSdk 21
         targetSdk 30
         versionCode 1

@@ -21,7 +21,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:hint="@string/endpoint_url_input_hint"
-            android:minHeight="48dp" />
+            android:importantForAutofill="no"
+            android:inputType="textUri"
+            android:minHeight="48dp"
+            android:text="@string/default_endpoint_url" />
 
         <EditText
             android:id="@+id/api_token_input"
@@ -29,6 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:hint="@string/api_token_input_hint"
+            android:importantForAutofill="no"
+            android:inputType="text"
             android:minHeight="48dp" />
 
         <TextView

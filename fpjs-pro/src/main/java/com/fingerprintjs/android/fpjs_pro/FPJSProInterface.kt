@@ -16,7 +16,7 @@ class FPJSProInterface internal constructor(
         val countDownLatch = CountDownLatch(1)
         var result = ""
         fingerprinter.getDeviceId {
-            result = it.deviceId
+            result = "${it.androidId};${it.gsfId};${it.mediaDrmId}"
             countDownLatch.countDown()
         }
         countDownLatch.await()

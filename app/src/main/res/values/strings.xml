@@ -4,4 +4,5 @@
     <string name="id_description_text">Your ID:</string>
     <string name="endpoint_url_input_hint">endpointUrl</string>
     <string name="api_token_input_hint">API token</string>
+    <string name="default_endpoint_url">https://api.fpjs.io</string>
 </resources>
