@@ -6,8 +6,11 @@ There are two common use cases:
 1. Using an external library to retrieve a FPJS visitor identifier in the native code;
 2. Retriving a FPJS visitor identifier in the webview on the JavaScript level.
 
-## Import the library to your Android project
+## Installing
 
+The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/).
+
+If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
 
 #### 1. Add the jitpack repository to your `build.gradle` file.
 
@@ -21,10 +24,6 @@ allprojects {
 
 #### 2. Add a dependency to your `build.gradle` file.
 
-The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/).
-
-If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
-
 ```gradle
 dependencies {
   // Add this line only if you use this library with Java
@@ -33,11 +32,10 @@ dependencies {
   implementation "com.github.fingerprintjs:fingerprintjs-pro-android-webview-1.0"
 }
 ```
-## Using as an external library
 
-#### Retrieve the visitor identifier
+## Kotlin usage
 
-Kotlin
+Retrieve the visitor identifier:
 
 ```kotlin
 // Initialization
