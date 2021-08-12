@@ -4,13 +4,10 @@ An example usage of FingerprintJS Pro inside a webview. The repo illustrates how
 
 There are two common use cases:
 1. Using an external library to retrieve a FPJS visitor identifier in the native code;
-2. Retriving a FPJS visitor identifier in the webivew on the JavaScript level.
+2. Retriving a FPJS visitor identifier in the webview on the JavaScript level.
 
-## Using as an external library
+## Import the library to your Android project
 
-The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/).
-
-If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
 
 #### 1. Add the jitpack repository to your `build.gradle` file.
 
@@ -24,6 +21,10 @@ allprojects {
 
 #### 2. Add a dependency to your `build.gradle` file.
 
+The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/).
+
+If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
+
 ```gradle
 dependencies {
   // Add this line only if you use this library with Java
@@ -32,8 +33,9 @@ dependencies {
   implementation "com.github.fingerprintjs:fingerprintjs-pro-android-webview-1.0"
 }
 ```
+## Using as an external library
 
-#### 3. Retrieve the visitor identifier
+#### Retrieve the visitor identifier
 
 Kotlin
 
@@ -58,9 +60,9 @@ Note: the identification call is performed on the UI-thread, consider using it w
 
 ## Using inside a webview (JavaScript)
 
-This option requires the [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) library to achive the better indetification accuracy. 
+This option uses the [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) library to achive the better identification accuracy. 
 
-The android device identifier should be passed to the JS SDK as a `deviceId` tag.
+The android device identifier is passed to the JS SDK as a `deviceId` tag.
 
 #### 1. Add a JavaScript interface to your webview
 
@@ -68,8 +70,7 @@ The android device identifier should be passed to the JS SDK as a `deviceId` tag
 
 // Init interface
 val factory = FPJSProFactory(webview.context.applicationContext)
-val configuration(apiToken = "YOUR_API_TOKEN")
-val interface = FPJSProFactory.createInterface(configuration)
+val interface = FPJSProFactory.createInterface()
 
 // Add it to your webview
 
