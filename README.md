@@ -58,7 +58,11 @@ Retrieve the visitor identifier:
 ```kotlin
 // Initialization
 val factory = FPJSProFactory(applicationContext)
-val configuration(apiToken = "BROWSER_TOKEN")
+val configuration(
+    apiToken = "BROWSER_TOKEN",
+    region = Region.US, // optional
+    endpointUrl = "https://endpoint.url" // optional
+  )
  
 val fpjsClient = factory.create(
     configuration
