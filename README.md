@@ -1,10 +1,10 @@
-# [FingerprintJS Pro](https://fingerprintjs.com/) Android Webview Integration
+# [FingerprintJS Pro](https://fingerprintjs.com/) Android Integration
 
-An example usage of FingerprintJS Pro inside a webview. The repo illustrates how to retrieve a FPJS visitor identifier in a mobile app.
+An example usage of FingerprintJS Pro inside in Android. The repo illustrates how to retrieve a FPJS visitor identifier in a mobile app.
 
 There are two common use cases:
 1. Using an external library to retrieve a FPJS visitor identifier in the native code;
-2. Retriving a FPJS visitor identifier in the webview on the JavaScript level.
+2. Retrieving a FPJS visitor identifier in the webview on the JavaScript level.
 
 ## Installing
 
@@ -86,7 +86,7 @@ webview.addJavascriptInterface(
 function initFingerprintJS() {
     // Initialize an agent at application startup.
     const fpPromise = FingerprintJS.load({
-      token: 'your-browser-token',
+      token: 'your-api-token',
       endpoint: 'your-endpoint', // optional
       region: 'your-region' // optional
     });
