@@ -1,18 +1,29 @@
-# [FingerprintJS Pro](https://fingerprintjs.com/) Android Integration
+<p align="center">
+  <a href="https://fingerprintjs.com">
+    <img src="https://user-images.githubusercontent.com/10922372/129346814-a4e95dbf-cd27-49aa-ae7c-f23dae63b792.png" alt="FingerprintJS" width="312px" />
+  </a>
+</p>
+<p align="center">
+  <a href="https://discord.gg/39EpE2neBg">
+    <img src="https://img.shields.io/discord/852099967190433792?style=logo&label=Discord&logo=Discord&logoColor=white" alt="Discord server">
+  </a>
+</p>
 
-An example usage of FingerprintJS Pro inside in Android. The repo illustrates how to retrieve a FPJS visitor identifier in a mobile app.
+# FingerprintJS Pro Android Integrations
 
-There are two common use cases:
-1. Using an external library to retrieve a FPJS visitor identifier in the native code;
-2. Retrieving a FPJS visitor identifier in the webview on the JavaScript level.
 
-## Installing
+An example app and packages demonstrating [FingerprintJS Pro](https://fingerprintjs.com/) capabilities on the Android platform. The repository illustrates how to retrieve a FingerprintJS Pro visitor identifier in a native mobile app. These integrations communicate with the FingerprintJS Pro API and require [browser token](https://dev.fingerprintjs.com/docs). For local client-side Android fingerprinting take a look at [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository instead.
 
-The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/).
+There are two typical use cases:
+- Using our native library to retrieve a FingerprintJS Pro visitor identifier in the native code OR
+- Retrieving visitor identifier using our native library in combination with signals from the FingerprintJS Pro browser agent in the webview on the JavaScript level.
 
-If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
+## Using the external library to retrieve a FingerprintJS Pro visitor identifier
+This integration approach uses the external library [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android). It collects various signals from the Android system, sends them to the FingerprintJS Pro API for processing, and retrieves an accurate visitor identifier.
 
-#### 1. Add the jitpack repository to your `build.gradle` file.
+*Note: The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/). If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).*
+
+### 1. Add the jitpack repository to your `build.gradle` file
 
 ```gradle
 allprojects {	
@@ -22,26 +33,32 @@ allprojects {
 }}
 ```
 
-#### 2. Add a dependency to your `build.gradle` file.
+### 2. Add a dependency to your `build.gradle` file
 
 ```gradle
 dependencies {
-  // Add this line only if you use this library with Java
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  implementation "com.github.fingerprintjs:fingerprintjs-pro-android-integrations-1.0" // TODO: check and fix version
 
-  implementation "com.github.fingerprintjs:fingerprintjs-pro-android-webview-1.0"
-}
+  // If you use Java for you project, add also this line
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"}
 ```
 
-## Kotlin usage
+When using Kotlin, also make sure you have specified Kotlin version in your `build.gradle` file:
+```gradle
+buildscript {
+    ext.kotlin_version= 'your-kotlin-version'
+    ...
+```
+*Note: You can find your Kotlin version in Android Studio > File > Settings > Languages & Frameworks > Kotlin.*
+
+### 3. Get the visitor identifier
 
 Retrieve the visitor identifier:
 
 ```kotlin
 // Initialization
-
 val factory = FPJSProFactory(applicationContext)
-val configuration(apiToken = "YOUR_API_TOKEN")
+val configuration(apiToken = "BROWSER_TOKEN")
  
 val fpjsClient = factory.create(
     configuration
@@ -49,20 +66,18 @@ val fpjsClient = factory.create(
 
 // Usage
 fpjsClient.getVisitorId { visitorId ->
-    // Handle visitorId
+    // Use visitorId
 }
 ```
 
-Note: the identification call is performed on the UI-thread, consider using it while the screen is static.
+*❗ Important: The identification call is performed on the UI-thread, consider using it while the screen is static.*
 
 
-## Using inside a webview (JavaScript)
+## Using inside a webview with JavaScript
 
-This option uses the [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) library to achive the better identification accuracy. 
+This approach uses signals from [FingerprintJS Pro browser agent](https://dev.fingerprintjs.com/docs/quick-start-guide#js-agent) together with signals provided by [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android). The identifier collected by [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) is added to the [`tag` field](https://dev.fingerprintjs.com/docs#tagging-your-requests) in the given format. FingerprintJS Pro browser agent adds an additional set of signals and sents them to the FingerprintJS Pro API. Eventually, the API returns accurate visitor identifier.
 
-The android device identifier is passed to the JS SDK as a `deviceId` tag.
-
-#### 1. Add a JavaScript interface to your webview
+### 1. Add a JavaScript interface to your webview
 
 ```kotlin
 
@@ -70,21 +85,18 @@ The android device identifier is passed to the JS SDK as a `deviceId` tag.
 val factory = FPJSProFactory(webview.context.applicationContext)
 val interface = FPJSProFactory.createInterface()
 
-// Add it to your webview
-
+// Add it to the webview
 webview.addJavascriptInterface(
                 interface,
                 "fpjs-pro-android"
             )
 ```
 
-
-
-#### 2. Setup the JavaScript FPJS SDK in your webview
+### 2. Setup the JavaScript FingerprintJS PRO integration in your webview
 
 ```js
 function initFingerprintJS() {
-    // Initialize an agent at application startup.
+    // Initialize an agent at application startup
     const fpPromise = FingerprintJS.load({
       token: 'your-api-token',
       endpoint: 'your-endpoint', // optional
@@ -94,7 +106,7 @@ function initFingerprintJS() {
     var androidDeviceId = window['fpjs-pro-android'].getDeviceId();
 
 
-    // Get the visitor identifier when you need it.
+    // Get the visitor identifier when you need it
     fpPromise
       .then(fp => fp.get({
        tag: {
@@ -106,10 +118,8 @@ function initFingerprintJS() {
   }
 ```
 
-
-[Read more.](https://dev.fingerprintjs.com/docs)
+## Additional Resources
+[FingerprintJS Pro documentation](https://dev.fingerprintjs.com/docs)
 
 ## License
-
 This library is MIT licensed.
-Copyright FingerprintJS, Inc. 2020-2021.
