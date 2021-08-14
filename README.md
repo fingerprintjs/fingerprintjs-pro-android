@@ -12,7 +12,7 @@
 # FingerprintJS Pro Android Integrations
 
 
-An example app and packages demonstrating [FingerprintJS Pro](https://fingerprintjs.com/) capabilities on the Android platform. The repository illustrates how to retrieve a FingerprintJS Pro visitor identifier in a native mobile app. These integrations communicate with the FingerprintJS Pro API and require [browser token](https://dev.fingerprintjs.com/docs). For local client-side Android fingerprinting take a look at [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository instead.
+An example app and packages demonstrating [FingerprintJS Pro](https://fingerprintjs.com/) capabilities on the Android platform. The repository illustrates how to retrieve a FingerprintJS Pro visitor identifier in a native mobile app. These integrations communicate with the FingerprintJS Pro API and require [browser token](https://dev.fingerprintjs.com/docs). For local client-side Android fingerprinting take a look at [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository instead. If you are interested in the iOS platform, you can also check our [FingerprintJS Pro iOS integrations](https://github.com/fingerprintjs/fingerprintjs-pro-ios-webview).
 
 There are two typical use cases:
 - Using our native library to retrieve a FingerprintJS Pro visitor identifier in the native code OR
