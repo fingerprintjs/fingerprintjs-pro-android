@@ -53,7 +53,8 @@ buildscript {
 
 ### 3. Get the visitor identifier
 
-Retrieve the visitor identifier:
+Retrieve the visitor identifier using browser token. You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
+
 
 ```kotlin
 // Initialization
@@ -121,6 +122,7 @@ function initFingerprintJS() {
       .then(result => console.log(result.visitorId));
   }
 ```
+You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
 
 ## Additional Resources
 [FingerprintJS Pro documentation](https://dev.fingerprintjs.com/docs)
