@@ -102,7 +102,7 @@ webview.addJavascriptInterface(
 function initFingerprintJS() {
     // Initialize an agent at application startup
     const fpPromise = FingerprintJS.load({
-      token: 'your-api-token',
+      token: 'your-browser-token',
       endpoint: 'your-endpoint', // optional
       region: 'your-region' // optional
     });
