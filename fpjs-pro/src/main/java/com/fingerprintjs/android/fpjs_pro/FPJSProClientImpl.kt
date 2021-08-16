@@ -26,11 +26,9 @@ class FPJSProClientImpl(
     private lateinit var webViewWeakRef: WeakReference<WebView>
 
     override fun getVisitorId(listener: (String) -> (Unit)) {
-        runOnUiThread {
-            drawWebView()
-            init(listener)
-            executeFPJS()
-        }
+        runOnUiThread { drawWebView() }
+        runOnUiThread(DELAY) { init(listener) }
+        runOnUiThread(2 * DELAY) { executeFPJS() }
     }
 
     private fun init(listener: (String) -> (Unit)) {
@@ -50,7 +48,7 @@ class FPJSProClientImpl(
                 message: String?,
                 result: JsResult?
             ): Boolean {
-                listener.invoke(message ?: "error")
+                listener.invoke(message ?: "")
                 clearWebView()
                 return true
             }
@@ -78,10 +76,10 @@ class FPJSProClientImpl(
         }, null)
     }
 
-    private fun runOnUiThread(action: () -> (Unit)) {
-        Handler(applicationContext.mainLooper).post {
+    private fun runOnUiThread(delayInMillis: Long = 0L, action: () -> (Unit)) {
+        Handler(applicationContext.mainLooper).postDelayed({
             action.invoke()
-        }
+        }, delayInMillis)
     }
 
     private fun clearWebView() {
@@ -97,3 +95,4 @@ class FPJSProClientImpl(
 
 private const val JS_INTERFACE_NAME = "fpjs-pro-android"
 private const val FPJS_ASSET_URL = "file:///android_asset/index.html"
+private const val DELAY = 50L
