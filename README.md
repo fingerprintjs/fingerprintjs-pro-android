@@ -37,7 +37,8 @@ allprojects {
 
 ```gradle
 dependencies {
-  implementation "com.github.fingerprintjs:fingerprintjs-pro-android-integrations-1.0" // TODO: check and fix version
+  implementation "com.github.fingerprintjs:fingerprint-android:1.2"
+  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android-integrations:v0.1.0-alpha
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"}
@@ -75,7 +76,7 @@ fpjsClient.getVisitorId { visitorId ->
 }
 ```
 
-*❗ Important: The identification call is performed on the UI-thread, consider using it while the screen is static.*
+*❗ Important: Due to WebView limitations the initialization of the client is performed on the UI-thread, consider call `getVisitorId()` while the screen is static.*
 
 
 ## Using inside a webview with JavaScript
