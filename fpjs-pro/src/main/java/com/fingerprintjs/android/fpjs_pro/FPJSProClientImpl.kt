@@ -14,6 +14,7 @@ import com.fingerprintjs.android.fingerprint.Configuration
 import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import java.lang.ref.WeakReference
+import java.util.concurrent.Executors
 
 
 @SuppressLint("SetJavaScriptEnabled", "InflateParams")
@@ -24,11 +25,14 @@ class FPJSProClientImpl(
 ) : FPJSProClient {
 
     private lateinit var webViewWeakRef: WeakReference<WebView>
+    private val executor = Executors.newSingleThreadExecutor()
 
     override fun getVisitorId(listener: (String) -> (Unit)) {
-        runOnUiThread { drawWebView() }
-        runOnUiThread(DELAY) { init(listener) }
-        runOnUiThread(2 * DELAY) { executeFPJS() }
+        runOnUiThread {
+            drawWebView()
+            init(listener)
+            executeFPJS()
+        }
     }
 
     private fun init(listener: (String) -> (Unit)) {
@@ -48,13 +52,18 @@ class FPJSProClientImpl(
                 message: String?,
                 result: JsResult?
             ): Boolean {
-                listener.invoke(message ?: "")
-                clearWebView()
+                executor.execute {
+                    listener.invoke(message ?: "")
+                }
+                runOnUiThread {
+                    clearWebView()
+                }
                 return true
             }
         }
 
         webViewWeakRef.get()?.settings?.javaScriptEnabled = true
+        webViewWeakRef.get()?.settings?.defaultTextEncodingName = "utf-8"
         webViewWeakRef.get()
             ?.addJavascriptInterface(
                 FPJSProInterface(fingerprinter, apiToken, endpointUrl),
@@ -95,4 +104,3 @@ class FPJSProClientImpl(
 
 private const val JS_INTERFACE_NAME = "fpjs-pro-android"
 private const val FPJS_ASSET_URL = "file:///android_asset/index.html"
-private const val DELAY = 50L
