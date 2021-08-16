@@ -23,22 +23,15 @@ This integration approach uses the external library [fingerprint-android](https:
 
 *Note: The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/). If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).*
 
-### 1. Add the jitpack repository to your `build.gradle` file
+### 1. Download the latest [release](https://github.com/fingerprintjs/fingerprintjs-pro-android-integrations/releases) to the `libs` folder of your application.
 
-```gradle
-allprojects {	
-  repositories {
-  ...
-  maven { url 'https://jitpack.io' }	
-}}
-```
 
 ### 2. Add a dependency to your `build.gradle` file
 
 ```gradle
 dependencies {
   implementation "com.github.fingerprintjs:fingerprint-android:1.2"
-  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android-integrations:v0.1.0-alpha
+  implementation files("libs/fpjs-pro-0.1.0-release.aar")
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"}
