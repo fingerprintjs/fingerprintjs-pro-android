@@ -12,7 +12,7 @@
 # FingerprintJS Pro Android Integrations
 
 
-An example app and packages demonstrating [FingerprintJS Pro](https://fingerprintjs.com/) capabilities on the Android platform. The repository illustrates how to retrieve a FingerprintJS Pro visitor identifier in a native mobile app. These integrations communicate with the FingerprintJS Pro API and require [browser token](https://dev.fingerprintjs.com/docs). For local client-side Android fingerprinting take a look at [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository instead.
+An example app and packages demonstrating [FingerprintJS Pro](https://fingerprintjs.com/) capabilities on the Android platform. The repository illustrates how to retrieve a FingerprintJS Pro visitor identifier in a native mobile app. These integrations communicate with the FingerprintJS Pro API and require [browser token](https://dev.fingerprintjs.com/docs). For local client-side Android fingerprinting take a look at [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository instead. If you are interested in the iOS platform, you can also check our [FingerprintJS Pro iOS integrations](https://github.com/fingerprintjs/fingerprintjs-pro-ios-webview).
 
 There are two typical use cases:
 - Using our native library to retrieve a FingerprintJS Pro visitor identifier in the native code OR
@@ -53,7 +53,8 @@ buildscript {
 
 ### 3. Get the visitor identifier
 
-Retrieve the visitor identifier:
+Retrieve the visitor identifier using browser token. You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
+
 
 ```kotlin
 // Initialization
@@ -102,7 +103,7 @@ webview.addJavascriptInterface(
 function initFingerprintJS() {
     // Initialize an agent at application startup
     const fpPromise = FingerprintJS.load({
-      token: 'your-api-token',
+      token: 'your-browser-token',
       endpoint: 'your-endpoint', // optional
       region: 'your-region' // optional
     });
@@ -121,6 +122,7 @@ function initFingerprintJS() {
       .then(result => console.log(result.visitorId));
   }
 ```
+You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
 
 ## Additional Resources
 [FingerprintJS Pro documentation](https://dev.fingerprintjs.com/docs)
