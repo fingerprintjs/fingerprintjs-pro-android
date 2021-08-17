@@ -33,11 +33,12 @@ android {
 }
 
 dependencies {
-
+    debugImplementation fileTree(dir: "../fpjs-pro/build/outputs/aar/", include: ["*-debug.aar"])
+    releaseImplementation fileTree(dir: "../fpjs-pro/build/outputs/aar/", include: ["*-release.aar"])
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation "com.github.fingerprintjs:fingerprint-android:1.2"
     implementation 'com.google.android.material:material:1.4.0'
-    implementation(project(":fpjs-pro"))
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
