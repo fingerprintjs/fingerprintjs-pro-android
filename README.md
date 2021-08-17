@@ -23,10 +23,24 @@ This integration approach uses the external library [fingerprint-android](https:
 
 *Note: The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/). If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).*
 
-### 1. Download the latest [release](https://github.com/fingerprintjs/fingerprintjs-pro-android-integrations/releases) to the `libs` folder of your application.
+
+### 1. Add repository
+
+Add these lines to your `build.gradle`.
 
 
-### 2. Add a dependency to your `build.gradle` file
+```gradle
+allprojects {	
+  repositories {
+  ...
+  maven { url 'https://jitpack.io' }	
+}}
+```
+
+### 2. Download the latest [release](https://github.com/fingerprintjs/fingerprintjs-pro-android-integrations/releases) to the `libs` folder of your application.
+
+
+### 3. Add a dependency to your `build.gradle` file
 
 ```gradle
 dependencies {
@@ -45,7 +59,7 @@ buildscript {
 ```
 *Note: You can find your Kotlin version in Android Studio > File > Settings > Languages & Frameworks > Kotlin.*
 
-### 3. Get the visitor identifier
+### 4. Get the visitor identifier
 
 Retrieve the visitor identifier using browser token. You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
 
