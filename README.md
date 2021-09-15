@@ -45,7 +45,7 @@ allprojects {
 ```gradle
 dependencies {
   implementation "com.github.fingerprintjs:fingerprint-android:1.2"
-  implementation files("libs/fpjs-pro-0.1.0-release.aar")
+  implementation files("libs/fpjs-pro-release.aar")
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"}
