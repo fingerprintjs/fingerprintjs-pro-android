@@ -4,7 +4,15 @@ plugins {
     id 'maven-publish'
 }
 
-group='com.github.fingerprintjs'
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.github.fingerprintjs'
+            artifactId = "fpjs-pro"
+            version = '1.0.0'
+        }
+    }
+}
 
 android {
     compileSdkVersion 31
@@ -31,6 +39,7 @@ android {
             }
         }
     }
+
 }
 
 dependencies {
