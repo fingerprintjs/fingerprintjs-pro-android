@@ -9,7 +9,7 @@ interface FPJSProClient {
     fun getVisitorId(listener: (String) -> Unit)
 }
 
-class Configuration(
+class Configuration @JvmOverloads constructor(
     val apiToken: String,
     val region: Region = Region.US,
     val endpointUrl: String = region.endpointUrl
