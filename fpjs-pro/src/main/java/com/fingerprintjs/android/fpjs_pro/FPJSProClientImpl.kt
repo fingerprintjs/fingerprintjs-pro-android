@@ -10,9 +10,10 @@ import android.webkit.ConsoleMessage
 import android.webkit.JsResult
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import com.fingerprintjs.android.fingerprint.Configuration
-import com.fingerprintjs.android.fingerprint.FingerprinterFactory
-import com.fingerprintjs.android.fingerprint.tools.executeSafe
+import com.fingerprintjs.android.fpjs_pro.device_id_providers.AndroidIdProvider
+import com.fingerprintjs.android.fpjs_pro.device_id_providers.GsfIdProvider
+import com.fingerprintjs.android.fpjs_pro.device_id_providers.MediaDrmIdProvider
+import com.fingerprintjs.android.fpjs_pro.tools.executeSafe
 import java.lang.ref.WeakReference
 import java.util.concurrent.Executors
 
@@ -36,8 +37,10 @@ class FPJSProClientImpl(
     }
 
     private fun init(listener: (String) -> (Unit)) {
-        val fingerprinter =
-            FingerprinterFactory.getInstance(applicationContext, Configuration(3))
+        val contentResolver = applicationContext.contentResolver!!
+        val androidIdProvider = AndroidIdProvider(contentResolver)
+        val gsfIdProvider = GsfIdProvider(contentResolver)
+        val mediaDrmIdProvider = MediaDrmIdProvider()
 
         webViewWeakRef.get()?.webChromeClient = object : WebChromeClient() {
 
@@ -66,7 +69,12 @@ class FPJSProClientImpl(
         webViewWeakRef.get()?.settings?.defaultTextEncodingName = "utf-8"
         webViewWeakRef.get()
             ?.addJavascriptInterface(
-                FPJSProInterface(fingerprinter, apiToken, endpointUrl),
+                FPJSProInterface(
+                    apiToken, endpointUrl,
+                    androidIdProvider,
+                    gsfIdProvider,
+                    mediaDrmIdProvider
+                ),
                 JS_INTERFACE_NAME
             )
     }

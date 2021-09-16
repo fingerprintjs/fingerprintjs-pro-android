@@ -3,9 +3,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url "https://jitpack.io"
-        }
     }
 }
 rootProject.name = "fingerprintjs-pro-android-webview"
