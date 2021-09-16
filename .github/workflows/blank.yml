@@ -25,10 +25,7 @@ jobs:
 
       - name: Lint
         run: ./gradlew fpjs-pro:lint
-
-      - name: Test
-        run: ./gradlew fpjs-pro:test
-
+        
       - name: Build library
         run: ./gradlew fpjs-pro:assembleRelease
 
