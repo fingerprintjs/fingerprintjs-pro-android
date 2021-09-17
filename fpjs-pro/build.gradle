@@ -10,6 +10,7 @@ publishing {
             groupId = 'com.github.fingerprintjs'
             artifactId = "fpjs-pro"
             version = '1.0.0'
+            artifact("$buildDir/outputs/aar/fpjs-pro-1.0.0-release.aar")
         }
     }
 }
