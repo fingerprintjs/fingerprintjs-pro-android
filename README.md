@@ -37,15 +37,11 @@ allprojects {
 }}
 ```
 
-### 2. Download the latest [release](https://github.com/fingerprintjs/fingerprintjs-pro-android-integrations/releases) to the `libs` folder of your application.
-
-
-### 3. Add a dependency to your `build.gradle` file
+### 2. Add a dependency to your `build.gradle` file
 
 ```gradle
 dependencies {
-  implementation "com.github.fingerprintjs:fingerprint-android:1.2"
-  implementation files("libs/fpjs-pro-0.1.0-release.aar")
+  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android-integrations:v1.0.0-rc5'
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"}
@@ -59,10 +55,11 @@ buildscript {
 ```
 *Note: You can find your Kotlin version in Android Studio > File > Settings > Languages & Frameworks > Kotlin.*
 
-### 4. Get the visitor identifier
+### 3. Get the visitor identifier
 
 Retrieve the visitor identifier using browser token. You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
 
+#### 3.1 Kotlin example
 
 ```kotlin
 // Initialization
@@ -83,6 +80,26 @@ fpjsClient.getVisitorId { visitorId ->
 }
 ```
 
+#### 3.2 Java example
+
+```java
+
+FPJSProFactory factory = new FPJSProFactory(this.getApplicationContext());
+Configuration configuration = new Configuration("BROWSER_TOKEN", Configuration.Region.US, Configuration.Region.US.getEndpointUrl()); 
+// Or you can choose Region.EU
+
+FPJSProClient fpjsClient = factory.createInstance(
+        configuration
+);
+
+fpjsClient.getVisitorId(new Function1<String, Unit>() {
+    @Override
+    public Unit invoke(String visitorId) {
+        // Use visitorId
+        return null;
+    }
+});
+```
 *❗ Important: Due to WebView limitations the initialization of the client is performed on the UI-thread, consider call `getVisitorId()` while the screen is static.*
 
 
