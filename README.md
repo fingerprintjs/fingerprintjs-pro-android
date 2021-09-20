@@ -37,6 +37,7 @@ allprojects {
 }}
 ```
 
+
 ### 2. Add a dependency to your `build.gradle` file
 
 ```gradle
@@ -59,6 +60,7 @@ buildscript {
 
 Retrieve the visitor identifier using browser token. You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
 
+
 #### 3.1 Kotlin example
 
 ```kotlin
@@ -80,6 +82,7 @@ fpjsClient.getVisitorId { visitorId ->
 }
 ```
 
+
 #### 3.2 Java example
 
 ```java
@@ -100,6 +103,7 @@ fpjsClient.getVisitorId(new Function1<String, Unit>() {
     }
 });
 ```
+
 *❗ Important: Due to WebView limitations the initialization of the client is performed on the UI-thread, consider call `getVisitorId()` while the screen is static.*
 
 
