@@ -2,14 +2,16 @@ package com.fingerprintjs.android.fpjs_pro
 
 
 import android.content.Context
-import com.fingerprintjs.android.fingerprint.FingerprinterFactory
+import com.fingerprintjs.android.fpjs_pro.device_id_providers.AndroidIdProvider
+import com.fingerprintjs.android.fpjs_pro.device_id_providers.GsfIdProvider
+import com.fingerprintjs.android.fpjs_pro.device_id_providers.MediaDrmIdProvider
 
 
 interface FPJSProClient {
     fun getVisitorId(listener: (String) -> Unit)
 }
 
-class Configuration(
+class Configuration @JvmOverloads constructor(
     val apiToken: String,
     val region: Region = Region.US,
     val endpointUrl: String = region.endpointUrl
@@ -34,11 +36,16 @@ class FPJSProFactory(
     }
 
     fun createInterface(configuration: Configuration = Configuration("")): FPJSProInterface {
-        val fingerprinter = FingerprinterFactory.getInstance(
-            applicationContext,
-            com.fingerprintjs.android.fingerprint.Configuration(3)
+        val contentResolver = applicationContext.contentResolver!!
+        val androidIdProvider = AndroidIdProvider(contentResolver)
+        val gsfIdProvider = GsfIdProvider(contentResolver)
+        val mediaDrmIdProvider = MediaDrmIdProvider()
+        return FPJSProInterface(
+            configuration.apiToken,
+            configuration.endpointUrl,
+            androidIdProvider,
+            gsfIdProvider,
+            mediaDrmIdProvider
         )
-
-        return FPJSProInterface(fingerprinter, configuration.apiToken, configuration.endpointUrl)
     }
 }

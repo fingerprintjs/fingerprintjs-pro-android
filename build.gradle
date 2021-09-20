@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.4.30'
+    ext.kotlin_version = '1.5.10'
     repositories {
         google()
         mavenCentral()
@@ -10,7 +10,6 @@ buildscript {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
-
 
 task clean(type: Delete) {
     delete rootProject.buildDir
