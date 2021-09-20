@@ -42,7 +42,7 @@ allprojects {
 
 ```gradle
 dependencies {
-  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android-integrations:v1.0.0-rc5'
+  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android-integrations:1.0.0'
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"}
@@ -143,9 +143,9 @@ function initFingerprintJS() {
     // Get the visitor identifier when you need it
     fpPromise
       .then(fp => fp.get({
-       tag: {
+       environment: {
         deviceId: androidDeviceId,
-        deviceType: 'android',
+        type: 'android',
        }
       }))
       .then(result => console.log(result.visitorId));
