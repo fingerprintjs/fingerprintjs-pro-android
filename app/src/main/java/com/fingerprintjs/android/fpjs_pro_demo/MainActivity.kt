@@ -52,9 +52,14 @@ class MainActivity : AppCompatActivity() {
             idTextView.visibility = View.INVISIBLE
             progressBar.visibility = View.VISIBLE
 
-            fpjsClient?.getVisitorId {
-                handleId(it)
-            }
+            fpjsClient?.getVisitorId(
+                tags = mapOf("sessionKey" to "101_179872"),
+                listener = { visitorId ->
+                    handleId(visitorId)
+                },
+                errorListener = { error ->
+                    showMessage(error)
+                })
         }
     }
 
@@ -88,6 +93,8 @@ class MainActivity : AppCompatActivity() {
             .isEmpty()) && (apiTokenInput.text.toString().isNotEmpty())
 
     private fun showMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        runOnUiThread {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
     }
 }

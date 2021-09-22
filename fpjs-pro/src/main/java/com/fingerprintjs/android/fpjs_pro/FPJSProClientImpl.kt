@@ -29,14 +29,30 @@ class FPJSProClientImpl(
     private val executor = Executors.newSingleThreadExecutor()
 
     override fun getVisitorId(listener: (String) -> (Unit)) {
+        getVisitorId(emptyMap(), listener, {})
+    }
+
+    override fun getVisitorId(listener: (String) -> Unit, errorListener: (String) -> Unit) {
+        getVisitorId(emptyMap(), listener, errorListener)
+    }
+
+    override fun getVisitorId(
+        tags: Map<String, Any>,
+        listener: (String) -> Unit,
+        errorListener: (String) -> Unit
+    ) {
         runOnUiThread {
             drawWebView()
-            init(listener)
+            init(tags, listener, errorListener)
             executeFPJS()
         }
     }
 
-    private fun init(listener: (String) -> (Unit)) {
+    private fun init(
+        tags: Map<String, Any>,
+        listener: (String) -> Unit,
+        errorListener: (String) -> Unit
+    ) {
         val contentResolver = applicationContext.contentResolver!!
         val androidIdProvider = AndroidIdProvider(contentResolver)
         val gsfIdProvider = GsfIdProvider(contentResolver)
@@ -56,7 +72,17 @@ class FPJSProClientImpl(
                 result: JsResult?
             ): Boolean {
                 executor.execute {
-                    listener.invoke(message ?: "")
+                    if (message.isNullOrEmpty()) {
+                        errorListener.invoke("Unknown error")
+                        return@execute
+                    }
+
+                    if (message.contains(ERROR_SIGNATURE)) {
+                        val errorMsg = message.replace(ERROR_SIGNATURE, "")
+                        errorListener.invoke(errorMsg)
+                        return@execute
+                    }
+                    listener.invoke(message)
                 }
                 runOnUiThread {
                     clearWebView()
@@ -112,3 +138,4 @@ class FPJSProClientImpl(
 
 private const val JS_INTERFACE_NAME = "fpjs-pro-android"
 private const val FPJS_ASSET_URL = "file:///android_asset/index.html"
+private const val ERROR_SIGNATURE = "FPJS-Pro-error"
