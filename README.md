@@ -26,7 +26,7 @@ This integration approach uses the external library [fingerprint-android](https:
 
 ### 1. Add repository
 
-Add these lines to your `build.gradle`.
+If your version of Gradle is earlier than 7, add these lines to your `build.gradle`.
 
 
 ```gradle
@@ -37,6 +37,14 @@ allprojects {
 }}
 ```
 
+If your version of Gradle is 7 or newer, add these lines to your `settings.gradle`.
+```gradle
+repositories {
+  ...
+  maven { url "https://jitpack.io" }
+}
+```
+
 
 ### 2. Add a dependency to your `build.gradle` file
 
@@ -45,13 +53,13 @@ dependencies {
   implementation 'com.github.fingerprintjs:fingerprintjs-pro-android-integrations:1.0.0'
 
   // If you use Java for you project, add also this line
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"}
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 ```
 
 When using Kotlin, also make sure you have specified Kotlin version in your `build.gradle` file:
 ```gradle
 buildscript {
-    ext.kotlin_version= 'your-kotlin-version'
+    ext.kotlin_version = 'your-kotlin-version'
     ...
 ```
 *Note: You can find your Kotlin version in Android Studio > File > Settings > Languages & Frameworks > Kotlin.*
@@ -64,15 +72,19 @@ Retrieve the visitor identifier using browser token. You can find your [browser 
 #### 3.1 Kotlin example
 
 ```kotlin
+import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
+...
+
 // Initialization
 val factory = FPJSProFactory(applicationContext)
-val configuration(
+val configuration = Configuration(
     apiToken = "BROWSER_TOKEN",
     region = Region.US, // optional
     endpointUrl = "https://endpoint.url" // optional
   )
  
-val fpjsClient = factory.create(
+val fpjsClient = factory.createInstance(
     configuration
 )
 
@@ -86,6 +98,10 @@ fpjsClient.getVisitorId { visitorId ->
 #### 3.2 Java example
 
 ```java
+import com.fingerprintjs.android.fpjs_pro.Configuration;
+import com.fingerprintjs.android.fpjs_pro.FPJSProClient;
+import com.fingerprintjs.android.fpjs_pro.FPJSProFactory;
+...
 
 FPJSProFactory factory = new FPJSProFactory(this.getApplicationContext());
 Configuration configuration = new Configuration("BROWSER_TOKEN", Configuration.Region.US, Configuration.Region.US.getEndpointUrl()); 
