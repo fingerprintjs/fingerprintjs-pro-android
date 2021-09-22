@@ -9,6 +9,8 @@ import com.fingerprintjs.android.fpjs_pro.device_id_providers.MediaDrmIdProvider
 
 interface FPJSProClient {
     fun getVisitorId(listener: (String) -> Unit)
+    fun getVisitorId(listener: (String) -> Unit, errorListener: (String) -> (Unit))
+    fun getVisitorId(tags: Map<String, Any>, listener: (String) -> Unit, errorListener: (String) -> (Unit))
 }
 
 class Configuration @JvmOverloads constructor(
