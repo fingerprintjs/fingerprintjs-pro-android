@@ -108,13 +108,13 @@ import com.fingerprintjs.android.fpjs_pro.FPJSProFactory;
 
 FPJSProFactory factory = new FPJSProFactory(this.getApplicationContext());
 Configuration configuration = new Configuration(
-  "BROWSER_TOKEN",
-  Configuration.Region.US, // optional,
-  "https://endpoint.url" // optional
-  ); 
+    "BROWSER_TOKEN",
+    Configuration.Region.US, // optional,
+    "https://endpoint.url" // optional
+    ); 
 
 FPJSProClient fpjsClient = factory.createInstance(
-        configuration
+    configuration
 );
 
 fpjsClient.getVisitorId(new Function1<String, Unit>() {
@@ -210,25 +210,25 @@ myWebView.loadUrl("https://site-with-injected-agent.com");
 
 ```js
 function initFingerprintJS() {
-    // Initialize an agent at application startup
-    const fpPromise = FingerprintJS.load({
-      token: 'your-browser-token',
-      endpoint: 'your-endpoint', // optional
-      region: 'your-region' // optional
-    });
-    
-    var androidDeviceId = window['fpjs-pro-android'].getDeviceId();
+  // Initialize an agent at application startup
+  const fpPromise = FingerprintJS.load({
+    token: 'your-browser-token',
+    endpoint: 'your-endpoint', // optional
+    region: 'your-region' // optional
+  });
+  
+  var androidDeviceId = window['fpjs-pro-android'].getDeviceId();
 
-    // Get the visitor identifier when you need it
-    fpPromise
-      .then(fp => fp.get({
-       environment: {
-        deviceId: androidDeviceId,
-        type: 'android',
-       }
-      }))
-      .then(result => console.log(result.visitorId));
-  }
+  // Get the visitor identifier when you need it
+  fpPromise
+    .then(fp => fp.get({
+     environment: {
+      deviceId: androidDeviceId,
+      type: 'android',
+     }
+    }))
+    .then(result => console.log(result.visitorId));
+}
 ```
 You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
 
