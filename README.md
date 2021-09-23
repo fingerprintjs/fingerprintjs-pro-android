@@ -11,20 +11,17 @@
 
 # FingerprintJS Pro Android Integrations
 
-
-An example app and packages demonstrating [FingerprintJS Pro](https://fingerprintjs.com/) capabilities on the Android platform. The repository illustrates how to retrieve a FingerprintJS Pro visitor identifier in a native mobile app. These integrations communicate with the FingerprintJS Pro API and require [browser token](https://dev.fingerprintjs.com/docs). For local client-side Android fingerprinting take a look at [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository instead. If you are interested in the iOS platform, you can also check our [FingerprintJS Pro iOS integrations](https://github.com/fingerprintjs/fingerprintjs-pro-ios-webview).
+An example app and packages demonstrating [FingerprintJS Pro](https://fingerprintjs.com/) capabilities on the Android platform. The repository illustrates how to retrieve a FingerprintJS Pro visitor identifier in a native mobile app. These integrations communicate with the FingerprintJS Pro API and require [browser token](https://dev.fingerprintjs.com/docs). For client-side only Android fingerprinting take a look at [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository instead. If you are interested in the iOS platform, you can also check our [FingerprintJS Pro iOS integrations](https://github.com/fingerprintjs/fingerprintjs-pro-ios-webview).
 
 There are two typical use cases:
 - Using our native library to retrieve a FingerprintJS Pro visitor identifier in the native code OR
 - Retrieving visitor identifier using our native library in combination with signals from the FingerprintJS Pro browser agent in the webview on the JavaScript level.
 
-## Using the external library to retrieve a FingerprintJS Pro visitor identifier
-This integration approach uses the external library [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android). It collects various signals from the Android system, sends them to the FingerprintJS Pro API for processing, and retrieves an accurate visitor identifier.
+## Installation
 
-*Note: The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/). If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).*
+For both scenarios, you have to add the library to your project first. This is a mandatory prerequisite before continuing with the external library or webview scenario.
 
-
-### 1. Add repository
+#### 1. Add the repository to the gradle.
 
 If your version of Gradle is earlier than 7, add these lines to your `build.gradle`.
 
@@ -44,9 +41,7 @@ repositories {
   maven { url "https://jitpack.io" }
 }
 ```
-
-
-### 2. Add a dependency to your `build.gradle` file
+#### 2. Add a dependency to your `build.gradle` file
 
 ```gradle
 dependencies {
@@ -64,12 +59,20 @@ buildscript {
 ```
 *Note: You can find your Kotlin version in Android Studio > File > Settings > Languages & Frameworks > Kotlin.*
 
-### 3. Get the visitor identifier
+Sync gradle settings.
+
+
+### Using the external library to retrieve a FingerprintJS Pro visitor identifier
+This integration approach uses the external library [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android). It collects various signals from the Android system, sends them to the FingerprintJS Pro API for processing, and retrieves an accurate visitor identifier.
+
+*Note: The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/). If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).*
+
+#### 3. Get the visitor identifier
 
 Retrieve the visitor identifier using browser token. You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
 
 
-#### 3.1 Kotlin example
+##### 3.1 Kotlin example
 
 ```kotlin
 import com.fingerprintjs.android.fpjs_pro.Configuration
@@ -95,7 +98,7 @@ fpjsClient.getVisitorId { visitorId ->
 ```
 
 
-#### 3.2 Java example
+##### 3.2 Java example
 
 ```java
 import com.fingerprintjs.android.fpjs_pro.Configuration;
@@ -104,8 +107,11 @@ import com.fingerprintjs.android.fpjs_pro.FPJSProFactory;
 ...
 
 FPJSProFactory factory = new FPJSProFactory(this.getApplicationContext());
-Configuration configuration = new Configuration("BROWSER_TOKEN", Configuration.Region.US, Configuration.Region.US.getEndpointUrl()); 
-// Or you can choose Region.EU
+Configuration configuration = new Configuration(
+  "BROWSER_TOKEN",
+  Configuration.Region.US, // optional,
+  "https://endpoint.url" // optional
+  ); 
 
 FPJSProClient fpjsClient = factory.createInstance(
         configuration
@@ -123,26 +129,84 @@ fpjsClient.getVisitorId(new Function1<String, Unit>() {
 *❗ Important: Due to WebView limitations the initialization of the client is performed on the UI-thread, consider call `getVisitorId()` while the screen is static.*
 
 
-## Using inside a webview with JavaScript
+### Using inside a webview with JavaScript
 
-This approach uses signals from [FingerprintJS Pro browser agent](https://dev.fingerprintjs.com/docs/quick-start-guide#js-agent) together with signals provided by [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android). The identifier collected by [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) is added to the [`tag` field](https://dev.fingerprintjs.com/docs#tagging-your-requests) in the given format. FingerprintJS Pro browser agent adds an additional set of signals and sents them to the FingerprintJS Pro API. Eventually, the API returns accurate visitor identifier.
+This approach uses signals from [FingerprintJS Pro browser agent](https://dev.fingerprintjs.com/docs/quick-start-guide#js-agent) together with signals provided by [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android). The identifier collected by [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) is added to the [`tag` field](https://dev.fingerprintjs.com/docs#tagging-your-requests) in the given format. FingerprintJS Pro browser agent adds an additional set of signals and sends them to the FingerprintJS Pro API. Eventually, the API returns an accurate visitor identifier.
 
-### 1. Add a JavaScript interface to your webview
+#### 3. Add a JavaScript interface to your webview
+
+##### 3.1 Kotlin example
 
 ```kotlin
+import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
+...
+
+val myWebView: WebView = findViewById(R.id.webview)
 
 // Init interface
-val factory = FPJSProFactory(webview.context.applicationContext)
-val interface = FPJSProFactory.createInterface()
+val factory = FPJSProFactory(myWebView.context.applicationContext)
+val configuration = Configuration(
+    apiToken = "BROWSER_TOKEN",
+    region = Configuration.Region.US, // optional
+    endpointUrl = "https://endpoint.url" // optional
+)
+val fpjsInterface = factory.createInterface(configuration)
 
-// Add it to the webview
-webview.addJavascriptInterface(
-                interface,
-                "fpjs-pro-android"
-            )
+// Add interface to the webview
+myWebView.addJavascriptInterface(
+    fpjsInterface,
+    "fpjs-pro-android"
+)
+
+// Use embedded webview in the app instead of the default new app
+myWebView.setWebViewClient(WebViewClient())
+
+// Enable javascript inside the webview
+val webSettings: WebSettings = myWebView.getSettings()
+webSettings.javaScriptEnabled = true
+
+// Load url with the injected and configured FingerprintJS Pro agent
+myWebView.loadUrl("https://site-with-injected-agent.com")
 ```
 
-### 2. Setup the JavaScript FingerprintJS PRO integration in your webview
+##### 3.1 Java example
+```java
+import com.fingerprintjs.android.fpjs_pro.Configuration;
+import com.fingerprintjs.android.fpjs_pro.FPJSProFactory;
+import com.fingerprintjs.android.fpjs_pro.FPJSProInterface;
+...
+
+WebView myWebView = findViewById(R.id.webview);
+
+// Init interface
+FPJSProFactory factory = new FPJSProFactory(this.getApplicationContext());
+Configuration configuration = new Configuration(
+  "BROWSER_TOKEN",
+  Configuration.Region.US, // optional
+  "https://endpoint.url" // optional
+  );
+
+FPJSProInterface fpjsInterface = factory.createInterface(configuration);
+
+// Add interface to the webview
+myWebView.addJavascriptInterface(
+    fpjsInterface,
+    "fpjs-pro-android"
+    );
+
+// Use embedded webview in the app instead of the default new app
+myWebView.setWebViewClient(new WebViewClient());
+
+// Enable javascript inside the webview
+WebSettings webSettings = myWebView.getSettings();
+webSettings.setJavaScriptEnabled(true);
+
+// Load url with the injected and configured FingerprintJS Pro agent
+myWebView.loadUrl("https://site-with-injected-agent.com");
+```
+
+### 4. Setup the JavaScript FingerprintJS Pro integration in your webview
 
 ```js
 function initFingerprintJS() {
@@ -154,7 +218,6 @@ function initFingerprintJS() {
     });
     
     var androidDeviceId = window['fpjs-pro-android'].getDeviceId();
-
 
     // Get the visitor identifier when you need it
     fpPromise
