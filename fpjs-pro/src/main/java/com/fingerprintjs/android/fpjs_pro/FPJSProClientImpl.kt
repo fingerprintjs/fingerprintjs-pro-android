@@ -99,7 +99,8 @@ class FPJSProClientImpl(
                     apiToken, endpointUrl,
                     androidIdProvider,
                     gsfIdProvider,
-                    mediaDrmIdProvider
+                    mediaDrmIdProvider,
+                    tags
                 ),
                 JS_INTERFACE_NAME
             )
@@ -138,4 +139,4 @@ class FPJSProClientImpl(
 
 private const val JS_INTERFACE_NAME = "fpjs-pro-android"
 private const val FPJS_ASSET_URL = "file:///android_asset/index.html"
-private const val ERROR_SIGNATURE = "FPJS-Pro-error"
+private const val ERROR_SIGNATURE = "FPJS-Pro-error:"

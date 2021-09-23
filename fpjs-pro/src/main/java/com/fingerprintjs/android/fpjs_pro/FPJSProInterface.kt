@@ -15,7 +15,7 @@ class FPJSProInterface internal constructor(
     private val androidIdProvider: AndroidIdProvider,
     private val gsfIdProvider: GsfIdProvider,
     private val mediaDrmIdProvider: MediaDrmIdProvider,
-    private val tags: Map<String, Object> = emptyMap()
+    private val tags: Map<String, Any> = emptyMap()
 ) {
     @JavascriptInterface
     fun getDeviceId(): String = nativeDeviceId()
@@ -28,11 +28,11 @@ class FPJSProInterface internal constructor(
 
     @JavascriptInterface
     fun getTags(): String {
-        if (tags.isEmpty()) return ""
+        if (tags.isEmpty()) return "{}"
         return try {
             JSONObject(tags).toString()
         } catch (e: JSONException) {
-            ""
+            "{}"
         }
     }
 

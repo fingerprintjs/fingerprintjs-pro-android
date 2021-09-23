@@ -2,7 +2,7 @@
 <body>
 <script>
       /**
-       * FingerprintJS Pro v3.5.0 - Copyright (c) FingerprintJS, Inc, 2021 (https://fingerprintjs.com)
+       * FingerprintJS Pro v3.5.3 - Copyright (c) FingerprintJS, Inc, 2021 (https://fingerprintjs.com)
        *
        * This software contains code from open-source projects:
        * MurmurHash3 by Karan Lyons (https://github.com/karanlyons/murmurHash3.js)
@@ -13,6 +13,7 @@
       var androidDeviceId = window['fpjs-pro-android'].getDeviceId();
       var apiToken = window['fpjs-pro-android'].getApiToken();
       var endpointUrl = window['fpjs-pro-android'].getEndpoint();
+      var androidTags = JSON.parse(window['fpjs-pro-android'].getTags());
 
       FingerprintJS.load({
         token: apiToken,
@@ -22,14 +23,14 @@
           environment: {
              type: 'android',
              deviceId: androidDeviceId,
-        }
+        }, tag: androidTags
         }))
         .then(result => {
             document.write(result.visitorId);
             alert(result.visitorId);
         })
         .catch(e => {
-            alert("FPJS-Pro-error" + e);
+            alert("FPJS-Pro-error:" + e);
             document.write(e);
             }
         )
