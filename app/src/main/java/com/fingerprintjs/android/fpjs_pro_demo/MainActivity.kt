@@ -53,12 +53,11 @@ class MainActivity : AppCompatActivity() {
             progressBar.visibility = View.VISIBLE
 
             fpjsClient?.getVisitorId(
-                tags = mapOf("sessionKey" to "101_179872"),
                 listener = { visitorId ->
                     handleId(visitorId)
                 },
                 errorListener = { error ->
-                    showMessage(error)
+                    showError(error)
                 })
         }
     }
@@ -77,6 +76,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun clearFPJSClient() {
         fpjsClient = null
+    }
+
+    private fun showError(error: String) {
+        runOnUiThread {
+            showMessage(error)
+            progressBar.visibility = View.GONE
+            idTextView.visibility = View.VISIBLE
+            clearFPJSClient()
+        }
     }
 
     private fun handleId(id: String) {
