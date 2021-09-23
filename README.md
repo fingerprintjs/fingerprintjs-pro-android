@@ -45,7 +45,7 @@ repositories {
 
 ```gradle
 dependencies {
-  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android-integrations:1.0.0'
+  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android-integrations:1.1.0'
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -62,7 +62,7 @@ buildscript {
 Sync gradle settings.
 
 
-### Using the external library to retrieve a FingerprintJS Pro visitor identifier
+## Using the external library to retrieve a FingerprintJS Pro visitor identifier
 This integration approach uses the external library [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android). It collects various signals from the Android system, sends them to the FingerprintJS Pro API for processing, and retrieves an accurate visitor identifier.
 
 *Note: The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/). If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).*
@@ -82,9 +82,7 @@ import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
 // Initialization
 val factory = FPJSProFactory(applicationContext)
 val configuration = Configuration(
-    apiToken = "BROWSER_TOKEN",
-    region = Region.US, // optional
-    endpointUrl = "https://endpoint.url" // optional
+    apiToken = "BROWSER_TOKEN"
   )
  
 val fpjsClient = factory.createInstance(
@@ -108,9 +106,7 @@ import com.fingerprintjs.android.fpjs_pro.FPJSProFactory;
 
 FPJSProFactory factory = new FPJSProFactory(this.getApplicationContext());
 Configuration configuration = new Configuration(
-    "BROWSER_TOKEN",
-    Configuration.Region.US, // optional,
-    "https://endpoint.url" // optional
+    "BROWSER_TOKEN"
     ); 
 
 FPJSProClient fpjsClient = factory.createInstance(
@@ -128,14 +124,54 @@ fpjsClient.getVisitorId(new Function1<String, Unit>() {
 
 *❗ Important: Due to WebView limitations the initialization of the client is performed on the UI-thread, consider call `getVisitorId()` while the screen is static.*
 
+## Full public API
 
-### Using inside a webview with JavaScript
+Full public API is following
+
+```kotlin
+
+interface FPJSProClient {
+    fun getVisitorId(listener: (String) -> Unit)
+    fun getVisitorId(listener: (String) -> Unit, errorListener: (String) -> (Unit))
+    fun getVisitorId(tags: Map<String, Any>, listener: (String) -> Unit, errorListener: (String) -> (Unit))
+}
+
+```
+
+### Error handling
+
+```kotlin
+fpjsClient.getVisitorId(
+          listener = { visitorId ->
+            // Handle ID
+          },
+          errorListener = { error ->
+            // Handle error
+          })
+```
+
+### [Tags](https://dev.fingerprintjs.com/v2/docs/js-agent#tag) support
+
+```kotlin
+ fpjsClient.getVisitorId(
+      tags = mapOf("sessionId" to sessionId),
+      listener = { visitorId ->
+          // Handle ID
+      },
+      errorListener = { error ->
+          // Handle error
+      })
+```
+
+
+
+## Using inside a webview with JavaScript
 
 This approach uses signals from [FingerprintJS Pro browser agent](https://dev.fingerprintjs.com/docs/quick-start-guide#js-agent) together with signals provided by [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android). The identifier collected by [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) is added to the [`tag` field](https://dev.fingerprintjs.com/docs#tagging-your-requests) in the given format. FingerprintJS Pro browser agent adds an additional set of signals and sends them to the FingerprintJS Pro API. Eventually, the API returns an accurate visitor identifier.
 
-#### 3. Add a JavaScript interface to your webview
+#### 4. Add a JavaScript interface to your webview
 
-##### 3.1 Kotlin example
+##### 4.1 Kotlin example
 
 ```kotlin
 import com.fingerprintjs.android.fpjs_pro.Configuration
@@ -170,7 +206,7 @@ webSettings.javaScriptEnabled = true
 myWebView.loadUrl("https://site-with-injected-agent.com")
 ```
 
-##### 3.1 Java example
+##### 4.2 Java example
 ```java
 import com.fingerprintjs.android.fpjs_pro.Configuration;
 import com.fingerprintjs.android.fpjs_pro.FPJSProFactory;
@@ -182,9 +218,7 @@ WebView myWebView = findViewById(R.id.webview);
 // Init interface
 FPJSProFactory factory = new FPJSProFactory(this.getApplicationContext());
 Configuration configuration = new Configuration(
-  "BROWSER_TOKEN",
-  Configuration.Region.US, // optional
-  "https://endpoint.url" // optional
+  "BROWSER_TOKEN"
   );
 
 FPJSProInterface fpjsInterface = factory.createInterface(configuration);
