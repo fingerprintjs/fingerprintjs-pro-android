@@ -19,7 +19,6 @@ class FetchVisitorIdResult(
     rawResponse: ByteArray?
 ) : TypedRequestResult<FetchVisitorIdResponse>(type, rawResponse) {
     override fun typedResult(): FetchVisitorIdResponse {
-        val response = rawResponse?.toString(Charsets.UTF_8) ?: ""
         val body = rawResponse?.toString(Charsets.UTF_8) ?: return FetchVisitorIdResponse(
             "",
             "",
