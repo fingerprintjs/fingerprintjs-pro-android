@@ -40,6 +40,9 @@ class FPJSProFactory(
     private val applicationContext: Context
 ) {
 
+
+    private val logger = ConsoleLogger()
+
     @JvmOverloads
     fun createInstance(
         configuration: Configuration,
@@ -54,9 +57,10 @@ class FPJSProFactory(
         } else {
             FPJSProKotlinClient(
                 createApiInteractor(
-                    configuration.apiToken,
-                    configuration.endpointUrl
-                )
+                    configuration.endpointUrl,
+                    configuration.apiToken
+                ),
+                logger
             )
         }
     }
@@ -92,19 +96,16 @@ class FPJSProFactory(
             endpointUrl,
             authToken,
             BuildConfig.VERSION_NAME,
-            getAppName()
+            getAppId()
         )
     }
 
     private fun createHttpClient(): HttpClient {
-        return NativeHttpClient(ConsoleLogger())
+        return NativeHttpClient(logger)
     }
 
-    private fun getAppName(): String {
+    private fun getAppId(): String {
         val applicationInfo = applicationContext.applicationInfo
-        val stringId = applicationInfo.labelRes
-        return if (stringId == 0) applicationInfo.nonLocalizedLabel.toString() else applicationContext.getString(
-            stringId
-        )
+        return applicationInfo.packageName
     }
 }
