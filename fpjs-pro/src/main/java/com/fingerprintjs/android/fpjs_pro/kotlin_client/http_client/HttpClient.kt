@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client
 
 
+import com.fingerprintjs.android.fpjs_pro.logger.Logger
 import com.fingerprintjs.android.fpjs_pro.tools.executeSafe
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -17,6 +18,7 @@ interface HttpClient {
 }
 
 class NativeHttpClient(
+    private val logger: Logger
 ) : HttpClient {
     override fun performRequest(request: Request): RawRequestResult {
         return executeSafe({
@@ -27,6 +29,7 @@ class NativeHttpClient(
     private fun sendPostRequest(request: Request): RawRequestResult {
 
         val reqParam = JSONObject(request.bodyAsMap()).toString()
+        logger.debug(this, "Body: $reqParam")
 
         val mURL = URL(request.url)
 
@@ -39,8 +42,8 @@ class NativeHttpClient(
             wr.write(reqParam);
             wr.flush();
 
-            println("URL : $url")
-            println("Response Code : $responseCode")
+            logger.debug(this, "URL : $url")
+            logger.debug(this,"Response Code : $responseCode")
 
             if (responseCode == 200) {
                 BufferedReader(InputStreamReader(inputStream)).use {
@@ -51,7 +54,8 @@ class NativeHttpClient(
                         response.append(inputLine)
                         inputLine = it.readLine()
                     }
-                    println("Response : $response")
+
+                    logger.debug(this, "Response : $response")
                     return RawRequestResult(RequestResultType.SUCCESS, response.toString().toByteArray())
                 }
             } else return RawRequestResult(RequestResultType.ERROR, "Error: code is $responseCode".toByteArray())

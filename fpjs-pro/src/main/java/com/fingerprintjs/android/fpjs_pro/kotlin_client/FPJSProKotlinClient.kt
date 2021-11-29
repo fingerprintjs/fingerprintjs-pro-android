@@ -2,6 +2,7 @@ package com.fingerprintjs.android.fpjs_pro.kotlin_client
 
 
 import com.fingerprintjs.android.fpjs_pro.FPJSProClient
+import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.RequestResultType
 import java.util.concurrent.Executors
 
 
@@ -25,13 +26,15 @@ class FPJSProKotlinClient(
         errorListener: (String) -> Unit
     ) {
         executor.execute {
-            interactor.getVisitorId(tags,
-                {
-                    listener.invoke(it)
-                },
-                {
-                    errorListener.invoke(it)
-                })
+            val result = interactor.getVisitorId(tags)
+            when(result.type) {
+                RequestResultType.SUCCESS -> {
+                    listener.invoke(result.typedResult().visitorId)
+                }
+                RequestResultType.ERROR -> {
+                    errorListener.invoke(result.typedResult().errorMessage ?: "")
+                }
+            }
         }
     }
 }
