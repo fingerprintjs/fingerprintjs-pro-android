@@ -1,0 +1,32 @@
+package com.fingerprintjs.android.fpjs_pro.kotlin_client
+
+
+import com.fingerprintjs.android.fpjs_pro.FPJSProClient
+
+
+class FPJSProKotlinClient(
+    private val interactor: FetchVisitorIdInteractor
+) : FPJSProClient {
+
+    override fun getVisitorId(listener: (String) -> (Unit)) {
+        getVisitorId(emptyMap(), listener, {})
+    }
+
+    override fun getVisitorId(listener: (String) -> Unit, errorListener: (String) -> Unit) {
+        getVisitorId(emptyMap(), listener, errorListener)
+    }
+
+    override fun getVisitorId(
+        tags: Map<String, Any>,
+        listener: (String) -> Unit,
+        errorListener: (String) -> Unit
+    ) {
+        interactor.getVisitorId(tags,
+            {
+                listener.invoke(it)
+            },
+            {
+                errorListener.invoke(it)
+            })
+    }
+}

@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro
+package com.fingerprintjs.android.fpjs_pro.web_view_client
 
 
 import android.webkit.JavascriptInterface
