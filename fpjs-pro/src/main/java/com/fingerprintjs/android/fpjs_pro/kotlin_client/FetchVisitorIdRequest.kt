@@ -50,11 +50,11 @@ class FetchVisitorIdRequest(
     private val mediaDrmId: String?,
     private val s67: String,
     private val tag: Map<String, Any>,
-    private val version: String,
+    version: String,
     private val packageName: String
 ) : Request {
 
-    override val url = "$endpointUrl/?ct=android/1.2.0"
+    override val url = "$endpointUrl/?ci=android/$version"
     override val type = RequestType.POST
     override val headers = mapOf(
         "Content-Type" to "application/json"
@@ -128,5 +128,4 @@ private const val GSF_ID_KEY = "a3"
 private const val S67_KEY = "s67"
 private const val DEVICE_ID_KEY = "deviceId"
 private const val TYPE_KEY = "type"
-private const val VERSION_KEY = "version"
 private const val REQUEST_ID_KEY = "requestId"
