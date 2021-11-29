@@ -10,6 +10,7 @@ import com.fingerprintjs.android.fpjs_pro.kotlin_client.FetchVisitorIdInteractor
 import com.fingerprintjs.android.fpjs_pro.kotlin_client.FetchVisitorIdInteractorImpl
 import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.HttpClient
 import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.NativeHttpClient
+import com.fingerprintjs.android.fpjs_pro.logger.ConsoleLogger
 import com.fingerprintjs.android.fpjs_pro.web_view_client.FPJSProClientImpl
 import com.fingerprintjs.android.fpjs_pro.web_view_client.FPJSProInterface
 
@@ -96,7 +97,7 @@ class FPJSProFactory(
     }
 
     private fun createHttpClient(): HttpClient {
-        return NativeHttpClient()
+        return NativeHttpClient(ConsoleLogger())
     }
 
     private fun getAppName(): String {

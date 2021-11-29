@@ -23,11 +23,11 @@ class FetchVisitorIdResult(
         return try {
             val jsonBody = JSONObject(body)
             val deviceId = jsonBody
-                .getJSONObject("products")
-                .getJSONObject("identification")
-                .getJSONObject("data")
-                .getJSONObject("result")
-                .getString("visitorId")
+                .getJSONObject(PRODUCTS_KEY)
+                .getJSONObject(IDENTIFICATION_KEY)
+                .getJSONObject(DATA_KEY)
+                .getJSONObject(RESULT_KEY)
+                .getString(VISITOR_ID_KEY)
             FetchVisitorIdResponse(deviceId)
         } catch (exception: Exception) {
             errorResponse
@@ -58,29 +58,48 @@ class FetchVisitorIdRequest(
         val resultMap = HashMap<String, Any>()
 
         val s67Map = mapOf(
-            "deviceId" to s67,
-            "type" to "android",
-            "version" to version
+            DEVICE_ID_KEY to s67,
+            TYPE_KEY to "android",
+            VERSION_KEY to version
         )
 
-        resultMap["c"] = publicApiKey
-        resultMap["url"] = packageName
+        resultMap[CUSTOMER_KEY] = publicApiKey
+        resultMap[URL_KEY] = packageName
 
-        resultMap["s67"] = s67Map
-        resultMap["a1"] = androidId
+        resultMap[S67_KEY] = s67Map
+        resultMap[ANDROID_ID_KEY] = androidId
         gsfId?.let {
-            resultMap["a2"] = it
+            resultMap[GSF_ID_KEY] = it
         }
 
         mediaDrmId?.let {
-            resultMap["a3"] = it
+            resultMap[MEDIA_DRM_KEY] = it
             return resultMap
         }
 
         if (tag.isNotEmpty()) {
-            resultMap["t"] = tag
+            resultMap[TAGS_KEY] = tag
         }
 
         return resultMap
     }
 }
+
+private const val PRODUCTS_KEY = "products"
+private const val IDENTIFICATION_KEY = "identification"
+private const val DATA_KEY = "data"
+private const val RESULT_KEY = "result"
+private const val VISITOR_ID_KEY = "visitorId"
+
+private const val CUSTOMER_KEY = "c"
+private const val TAGS_KEY = "t"
+private const val URL_KEY = "url"
+
+private const val ANDROID_ID_KEY = "a1"
+private const val GSF_ID_KEY = "a2"
+private const val MEDIA_DRM_KEY = "a3"
+
+private const val S67_KEY = "s67"
+private const val DEVICE_ID_KEY = "deviceId"
+private const val TYPE_KEY = "type"
+private const val VERSION_KEY = "version"

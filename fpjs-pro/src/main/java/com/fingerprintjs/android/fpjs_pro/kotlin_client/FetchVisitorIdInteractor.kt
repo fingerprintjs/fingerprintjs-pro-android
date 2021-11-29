@@ -8,7 +8,7 @@ import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.HttpClient
 
 
 interface FetchVisitorIdInteractor {
-    fun getVisitorId(tags: Map<String, Any>, listener: (String) -> (Unit), errorListener: (String) -> (Unit)): FetchVisitorIdResponse
+    fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResult
 }
 
 class FetchVisitorIdInteractorImpl(
@@ -19,16 +19,15 @@ class FetchVisitorIdInteractorImpl(
     private val endpointUrl: String,
     private val authToken: String,
     private val version: String,
-    private val appname: String
+    private val appname: String,
 ) : FetchVisitorIdInteractor {
 
 
-    override fun getVisitorId(tags: Map<String, Any>, listener: (String) -> Unit, errorListener: (String) -> Unit): FetchVisitorIdResponse {
+    override fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResult {
         val androidId = androidIdProvider.getAndroidId()
         val gsfId = gsfIdProvider.getGsfAndroidId()
         val mediaDrmId = mediaDrmIdProvider.getMediaDrmId()
-        val s67 = gsfId ?: mediaDrmId
-        ?: androidId
+        val s67 = gsfId ?: mediaDrmId ?: androidId
 
         val fetchTokenRequest = FetchVisitorIdRequest(
             endpointUrl, authToken, androidId, gsfId, mediaDrmId, s67, tags, version, appname
@@ -38,10 +37,6 @@ class FetchVisitorIdInteractorImpl(
             fetchTokenRequest
         )
 
-        val response = FetchVisitorIdResult(rawRequestResult.type, rawRequestResult.rawResponse)
-        rawRequestResult.rawResponse?.let {
-            println("Response: ${String(it, Charsets.UTF_8)}")
-        }
-        return response.typedResult()
+        return FetchVisitorIdResult(rawRequestResult.type, rawRequestResult.rawResponse)
     }
 }
