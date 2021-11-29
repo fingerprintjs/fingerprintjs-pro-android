@@ -35,7 +35,9 @@ class NativeHttpClient(
 
         try {
             with(mURL.openConnection() as HttpsURLConnection) {
+                logger.debug(this, "Headers:$")
                 request.headers.keys.forEach {
+                    logger.debug(this, "$it ${request.headers[it]}")
                     setRequestProperty(it, request.headers[it])
                 }
 
