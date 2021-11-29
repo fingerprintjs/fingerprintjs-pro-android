@@ -28,24 +28,25 @@ class NativeHttpClient(
 
     private fun sendPostRequest(request: Request): RawRequestResult {
 
-        val reqParam = JSONObject(request.bodyAsMap()).toString()
-        logger.debug(this, "Body: $reqParam")
+        val reqParamJson = JSONObject(request.bodyAsMap())
+        logger.debug(this, reqParamJson)
 
         val mURL = URL(request.url)
 
-        with(mURL.openConnection() as HttpsURLConnection) {
-            request.headers.keys.forEach {
-                setRequestProperty(it, request.headers[it])
-            }
-            doOutput = true
-            val wr = OutputStreamWriter(outputStream);
-            wr.write(reqParam);
-            wr.flush();
+        try {
+            with(mURL.openConnection() as HttpsURLConnection) {
+                request.headers.keys.forEach {
+                    setRequestProperty(it, request.headers[it])
+                }
 
-            logger.debug(this, "URL : $url")
-            logger.debug(this,"Response Code : $responseCode")
+                doOutput = true
+                val wr = OutputStreamWriter(outputStream)
+                wr.write(reqParamJson.toString())
+                wr.flush()
 
-            if (responseCode == 200) {
+                logger.debug(this, "URL : $url")
+                logger.debug(this, "Response Code : $responseCode")
+
                 BufferedReader(InputStreamReader(inputStream)).use {
                     val response = StringBuffer()
 
@@ -56,9 +57,23 @@ class NativeHttpClient(
                     }
 
                     logger.debug(this, "Response : $response")
-                    return RawRequestResult(RequestResultType.SUCCESS, response.toString().toByteArray())
+
+                    if (responseCode == 200) {
+                        return RawRequestResult(
+                            RequestResultType.SUCCESS,
+                            response.toString().toByteArray()
+                        )
+                    } else {
+                        return RawRequestResult(
+                            RequestResultType.ERROR,
+                            "Error: response code is $responseCode".toByteArray()
+                        )
+                    }
                 }
-            } else return RawRequestResult(RequestResultType.ERROR, "Error: code is $responseCode".toByteArray())
+            }
+        } catch (throwable: Throwable) {
+            logger.error(this, throwable.message)
+            return RawRequestResult(RequestResultType.ERROR, "${throwable.message}".toByteArray())
         }
     }
 }

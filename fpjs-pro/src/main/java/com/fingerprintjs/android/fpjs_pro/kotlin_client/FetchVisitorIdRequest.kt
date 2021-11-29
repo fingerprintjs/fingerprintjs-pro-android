@@ -9,6 +9,7 @@ import org.json.JSONObject
 
 
 data class FetchVisitorIdResponse(
+    val requestId: String,
     val visitorId: String,
     val errorMessage: String? = ""
 )
@@ -18,19 +19,25 @@ class FetchVisitorIdResult(
     rawResponse: ByteArray?
 ) : TypedRequestResult<FetchVisitorIdResponse>(type, rawResponse) {
     override fun typedResult(): FetchVisitorIdResponse {
-        val errorResponse = FetchVisitorIdResponse("", rawResponse?.toString(Charsets.UTF_8))
-        val body = rawResponse?.toString(Charsets.UTF_8) ?: return errorResponse
+        val response = rawResponse?.toString(Charsets.UTF_8) ?: ""
+        val body = rawResponse?.toString(Charsets.UTF_8) ?: return FetchVisitorIdResponse(
+            "",
+            "",
+            rawResponse?.toString(Charsets.UTF_8)
+        )
+        var requestId = ""
         return try {
             val jsonBody = JSONObject(body)
+            requestId = jsonBody.getString(REQUEST_ID_KEY)
             val deviceId = jsonBody
                 .getJSONObject(PRODUCTS_KEY)
                 .getJSONObject(IDENTIFICATION_KEY)
                 .getJSONObject(DATA_KEY)
                 .getJSONObject(RESULT_KEY)
                 .getString(VISITOR_ID_KEY)
-            FetchVisitorIdResponse(deviceId)
+            FetchVisitorIdResponse(requestId, deviceId)
         } catch (exception: Exception) {
-            errorResponse
+            FetchVisitorIdResponse(requestId, "", "RequestID: $requestId " + rawResponse.toString(Charsets.UTF_8))
         }
     }
 }
@@ -48,7 +55,7 @@ class FetchVisitorIdRequest(
     private val packageName: String
 ) : Request {
 
-    override val url = "$endpointUrl/"
+    override val url = "$endpointUrl/?ct=1.2.0"
     override val type = RequestType.POST
     override val headers = mapOf(
         "Content-Type" to "application/json"
@@ -58,23 +65,43 @@ class FetchVisitorIdRequest(
         val resultMap = HashMap<String, Any>()
 
         val s67Map = mapOf(
-            DEVICE_ID_KEY to s67,
-            TYPE_KEY to "android",
-            VERSION_KEY to version
+            "v" to mapOf(
+                DEVICE_ID_KEY to s67,
+                TYPE_KEY to "android"
+            ),
+            "s" to 0
         )
+
 
         resultMap[CUSTOMER_KEY] = publicApiKey
         resultMap[URL_KEY] = packageName
 
         resultMap[S67_KEY] = s67Map
-        resultMap[ANDROID_ID_KEY] = androidId
-        gsfId?.let {
-            resultMap[GSF_ID_KEY] = it
+        resultMap[ANDROID_ID_KEY] = mapOf(
+                "v" to androidId,
+                "s" to 0
+            )
+
+        if (gsfId.isNullOrEmpty()) {
+            resultMap[GSF_ID_KEY] = mapOf(
+                "s" to -1
+            )
+        } else {
+            resultMap[GSF_ID_KEY] = mapOf(
+                "s" to 0,
+                "v" to gsfId
+            )
         }
 
-        mediaDrmId?.let {
-            resultMap[MEDIA_DRM_KEY] = it
-            return resultMap
+        if (mediaDrmId.isNullOrEmpty()) {
+            resultMap[MEDIA_DRM_KEY] = mapOf(
+                "s" to -1
+            )
+        } else {
+            resultMap[MEDIA_DRM_KEY] = mapOf(
+                "s" to 0,
+                "v" to mediaDrmId
+            )
         }
 
         if (tag.isNotEmpty()) {
@@ -96,10 +123,11 @@ private const val TAGS_KEY = "t"
 private const val URL_KEY = "url"
 
 private const val ANDROID_ID_KEY = "a1"
-private const val GSF_ID_KEY = "a2"
-private const val MEDIA_DRM_KEY = "a3"
+private const val MEDIA_DRM_KEY = "a2"
+private const val GSF_ID_KEY = "a3"
 
 private const val S67_KEY = "s67"
 private const val DEVICE_ID_KEY = "deviceId"
 private const val TYPE_KEY = "type"
 private const val VERSION_KEY = "version"
+private const val REQUEST_ID_KEY = "requestId"
