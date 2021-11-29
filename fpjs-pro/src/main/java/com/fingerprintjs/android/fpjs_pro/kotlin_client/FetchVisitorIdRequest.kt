@@ -55,7 +55,7 @@ class FetchVisitorIdRequest(
     private val packageName: String
 ) : Request {
 
-    override val url = "$endpointUrl/?ct=1.2.0"
+    override val url = "$endpointUrl/?ct=android/1.2.0"
     override val type = RequestType.POST
     override val headers = mapOf(
         "Content-Type" to "application/json"
