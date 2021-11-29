@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro
+package com.fingerprintjs.android.fpjs_pro.web_view_client
 
 
 import android.annotation.SuppressLint
@@ -10,6 +10,8 @@ import android.webkit.ConsoleMessage
 import android.webkit.JsResult
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import com.fingerprintjs.android.fpjs_pro.FPJSProClient
+import com.fingerprintjs.android.fpjs_pro.R
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.MediaDrmIdProvider

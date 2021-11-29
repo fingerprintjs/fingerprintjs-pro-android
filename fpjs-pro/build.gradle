@@ -24,7 +24,9 @@ android {
         targetSdkVersion 31
         versionName project.VERSION_NAME
         versionCode Integer.parseInt(project.VERSION_CODE)
+        buildConfigField 'String', 'VERSION_NAME', "\"$versionName\""
     }
+
 
     buildTypes {
         release {

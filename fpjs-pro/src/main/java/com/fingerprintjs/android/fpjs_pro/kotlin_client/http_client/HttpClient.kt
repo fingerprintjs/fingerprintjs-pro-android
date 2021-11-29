@@ -1,0 +1,60 @@
+package com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client
+
+
+import com.fingerprintjs.android.fpjs_pro.tools.executeSafe
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.net.URL
+import javax.net.ssl.HttpsURLConnection
+
+
+interface HttpClient {
+    fun performRequest(
+        request: Request
+    ): RawRequestResult
+}
+
+class NativeHttpClient(
+) : HttpClient {
+    override fun performRequest(request: Request): RawRequestResult {
+        return executeSafe({
+            sendPostRequest(request)
+        }, RawRequestResult(RequestResultType.ERROR, "Network error".toByteArray()))
+    }
+
+    private fun sendPostRequest(request: Request): RawRequestResult {
+
+        val reqParam = JSONObject(request.bodyAsMap()).toString()
+
+        val mURL = URL(request.url)
+
+        with(mURL.openConnection() as HttpsURLConnection) {
+            request.headers.keys.forEach {
+                setRequestProperty(it, request.headers[it])
+            }
+            doOutput = true
+            val wr = OutputStreamWriter(outputStream);
+            wr.write(reqParam);
+            wr.flush();
+
+            println("URL : $url")
+            println("Response Code : $responseCode")
+
+            if (responseCode == 200) {
+                BufferedReader(InputStreamReader(inputStream)).use {
+                    val response = StringBuffer()
+
+                    var inputLine = it.readLine()
+                    while (inputLine != null) {
+                        response.append(inputLine)
+                        inputLine = it.readLine()
+                    }
+                    println("Response : $response")
+                    return RawRequestResult(RequestResultType.SUCCESS, response.toString().toByteArray())
+                }
+            } else return RawRequestResult(RequestResultType.ERROR, "Error: code is $responseCode".toByteArray())
+        }
+    }
+}
