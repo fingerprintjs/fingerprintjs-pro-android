@@ -9,7 +9,7 @@
   </a>
 </p>
 
-# FingerprintJS Pro Android Integrations
+# FingerprintJS Pro Android
 
 An example app and packages demonstrating [FingerprintJS Pro](https://fingerprintjs.com/) capabilities on the Android platform. The repository illustrates how to retrieve a FingerprintJS Pro visitor identifier in a native mobile app. These integrations communicate with the FingerprintJS Pro API and require [browser token](https://dev.fingerprintjs.com/docs). For client-side only Android fingerprinting take a look at [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository instead. If you are interested in the iOS platform, you can also check our [FingerprintJS Pro iOS integrations](https://github.com/fingerprintjs/fingerprintjs-pro-ios-webview).
 
@@ -45,7 +45,7 @@ repositories {
 
 ```gradle
 dependencies {
-  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android-integrations:1.1.0'
+  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android:v1.2.0-rc2'
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
