@@ -4,6 +4,9 @@
   </a>
 </p>
 <p align="center">
+  <a href="https://jitpack.io/#fingerprintjs/fingerprint-android">
+    <img src="https://jitpack.io/v/fingerprintjs/fingerprintjs-pro-android.svg" alt="Latest release">
+  </a>
   <a href="https://discord.gg/39EpE2neBg">
     <img src="https://img.shields.io/discord/852099967190433792?style=logo&label=Discord&logo=Discord&logoColor=white" alt="Discord server">
   </a>
