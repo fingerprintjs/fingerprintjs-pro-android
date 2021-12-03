@@ -140,9 +140,3 @@ function initFingerprintJS() {
 }
 ```
 You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
-
-## Additional Resources
-[FingerprintJS Pro documentation](https://dev.fingerprintjs.com/docs)
-
-## License
-This library is MIT licensed.
