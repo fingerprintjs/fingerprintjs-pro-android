@@ -67,7 +67,7 @@ Sync gradle settings.
 
 Retrieve the visitor identifier using browser token. You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
 
-
+##### 3.1 Kotlin example
 ```kotlin
 import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
@@ -89,9 +89,32 @@ fpjsClient.getVisitorId { visitorId ->
 }
 
 ```
-For using FingerprintJS Pro Android inside of an PWA read the [full API reference](docs/client_api.md).
+##### 3.2 Java example
 
-You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
+```java
+import com.fingerprintjs.android.fpjs_pro.Configuration;
+import com.fingerprintjs.android.fpjs_pro.FPJSProClient;
+import com.fingerprintjs.android.fpjs_pro.FPJSProFactory;
+...
+
+FPJSProFactory factory = new FPJSProFactory(this.getApplicationContext());
+Configuration configuration = new Configuration(
+    "BROWSER_TOKEN"
+    );
+
+FPJSProClient fpjsClient = factory.createInstance(
+    configuration
+);
+
+fpjsClient.getVisitorId(new Function1<String, Unit>() {
+    @Override
+    public Unit invoke(String visitorId) {
+        // Use visitorId
+        return null;
+    }
+});
+```
+For using FingerprintJS Pro Android inside of an PWA check the [full API reference](docs/client_api.md).
 
 ## Additional Resources
 [FingerprintJS Pro documentation](https://dev.fingerprintjs.com/docs)
