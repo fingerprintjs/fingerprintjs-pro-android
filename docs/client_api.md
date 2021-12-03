@@ -1,4 +1,4 @@
-# FingerprintJS Pro Android Clien API
+# FingerprintJS Pro Android Client API
 
 
 ## Full public API
