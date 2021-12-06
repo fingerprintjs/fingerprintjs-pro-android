@@ -4,7 +4,7 @@
   </a>
 </p>
 <p align="center">
-  <a href="https://jitpack.io/#fingerprintjs/fingerprint-android">
+  <a href="https://jitpack.io/#fingerprintjs/fingerprintjs-pro-android">
     <img src="https://jitpack.io/v/fingerprintjs/fingerprintjs-pro-android.svg" alt="Latest release">
   </a>
   <a href="https://discord.gg/39EpE2neBg">
