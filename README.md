@@ -10,6 +10,9 @@
   <a href="https://discord.gg/39EpE2neBg">
     <img src="https://img.shields.io/discord/852099967190433792?style=logo&label=Discord&logo=Discord&logoColor=white" alt="Discord server">
   </a>
+    <a href="https://android-arsenal.com/api?level=21">
+    <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg" alt="Android minAPI status">
+  </a>
 </p>
 
 # FingerprintJS Pro Android
