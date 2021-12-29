@@ -23,20 +23,26 @@ import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
 
 val fpjsClient = FPJSProFactory(applicationContext).createInstance(
      Configuration(
-        apiToken = "BROWSER_TOKEN"
+        apiToken = "MY_API_TOKEN"
   )
 )
 
 fpjsClient.getVisitorId { visitorId ->
   // Prevent fraud cases in your apps by using
-  // a unique stick and reliable ID provided by FingerprintJS Pro.
+  // a unique sticky and reliable ID provided by FingerprintJS Pro.
 }
 
 ```
 
 ## #1 library for Android device identification.
 
-Retrieve a [FingerprintJS Pro](https://fingerprintjs.com/) visitor identifier in a native mobile app. This library communicates with the FingerprintJS Pro API and requires [browser token](https://dev.fingerprintjs.com/docs). For client-side only Android fingerprinting take a look at [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository instead. If you are interested in the iOS platform, you can also check our [FingerprintJS Pro iOS](https://github.com/fingerprintjs/fingerprintjs-pro-ios).
+FingerprintJS Pro is a professional visitor identification service that processes all information server-side and transmits it securely to your servers using server-to-server APIs.
+
+Retrieve an accurate, sticky an stable [FingerprintJS Pro](https://fingerprintjs.com/) visitor identifier in an Android app. It is the same for all applications, and only factory reset changes it. This library communicates with the FingerprintJS Pro API and requires [browser token](https://dev.fingerprintjs.com/docs). 
+
+For client-side only Android fingerprinting take a look at the [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository. 
+
+If you are interested in the iOS platform, you can also check our [FingerprintJS Pro iOS](https://github.com/fingerprintjs/fingerprintjs-pro-ios).
 
 
 ## Installation
@@ -134,7 +140,12 @@ fpjsClient.getVisitorId(new Function1<String, Unit>() {
     }
 });
 ```
-Also there is an ability to retrie visitor identifier using our native library in combination with signals from the FingerprintJS Pro browser agent in the webview on the JavaScript level. For using FingerprintJS Pro Android inside of a WEB-based application check the [full API reference](docs/client_api.md).
+[Full API reference](docs/client_api.md).
+
+## Features
+
+- [Retrieve a visitor identifier in the webview on the JavaScript level](docs/client_api.md#using-inside-a-webview-with-javascript)
+- [Server-to-Server API](https://dev.fingerprintjs.com/docs/server-api)
 
 ## Additional Resources
 [FingerprintJS Pro documentation](https://dev.fingerprintjs.com/docs)
