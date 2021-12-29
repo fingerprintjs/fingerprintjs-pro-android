@@ -31,8 +31,8 @@ val fpjsClient = FPJSProFactory(applicationContext).createInstance(
 )
 
 fpjsClient.getVisitorId { visitorId ->
-  // Prevent fraud cases in your apps by using
-  // a unique sticky and reliable ID provided by FingerprintJS Pro.
+  // Prevent fraud cases in your apps with a unique
+  // sticky and reliable ID provided by FingerprintJS Pro.
 }
 
 ```
