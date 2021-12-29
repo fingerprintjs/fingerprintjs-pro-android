@@ -147,9 +147,9 @@ fpjsClient.getVisitorId(new Function1<String, Unit>() {
     }
 });
 ```
-[Full API reference](docs/client_api.md).
 
 ## Additional Resources
+[Full API reference](docs/client_api.md).
 [FingerprintJS Pro documentation](https://dev.fingerprintjs.com/docs)
 
 ## License
