@@ -34,7 +34,9 @@ fpjsClient.getVisitorId { visitorId ->
 
 ```
 
-**#1 library for Android device identification.**  Retrieve a [FingerprintJS Pro](https://fingerprintjs.com/) visitor identifier in a native mobile app. This library communicates with the FingerprintJS Pro API and requires [browser token](https://dev.fingerprintjs.com/docs). For client-side only Android fingerprinting take a look at [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository instead. If you are interested in the iOS platform, you can also check our [FingerprintJS Pro iOS](https://github.com/fingerprintjs/fingerprintjs-pro-ios).
+## #1 library for Android device identification.
+
+Retrieve a [FingerprintJS Pro](https://fingerprintjs.com/) visitor identifier in a native mobile app. This library communicates with the FingerprintJS Pro API and requires [browser token](https://dev.fingerprintjs.com/docs). For client-side only Android fingerprinting take a look at [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository instead. If you are interested in the iOS platform, you can also check our [FingerprintJS Pro iOS](https://github.com/fingerprintjs/fingerprintjs-pro-ios).
 
 
 ## Installation
