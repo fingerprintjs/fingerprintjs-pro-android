@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://fingerprintjs.com">
-    <img src="https://user-images.githubusercontent.com/10922372/129346814-a4e95dbf-cd27-49aa-ae7c-f23dae63b792.png" alt="FingerprintJS" width="312px" />
+    <img src="res/logo.svg" alt="FingerprintJS" width="312px" />
   </a>
 </p>
 <p align="center">
@@ -37,13 +37,13 @@ fpjsClient.getVisitorId { visitorId ->
 
 ```
 
-## #1 library for Android device identification.
+## #1 library for Android device identification
 
 FingerprintJS Pro is a professional visitor identification service that processes all information server-side and transmits it securely to your servers using server-to-server APIs.
 
-Retrieve an accurate, sticky an stable [FingerprintJS Pro](https://fingerprintjs.com/) visitor identifier in an Android app. It is the same for all applications, and only factory reset changes it. This library communicates with the FingerprintJS Pro API and requires [browser token](https://dev.fingerprintjs.com/docs). 
+Retrieve an accurate, sticky an stable [FingerprintJS Pro](https://fingerprintjs.com/) visitor identifier in an Android app. It is the same for all applications, and only factory reset changes it. This library communicates with the FingerprintJS Pro API and requires a [token](https://dev.fingerprintjs.com/docs). 
 
-For client-side only Android fingerprinting take a look at the [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) repository. 
+For local Android fingerprinting and identifying without making requests to API take a look at the [fingerprintjs-android](https://github.com/fingerprintjs/fingerprintjs-android) repository. 
 
 If you are interested in the iOS platform, you can also check our [FingerprintJS Pro iOS](https://github.com/fingerprintjs/fingerprintjs-pro-ios).
 
@@ -109,7 +109,7 @@ import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
 // Initialization
 val factory = FPJSProFactory(applicationContext)
 val configuration = Configuration(
-    apiToken = "BROWSER_TOKEN"
+    apiToken = "TOKEN"
   )
  
 val fpjsClient = factory.createInstance(
@@ -132,7 +132,7 @@ import com.fingerprintjs.android.fpjs_pro.FPJSProFactory;
 
 FPJSProFactory factory = new FPJSProFactory(this.getApplicationContext());
 Configuration configuration = new Configuration(
-    "BROWSER_TOKEN"
+    "TOKEN"
     );
 
 FPJSProClient fpjsClient = factory.createInstance(
@@ -149,8 +149,8 @@ fpjsClient.getVisitorId(new Function1<String, Unit>() {
 ```
 
 ## Additional Resources
-[Full API reference](docs/client_api.md).
-[FingerprintJS Pro documentation](https://dev.fingerprintjs.com/docs)
+- [Full API reference](docs/client_api.md).
+- [FingerprintJS Pro documentation](https://dev.fingerprintjs.com/docs)
 
 ## License
 This library is MIT licensed.
