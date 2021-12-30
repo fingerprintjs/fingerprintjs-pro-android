@@ -22,7 +22,7 @@ import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
 ...
 
-// Trust your user's identifiers with the FingerprintJS Pro library.
+// Trust your user's identifiers with the FingerprintJS Pro
 
 val fpjsClient = FPJSProFactory(applicationContext).createInstance(
      Configuration(
