@@ -15,7 +15,8 @@
   </a>
 </p>
 
-# FingerprintJS Pro Android
+# FingerprintJS Pro Android 
+### Official Android agent & SDK for 100% accurate device identification, created for the FingerprintJS Pro Server API.
 
 ```kotlin
 import com.fingerprintjs.android.fpjs_pro.Configuration
