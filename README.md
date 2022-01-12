@@ -48,10 +48,6 @@ For local Android fingerprinting and identifying without making requests to API 
 
 If you are interested in the iOS platform, you can also check our [FingerprintJS Pro iOS](https://github.com/fingerprintjs/fingerprintjs-pro-ios).
 
-## Features
-
-- Retrive a visitor ID in mobile apps or in  a [webview on the JavaScript level](docs/client_api.md#using-inside-a-webview-with-javascript)
-- [Server-to-Server API](https://dev.fingerprintjs.com/docs/server-api)
 
 ## Quick start
 
@@ -151,6 +147,7 @@ fpjsClient.getVisitorId(new Function1<String, Unit>() {
 
 ## Additional Resources
 - [Full API reference](docs/client_api.md).
+- [Server-to-Server API](https://dev.fingerprintjs.com/docs/server-api)
 - [FingerprintJS Pro documentation](https://dev.fingerprintjs.com/docs)
 
 ## License
