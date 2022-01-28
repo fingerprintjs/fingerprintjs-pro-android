@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
             fpjsClient?.getVisitorId(
                 listener = { visitorId ->
-                    handleId(visitorId)
+                    handleId(visitorId.visitorId)
                 },
                 errorListener = { error ->
                     showError(error)
