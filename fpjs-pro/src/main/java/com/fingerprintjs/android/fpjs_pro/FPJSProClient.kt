@@ -8,19 +8,19 @@ import com.fingerprintjs.android.fpjs_pro.device_id_providers.MediaDrmIdProvider
 import com.fingerprintjs.android.fpjs_pro.kotlin_client.FPJSProKotlinClient
 import com.fingerprintjs.android.fpjs_pro.kotlin_client.FetchVisitorIdInteractor
 import com.fingerprintjs.android.fpjs_pro.kotlin_client.FetchVisitorIdInteractorImpl
+import com.fingerprintjs.android.fpjs_pro.kotlin_client.FetchVisitorIdResponse
 import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.HttpClient
 import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.NativeHttpClient
 import com.fingerprintjs.android.fpjs_pro.logger.ConsoleLogger
-import com.fingerprintjs.android.fpjs_pro.web_view_client.FPJSProClientImpl
 import com.fingerprintjs.android.fpjs_pro.web_view_client.FPJSProInterface
 
 
 interface FPJSProClient {
-    fun getVisitorId(listener: (String) -> Unit)
-    fun getVisitorId(listener: (String) -> Unit, errorListener: (String) -> (Unit))
+    fun getVisitorId(listener: (FetchVisitorIdResponse) -> Unit)
+    fun getVisitorId(listener: (FetchVisitorIdResponse) -> Unit, errorListener: (String) -> (Unit))
     fun getVisitorId(
         tags: Map<String, Any>,
-        listener: (String) -> Unit,
+        listener: (FetchVisitorIdResponse) -> Unit,
         errorListener: (String) -> (Unit)
     )
 }
@@ -43,26 +43,16 @@ class FPJSProFactory(
 
     private val logger = ConsoleLogger()
 
-    @JvmOverloads
     fun createInstance(
-        configuration: Configuration,
-        webViewClient: Boolean = false
+        configuration: Configuration
     ): FPJSProClient {
-        return if (webViewClient) {
-            FPJSProClientImpl(
-                applicationContext,
-                configuration.apiToken,
-                configuration.endpointUrl
-            )
-        } else {
-            FPJSProKotlinClient(
-                createApiInteractor(
-                    configuration.endpointUrl,
-                    configuration.apiToken
-                ),
-                logger
-            )
-        }
+        return FPJSProKotlinClient(
+            createApiInteractor(
+                configuration.endpointUrl,
+                configuration.apiToken
+            ),
+            logger
+        )
     }
 
     fun createInterface(configuration: Configuration = Configuration("")): FPJSProInterface {

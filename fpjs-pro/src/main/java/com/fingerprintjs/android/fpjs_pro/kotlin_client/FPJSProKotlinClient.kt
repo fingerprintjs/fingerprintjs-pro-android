@@ -14,24 +14,24 @@ class FPJSProKotlinClient(
 
     private val executor = Executors.newSingleThreadExecutor()
 
-    override fun getVisitorId(listener: (String) -> (Unit)) {
+    override fun getVisitorId(listener: (FetchVisitorIdResponse) -> (Unit)) {
         getVisitorId(emptyMap(), listener, {})
     }
 
-    override fun getVisitorId(listener: (String) -> Unit, errorListener: (String) -> Unit) {
+    override fun getVisitorId(listener: (FetchVisitorIdResponse) -> Unit, errorListener: (String) -> Unit) {
         getVisitorId(emptyMap(), listener, errorListener)
     }
 
     override fun getVisitorId(
         tags: Map<String, Any>,
-        listener: (String) -> Unit,
+        listener: (FetchVisitorIdResponse) -> Unit,
         errorListener: (String) -> Unit
     ) {
         executor.execute {
             val result = interactor.getVisitorId(tags)
             when(result.type) {
                 RequestResultType.SUCCESS -> {
-                    listener.invoke(result.typedResult().visitorId)
+                    listener.invoke(result.typedResult())
                 }
                 RequestResultType.ERROR -> {
                     result.typedResult().let {
