@@ -28,7 +28,8 @@ interface FPJSProClient {
 class Configuration @JvmOverloads constructor(
     val apiToken: String,
     val region: Region = Region.US,
-    val endpointUrl: String = region.endpointUrl
+    val endpointUrl: String = region.endpointUrl,
+    val extendedResponseFormat: Boolean = false
 ) {
     enum class Region(val endpointUrl: String) {
         US("https://api.fpjs.io"),
@@ -49,7 +50,8 @@ class FPJSProFactory(
         return FPJSProKotlinClient(
             createApiInteractor(
                 configuration.endpointUrl,
-                configuration.apiToken
+                configuration.apiToken,
+                configuration.extendedResponseFormat
             ),
             logger
         )
@@ -71,7 +73,8 @@ class FPJSProFactory(
 
     private fun createApiInteractor(
         endpointUrl: String,
-        authToken: String
+        authToken: String,
+        extendedResponseFormat: Boolean
     ): FetchVisitorIdInteractor {
         val contentResolver = applicationContext.contentResolver!!
         val androidIdProvider = AndroidIdProvider(contentResolver)
@@ -86,7 +89,8 @@ class FPJSProFactory(
             endpointUrl,
             authToken,
             BuildConfig.VERSION_NAME,
-            getAppId()
+            getAppId(),
+            extendedResponseFormat
         )
     }
 

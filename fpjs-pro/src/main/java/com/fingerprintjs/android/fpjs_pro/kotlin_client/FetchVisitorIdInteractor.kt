@@ -20,8 +20,8 @@ class FetchVisitorIdInteractorImpl(
     private val authToken: String,
     private val version: String,
     private val appname: String,
+    private val extendedResponse: Boolean
 ) : FetchVisitorIdInteractor {
-
 
     override fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResult {
         val androidId = androidIdProvider.getAndroidId()
@@ -30,13 +30,26 @@ class FetchVisitorIdInteractorImpl(
         val s67 = gsfId ?: mediaDrmId ?: androidId
 
         val fetchTokenRequest = FetchVisitorIdRequest(
-            endpointUrl, authToken, androidId, gsfId, mediaDrmId, s67, tags, version, appname
+            endpointUrl,
+            authToken,
+            androidId,
+            gsfId,
+            mediaDrmId,
+            s67,
+            tags,
+            version,
+            appname,
+            extendedResponse
         )
 
         val rawRequestResult = httpClient.performRequest(
             fetchTokenRequest
         )
 
-        return FetchVisitorIdResult(rawRequestResult.type, rawRequestResult.rawResponse)
+        return FetchVisitorIdResult(
+            rawRequestResult.type,
+            rawRequestResult.rawResponse,
+            extendedResponse
+        )
     }
 }

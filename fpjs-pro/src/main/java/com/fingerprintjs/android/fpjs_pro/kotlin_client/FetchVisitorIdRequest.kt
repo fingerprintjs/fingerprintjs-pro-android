@@ -65,7 +65,8 @@ data class FetchVisitorIdResponse(
 
 class FetchVisitorIdResult(
     type: RequestResultType,
-    rawResponse: ByteArray?
+    rawResponse: ByteArray?,
+    private val extendedFormat: Boolean
 ) : TypedRequestResult<FetchVisitorIdResponse>(type, rawResponse) {
     override fun typedResult(): FetchVisitorIdResponse {
         val body = rawResponse?.toString(Charsets.UTF_8) ?: return emptyResponse(
@@ -76,6 +77,7 @@ class FetchVisitorIdResult(
         var requestId = ""
         return try {
             val jsonBody = JSONObject(body)
+
             requestId = jsonBody.getString(REQUEST_ID_KEY)
 
             val result = jsonBody
@@ -102,7 +104,10 @@ class FetchVisitorIdResult(
                 osVersion
             )
         } catch (exception: Exception) {
-            emptyResponse(requestId, "RequestID: $requestId " + rawResponse.toString(Charsets.UTF_8))
+            emptyResponse(
+                requestId,
+                "RequestID: $requestId " + rawResponse.toString(Charsets.UTF_8)
+            )
         }
     }
 
@@ -199,7 +204,8 @@ class FetchVisitorIdRequest(
     private val s67: String,
     private val tag: Map<String, Any>,
     version: String,
-    private val packageName: String
+    private val packageName: String,
+    private val extendedFormat: Boolean
 ) : Request {
 
     override val url = "$endpointUrl/?ci=android/$version"
@@ -249,6 +255,10 @@ class FetchVisitorIdRequest(
                 "s" to 0,
                 "v" to mediaDrmId
             )
+        }
+
+        if (extendedFormat) {
+            resultMap[EXTENDED_FORMAT_SUPPORT] = 1
         }
 
         if (tag.isNotEmpty()) {
@@ -309,6 +319,7 @@ private const val MEDIA_DRM_KEY = "a2"
 private const val GSF_ID_KEY = "a3"
 
 private const val S67_KEY = "s67"
+private const val EXTENDED_FORMAT_SUPPORT = "cbd"
 private const val DEVICE_ID_KEY = "deviceId"
 private const val TYPE_KEY = "type"
 private const val REQUEST_ID_KEY = "requestId"
