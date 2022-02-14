@@ -49,6 +49,7 @@
             android:id="@+id/id_result_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_gravity="center">
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -60,17 +61,7 @@
                 android:indeterminate="true"
                 android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/id_text_view"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textIsSelectable="true"
-                android:layout_marginHorizontal="2dp"
-                android:layout_marginVertical="8dp"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                tools:text="f6fc84c9f21c24907d6bee6eec38cabab5fa9a7be8c4a7827fe9e56f245bd2d5" />
+           <include layout="@layout/extended_response_view" android:visibility="gone"/>
 
         </FrameLayout>
 
