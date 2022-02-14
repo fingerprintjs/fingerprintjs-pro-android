@@ -5,4 +5,9 @@
     <string name="endpoint_url_input_hint">endpointUrl</string>
     <string name="api_token_input_hint">API token</string>
     <string name="default_endpoint_url">https://api.fpjs.io</string>
+    <string name="prefs_endpoint_url_key">endpointUrl</string>
+    <string name="prefs_public_token_key">publicToken</string>
+    <string name="ip_title">IP:</string>
+    <string name="os_title">OS</string>
+    <string name="location_title">Location</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro_demo
 
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.webkit.URLUtil
@@ -9,16 +10,30 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FPJSProClient
 import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
+import com.fingerprintjs.android.fpjs_pro.kotlin_client.FetchVisitorIdResponse
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
+import android.preference.PreferenceManager
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 
 
 class MainActivity : AppCompatActivity() {
 
     private var fpjsClient: FPJSProClient? = null
 
+    private lateinit var idContainer: View
     private lateinit var idTextView: TextView
+    private lateinit var ipTextView: TextView
+    private lateinit var osTextView: TextView
+
+    private lateinit var mapView: MapView
+
     private lateinit var progressBar: ProgressBar
+
     private lateinit var endpointUrlInput: EditText
     private lateinit var apiTokenInput: EditText
+
     private lateinit var getVisitorIdButton: FrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +44,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        idContainer = findViewById(R.id.id_response_container)
+
         idTextView = findViewById(R.id.id_text_view)
+
+        ipTextView = findViewById(R.id.ip_text_view)
+        osTextView = findViewById(R.id.os_text_view)
+
+        mapView = findViewById(R.id.map_view)
+        val ctx: Context = applicationContext
+        org.osmdroid.config.Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
+        org.osmdroid.config.Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
+        mapView.setTileSource(TileSourceFactory.MAPNIK)
+
+
         progressBar = findViewById(R.id.progress_indicator)
 
         endpointUrlInput = findViewById(R.id.endpoint_url_input)
@@ -49,12 +77,12 @@ class MainActivity : AppCompatActivity() {
             showMessage("Inputs are invalid")
         } else {
             initFPJSClient()
-            idTextView.visibility = View.INVISIBLE
+            idContainer.visibility = View.INVISIBLE
             progressBar.visibility = View.VISIBLE
 
             fpjsClient?.getVisitorId(
                 listener = { visitorId ->
-                    handleId(visitorId.visitorId)
+                    handleId(visitorId)
                 },
                 errorListener = { error ->
                     showError(error)
@@ -64,8 +92,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initFPJSClient() {
         val configuration = Configuration(
-            apiTokenInput.text.toString(),
-            endpointUrl = endpointUrlInput.text.toString()
+            apiToken = "YOUR_BROWSER_TOKEN",
+            endpointUrl = "https://ap.api.fpjs.io/"
         )
         fpjsClient = FPJSProFactory(
             applicationContext
@@ -82,16 +110,30 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread {
             showMessage(error)
             progressBar.visibility = View.GONE
-            idTextView.visibility = View.VISIBLE
+            idContainer.visibility = View.VISIBLE
             clearFPJSClient()
         }
     }
 
-    private fun handleId(id: String) {
+    private fun handleId(idResponse: FetchVisitorIdResponse) {
         runOnUiThread {
             progressBar.visibility = View.GONE
-            idTextView.visibility = View.VISIBLE
-            idTextView.text = id
+            idContainer.visibility = View.VISIBLE
+            idTextView.text = idResponse.visitorId
+            ipTextView.text = idResponse.ipAddress
+            osTextView.text = "${idResponse.osName} ${idResponse.osVersion}"
+
+            val marker = Marker(mapView)
+            val point = GeoPoint(idResponse.ipLocation?.latitude ?: 0.0,
+                idResponse.ipLocation?.latitude ?: 0.0)
+            marker.position = point
+            mapView.controller.setCenter(point)
+
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            mapView.overlays.add(marker)
+
+            mapView.invalidate()
+
             clearFPJSClient()
         }
     }
