@@ -42,7 +42,7 @@ fpjsClient.getVisitorId { visitorId ->
 
 FingerprintJS Pro is a professional visitor identification service that processes all information server-side and transmits it securely to your servers using server-to-server APIs.
 
-This identification library generates an accurate, sticky, and stable [FingerprintJS Pro](https://fingerprintjs.com/) visitor identifier in Android apps. The identifier is linked to a device, i.e. it is the same in all the apps on a device, even if you reinstall or clone them. This library requires a [free token](https://dashboard.fingerprintjs.com/signup) to connect to the FingerprintJS Pro API. 
+This identification library generates an accurate, sticky, and stable [FingerprintJS Pro](https://fingerprintjs.com/) visitor identifier in Android apps. The identifier is linked to a device, i.e. it is the same in all the apps on a device, even if you reinstall or clone them. This library requires a [free API key](https://dashboard.fingerprintjs.com/signup) to connect to the FingerprintJS Pro API. 
 
 For local Android fingerprinting and identifying without making requests to API take a look at the [fingerprintjs-android](https://github.com/fingerprintjs/fingerprintjs-android) repository. 
 
