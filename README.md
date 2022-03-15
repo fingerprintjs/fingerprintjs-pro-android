@@ -16,7 +16,7 @@
 </p>
 
 # FingerprintJS Pro Android 
-### Official Android agent & SDK for 100% accurate device identification, created for the FingerprintJS Pro Server API.
+### Official Androd library for 100% accurate device identification, created for the FingerprintJS Pro API.
 
 ```kotlin
 import com.fingerprintjs.android.fpjs_pro.Configuration
@@ -38,11 +38,11 @@ fpjsClient.getVisitorId { visitorId ->
 
 ```
 
-## #1 library for Android device identification
+## Introduction
 
 FingerprintJS Pro is a professional visitor identification service that processes all information server-side and transmits it securely to your servers using server-to-server APIs.
 
-Retrieve an accurate, sticky an stable [FingerprintJS Pro](https://fingerprintjs.com/) visitor identifier in an Android app. It is the same for all applications, and only factory reset changes it. This library communicates with the FingerprintJS Pro API and requires a [token](https://dev.fingerprintjs.com/docs). 
+This identification library generates an accurate, sticky, and stable [FingerprintJS Pro](https://fingerprintjs.com/) visitor identifier in Android apps. The identifier is linked to a device, i.e. it is the same in all the apps on a device, even if you reinstall or clone them. This library requires a [free token](https://dashboard.fingerprintjs.com/signup) to connect to the FingerprintJS Pro API. 
 
 For local Android fingerprinting and identifying without making requests to API take a look at the [fingerprintjs-android](https://github.com/fingerprintjs/fingerprintjs-android) repository. 
 
@@ -51,7 +51,7 @@ If you are interested in the iOS platform, you can also check our [FingerprintJS
 
 ## Quick start
 
-#### 1. Add the repository to the gradle.
+#### Add the repository to the gradle.
 
 If your version of Gradle is earlier than 7, add these lines to your `build.gradle`.
 
@@ -71,7 +71,7 @@ repositories {
   maven { url "https://jitpack.io" }
 }
 ```
-#### 2. Add a dependency to your `build.gradle` file
+#### Add a dependency to your `build.gradle` file
 
 ```gradle
 dependencies {
@@ -93,11 +93,11 @@ Sync gradle settings.
 
 *Note: The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/). If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).*
 
-#### 3. Get the visitor identifier
+#### Get the visitor identifier
 
 Retrieve the visitor identifier using browser token. You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).
 
-##### 3.1 Kotlin example
+##### Kotlin example
 ```kotlin
 import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
@@ -119,7 +119,7 @@ fpjsClient.getVisitorId { visitorId ->
 }
 
 ```
-##### 3.2 Java example
+##### Java example
 
 ```java
 import com.fingerprintjs.android.fpjs_pro.Configuration;
@@ -151,4 +151,4 @@ fpjsClient.getVisitorId(new Function1<String, Unit>() {
 - [FingerprintJS Pro documentation](https://dev.fingerprintjs.com/docs)
 
 ## License
-This library is MIT licensed.
+This library is MIT licensed. Copyright FingerprintJS, Inc 2021-2022 (c)
