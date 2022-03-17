@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fingerprintjs.android.fpjs_pro_demo">
 
+    <uses-sdk tools:overrideLibrary="androidx.security.ktx" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -11,15 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FingerprintJS.Playground">
         <activity
-            android:name="com.fingerprintjs.android.fpjs_pro_demo.MainActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
+            android:name="com.fingerprintjs.android.fpjs_pro_demo.input_screen.InputScreenActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>

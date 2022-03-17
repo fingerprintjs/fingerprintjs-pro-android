@@ -1,12 +1,15 @@
-package com.fingerprintjs.android.fpjs_pro.kotlin_client
+package com.fingerprintjs.android.fpjs_pro.transport
 
 
 import android.os.Build
 import android.util.Log
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.Request
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.RequestResultType
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.RequestType
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.TypedRequestResult
+import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.ConfidenceScore
+import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.FetchVisitorIdResponse
+import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.IpLocation
+import com.fingerprintjs.android.fpjs_pro.transport.http_client.Request
+import com.fingerprintjs.android.fpjs_pro.transport.http_client.RequestResultType
+import com.fingerprintjs.android.fpjs_pro.transport.http_client.RequestType
+import com.fingerprintjs.android.fpjs_pro.transport.http_client.TypedRequestResult
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
@@ -106,8 +109,9 @@ class FetchVisitorIdResult(
 
         var requestId = ""
         return try {
-            val jsonBody = JSONObject(body)
 
+            Log.d("BODY", body)
+            val jsonBody = JSONObject(body)
             requestId = jsonBody.getString(REQUEST_ID_KEY)
 
             val result = jsonBody
@@ -239,8 +243,6 @@ class FetchVisitorIdResult(
             errorMessage = errorMessage
         )
     }
-
-    private fun emptyJson() = JSONObject(emptyMap<String, String>())
 }
 
 //endregion

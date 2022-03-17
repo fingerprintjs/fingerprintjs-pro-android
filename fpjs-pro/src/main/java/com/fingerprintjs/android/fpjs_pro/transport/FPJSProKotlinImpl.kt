@@ -1,13 +1,14 @@
-package com.fingerprintjs.android.fpjs_pro.kotlin_client
+package com.fingerprintjs.android.fpjs_pro.transport
 
 
 import com.fingerprintjs.android.fpjs_pro.FPJSProClient
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.RequestResultType
+import com.fingerprintjs.android.fpjs_pro.transport.http_client.RequestResultType
 import com.fingerprintjs.android.fpjs_pro.logger.Logger
+import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.FetchVisitorIdResponse
 import java.util.concurrent.Executors
 
 
-class FPJSProKotlinClient(
+class FPJSProKotlinImpl(
     private val interactor: FetchVisitorIdInteractor,
     private val logger: Logger
 ) : FPJSProClient {
@@ -15,7 +16,7 @@ class FPJSProKotlinClient(
     private val executor = Executors.newSingleThreadExecutor()
 
     override fun getVisitorId(listener: (FetchVisitorIdResponse) -> (Unit)) {
-        getVisitorId(emptyMap(), listener, {})
+        getVisitorId(emptyMap(), listener) {}
     }
 
     override fun getVisitorId(listener: (FetchVisitorIdResponse) -> Unit, errorListener: (String) -> Unit) {

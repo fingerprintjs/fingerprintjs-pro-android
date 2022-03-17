@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client
+package com.fingerprintjs.android.fpjs_pro.transport.http_client
 
 
 enum class RequestType {

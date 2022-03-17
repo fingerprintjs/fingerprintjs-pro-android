@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FPJSProClient
 import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.FetchVisitorIdResponse
+import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.FetchVisitorIdResponse
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progress_indicator)
 
         endpointUrlInput = findViewById(R.id.endpoint_url_input)
-        apiTokenInput = findViewById(R.id.api_token_input)
+        apiTokenInput = findViewById(R.id.api_key_input)
 
         getVisitorIdButton = findViewById(R.id.get_visitor_id_button)
     }
@@ -91,9 +91,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initFPJSClient() {
+
         val configuration = Configuration(
-            apiToken = "YOUR_BROWSER_TOKEN",
-            endpointUrl = "https://ap.api.fpjs.io/"
+            apiToken = apiTokenInput.toString(),
+            endpointUrl = endpointUrlInput.toString()
         )
         fpjsClient = FPJSProFactory(
             applicationContext

@@ -5,12 +5,12 @@ import android.content.Context
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.MediaDrmIdProvider
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.FPJSProKotlinClient
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.FetchVisitorIdInteractor
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.FetchVisitorIdInteractorImpl
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.FetchVisitorIdResponse
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.HttpClient
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.NativeHttpClient
+import com.fingerprintjs.android.fpjs_pro.transport.FPJSProKotlinImpl
+import com.fingerprintjs.android.fpjs_pro.transport.FetchVisitorIdInteractor
+import com.fingerprintjs.android.fpjs_pro.transport.FetchVisitorIdInteractorImpl
+import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.FetchVisitorIdResponse
+import com.fingerprintjs.android.fpjs_pro.transport.http_client.HttpClient
+import com.fingerprintjs.android.fpjs_pro.transport.http_client.NativeHttpClient
 import com.fingerprintjs.android.fpjs_pro.logger.ConsoleLogger
 import com.fingerprintjs.android.fpjs_pro.web_view_client.FPJSProInterface
 
@@ -33,7 +33,8 @@ class Configuration @JvmOverloads constructor(
 ) {
     enum class Region(val endpointUrl: String) {
         US("https://api.fpjs.io"),
-        EU("https://eu.api.fpjs.io")
+        EU("https://eu.api.fpjs.io"),
+        AP("https://ap.api.fpjs.io")
     }
 }
 
@@ -47,7 +48,7 @@ class FPJSProFactory(
     fun createInstance(
         configuration: Configuration
     ): FPJSProClient {
-        return FPJSProKotlinClient(
+        return FPJSProKotlinImpl(
             createApiInteractor(
                 configuration.endpointUrl,
                 configuration.apiToken,
