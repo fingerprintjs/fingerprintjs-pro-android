@@ -1,10 +1,10 @@
-package com.fingerprintjs.android.fpjs_pro.kotlin_client
+package com.fingerprintjs.android.fpjs_pro.transport
 
 
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.MediaDrmIdProvider
-import com.fingerprintjs.android.fpjs_pro.kotlin_client.http_client.HttpClient
+import com.fingerprintjs.android.fpjs_pro.transport.http_client.HttpClient
 
 
 interface FetchVisitorIdInteractor {

@@ -27,7 +27,7 @@
             android:text="@string/default_endpoint_url" />
 
         <EditText
-            android:id="@+id/api_token_input"
+            android:id="@+id/api_key_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
