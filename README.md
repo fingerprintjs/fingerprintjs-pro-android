@@ -145,6 +145,15 @@ fpjsClient.getVisitorId(new Function1<String, Unit>() {
 });
 ```
 
+## Privacy notes
+
+When publishing to the Play Market make sure you've noted the following information about collected data:
+| Data Types | Collected | Shared | Processed ephemerally | Required or Optional | Purposes |
+| --- | --- | --- | --- | --- | --- |
+| User IDs | Yes | No | No | Required | Antifraud |
+| Device or other IDs | Yes | No | No | Required | Antifraud |
+
+
 ## Additional Resources
 - [Full API reference](docs/client_api.md).
 - [Server-to-Server API](https://dev.fingerprintjs.com/docs/server-api)
