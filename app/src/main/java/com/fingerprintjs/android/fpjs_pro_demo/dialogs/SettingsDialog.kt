@@ -34,7 +34,7 @@ class SettingsDialog(
         val publicApiTokenEditText = view.findViewById<EditText>(R.id.edit_text_public_api_token)
 
         endpointUrlEditText.text = SpannableStringBuilder(preferences.getEndpointUrl())
-        publicApiTokenEditText.text = SpannableStringBuilder(preferences.getPublicApKey())
+        publicApiTokenEditText.text = SpannableStringBuilder(preferences.getPublicApiKey())
 
         dialog = builder
             .setTitle("Settings")

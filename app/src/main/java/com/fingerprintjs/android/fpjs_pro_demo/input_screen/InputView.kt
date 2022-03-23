@@ -54,7 +54,9 @@ class InputViewImpl(activity: BaseActivity<*>) : BaseView(activity), InputView {
 
 
     override fun setOnRegionSelectedListener(selectedRegionListener: (Configuration.Region) -> Unit) {
-        RegionBottomSheet(selectedRegionListener).show(fragmentManager, RegionBottomSheet.TAG)
+        regionSelectButton.setOnClickListener {
+            RegionBottomSheet(selectedRegionListener).show(fragmentManager, RegionBottomSheet.TAG)
+        }
     }
 
     override fun setRegionText(text: String) {
@@ -81,16 +83,19 @@ class RegionBottomSheet(
         usRegionButton = view.findViewById(R.id.us_endpoint_btn)
         usRegionButton.setOnClickListener {
             selectedRegionListener.invoke(Configuration.Region.US)
+            dismiss()
         }
 
         euRegionButton = view.findViewById(R.id.eu_endpoint_btn)
         euRegionButton.setOnClickListener {
             selectedRegionListener.invoke(Configuration.Region.EU)
+            dismiss()
         }
 
         apRegionButton = view.findViewById(R.id.ap_endpoint_btn)
         apRegionButton.setOnClickListener {
             selectedRegionListener.invoke(Configuration.Region.AP)
+            dismiss()
         }
 
         return view
