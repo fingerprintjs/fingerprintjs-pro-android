@@ -62,9 +62,27 @@
             android:id="@+id/map_view"
             tilesource="Mapnik"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="240dp"
             android:layout_margin="8dp" />
 
-    </LinearLayout>
+        <FrameLayout
+            android:id="@+id/try_again_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/btn_ripple">
 
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_run_btn"
+                android:padding="16dp"
+                android:text="@string/try_again_btn_text"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+        </FrameLayout>
+    </LinearLayout>
 </LinearLayout>

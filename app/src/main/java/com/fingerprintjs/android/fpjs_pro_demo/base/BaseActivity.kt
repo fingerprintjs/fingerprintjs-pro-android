@@ -18,7 +18,7 @@ abstract class BaseActivity<T : Parcelable>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
-        init(restoreState(savedInstanceState) as? T)
+        init(intent, restoreState(savedInstanceState) as? T)
     }
 
     override fun onDestroy() {
@@ -47,5 +47,5 @@ abstract class BaseActivity<T : Parcelable>(
         return savedInstanceState?.getParcelable(parcelableStateKey)
     }
 
-    abstract fun init(savedInstanceState: T?)
+    abstract fun init(intent: Intent, savedInstanceState: T?)
 }

@@ -17,4 +17,5 @@
     <string name="eu_endpoint_url">https://eu.api.fpjs.io</string>
     <string name="ap_endpoint">🇮🇳 India</string>
     <string name="ap_endpoint_url">https://ap.api.fpjs.io</string>
+    <string name="try_again_btn_text">Try again?</string>
 </resources>

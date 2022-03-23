@@ -11,7 +11,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.R
 
 interface ApplicationPreferences {
     fun getEndpointUrl(): String
-    fun getPublicApKey(): String
+    fun getPublicApiKey(): String
 
     fun setEndpointUrl(endpointUrl: String)
     fun setPublicApiKey(apiToken: String)
@@ -30,7 +30,7 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
     override fun getEndpointUrl() =
         preferences.getString(ENDPOINT_URL_KEY, null) ?: defaultEndpointUrl
 
-    override fun getPublicApKey() = preferences.getString(API_KEY, null) ?: defaultPublicApiToken
+    override fun getPublicApiKey() = preferences.getString(API_KEY, null) ?: defaultPublicApiToken
 
     override fun setEndpointUrl(endpointUrl: String) {
         preferences.edit().putString(ENDPOINT_URL_KEY, endpointUrl).apply()
