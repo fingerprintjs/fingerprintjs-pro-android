@@ -150,8 +150,8 @@ fpjsClient.getVisitorId(new Function1<String, Unit>() {
 When publishing to the Play Market make sure you've noted the following information about collected data:
 | Data Types | Collected | Shared | Processed ephemerally | Required or Optional | Purposes |
 | --- | --- | --- | --- | --- | --- |
-| User IDs | Yes | No | No | Required | Antifraud |
-| Device or other IDs | Yes | No | No | Required | Antifraud |
+| User IDs | Yes | No | No | Required | Fraud Prevention |
+| Device or other IDs | Yes | No | No | Required | Fraud Prevention |
 
 
 ## Additional Resources
