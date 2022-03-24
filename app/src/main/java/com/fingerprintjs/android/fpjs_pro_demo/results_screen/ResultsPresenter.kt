@@ -9,6 +9,7 @@ import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.Fet
 import com.fingerprintjs.android.fpjs_pro_demo.base.BasePresenter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseRouter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseView
+import com.fingerprintjs.android.fpjs_pro_demo.persistence.ApplicationPreferences
 import kotlinx.parcelize.Parcelize
 
 
@@ -26,6 +27,7 @@ class ResultsPresenter(
     private val endpointUrl: String,
     private val apiToken: String,
     private val fpjsProFactory: FPJSProFactory,
+    private val applicationPreferences: ApplicationPreferences,
     state: ResultState?
 ) : BasePresenter<ResultState>() {
     private var fpjsClient: FPJSProClient? = null
@@ -47,9 +49,9 @@ class ResultsPresenter(
         fpjsClient?.getVisitorId({
             handleId(it)
         },
-            errorListener = {
-                //TODO Handle error
-            })
+        errorListener = {
+            this.view?.showError(it)
+        })
     }
 
     override fun detachView() {
@@ -85,7 +87,8 @@ class ResultsPresenter(
     private fun initFPJSClient() {
         val configuration = Configuration(
             apiToken = apiToken,
-            endpointUrl = endpointUrl
+            endpointUrl = endpointUrl,
+            extendedResponseFormat = true
         )
         fpjsClient = fpjsProFactory.createInstance(
             configuration
@@ -93,6 +96,8 @@ class ResultsPresenter(
     }
 
     private fun handleId(idResponse: FetchVisitorIdResponse) {
+        applicationPreferences.setEndpointUrl(endpointUrl)
+        applicationPreferences.setPublicApiKey(apiToken)
         this.view?.apply {
             hideProgressBar()
             setVisitorId(idResponse.visitorId)

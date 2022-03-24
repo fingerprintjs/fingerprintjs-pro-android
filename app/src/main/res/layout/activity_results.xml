@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +12,6 @@
         android:layout_marginHorizontal="8dp"
         android:background="@drawable/bg_main"
         android:orientation="vertical"
-        android:paddingVertical="200dp"
         tools:context=".results_screen.ResultsActivity">
 
         <FrameLayout
@@ -35,4 +34,4 @@
 
         </FrameLayout>
     </LinearLayout>
-</ScrollView>
+</FrameLayout>

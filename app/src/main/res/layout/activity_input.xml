@@ -65,7 +65,7 @@
             android:inputType="textUri"
             android:minHeight="48dp"
             android:padding="16dp"
-            android:text="@string/endpoint_url_input_hint"
+            android:text="@string/default_endpoint_url"
             android:textColor="#AAAAAA" />
 
         <EditText

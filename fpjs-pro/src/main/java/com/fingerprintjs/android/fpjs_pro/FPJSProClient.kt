@@ -42,7 +42,6 @@ class FPJSProFactory(
     private val applicationContext: Context
 ) {
 
-
     private val logger = ConsoleLogger()
 
     fun createInstance(

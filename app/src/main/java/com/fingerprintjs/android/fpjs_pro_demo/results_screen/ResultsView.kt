@@ -6,12 +6,16 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
 import com.fingerprintjs.android.fpjs_pro_demo.R
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseView
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.OverlayItem
 
 
 interface ResultsView {
@@ -23,6 +27,7 @@ interface ResultsView {
     fun hideProgressBar()
 
     fun showMessage(message: String)
+    fun showError(message: String)
 
     fun setOnTryAgainClickedListener(listener: () -> (Unit))
 }
@@ -47,29 +52,36 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
     }
 
     override fun setVisitorId(visitorId: String) {
-        idTextView.text = visitorId
+        activity.runOnUiThread {
+            idTextView.text = visitorId
+        }
     }
 
     override fun setIpGeolocation(ipAddress: String, latitude: Double, longitude: Double) {
-        ipTextView.text = ipAddress
+        activity.runOnUiThread {
+            ipTextView.text = ipAddress
 
-        val marker = Marker(mapView)
-        val point = GeoPoint(
-            latitude,
-            latitude
-        )
+            val marker = Marker(mapView)
+            val point = GeoPoint(
+                latitude,
+                latitude
+            )
 
-        marker.position = point
-        mapView.controller.setCenter(point)
+            marker.position = point
+            marker.icon = ContextCompat.getDrawable(activity, R.drawable.ic_point_on_map)
+            mapView.controller.setCenter(point)
 
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-        mapView.overlays.add(marker)
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            mapView.overlays.add(marker)
 
-        mapView.invalidate()
+            mapView.invalidate()
+        }
     }
 
     override fun setOsInformation(osInfo: String) {
-        osTextView.text = osInfo
+        activity.runOnUiThread {
+            osTextView.text = osInfo
+        }
     }
 
     override fun showMessage(message: String) {
@@ -78,14 +90,25 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
         }
     }
 
+    override fun showError(message: String) {
+        activity.runOnUiThread {
+            hideProgressBar()
+            idTextView.text = message
+        }
+    }
+
     override fun showProgressBar() {
-        idContainer.visibility = View.INVISIBLE
-        progressBar.visibility = View.VISIBLE
+        activity.runOnUiThread {
+            idContainer.visibility = View.INVISIBLE
+            progressBar.visibility = View.VISIBLE
+        }
     }
 
     override fun hideProgressBar() {
-        progressBar.visibility = View.GONE
-        idContainer.visibility = View.VISIBLE
+        activity.runOnUiThread {
+            progressBar.visibility = View.GONE
+            idContainer.visibility = View.VISIBLE
+        }
     }
 
     override fun setOnTryAgainClickedListener(listener: () -> Unit) {

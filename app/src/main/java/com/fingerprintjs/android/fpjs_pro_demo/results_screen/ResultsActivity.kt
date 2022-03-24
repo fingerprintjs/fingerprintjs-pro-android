@@ -7,6 +7,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.API_PUBLIC_KEY
 import com.fingerprintjs.android.fpjs_pro_demo.ENDPOINT_URL_KEY
 import com.fingerprintjs.android.fpjs_pro_demo.R
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseActivity
+import com.fingerprintjs.android.fpjs_pro_demo.persistence.ApplicationPreferences
 import com.fingerprintjs.android.fpjs_pro_demo.persistence.ApplicationPreferencesImpl
 
 
@@ -23,17 +24,29 @@ class ResultsActivity :
     override fun init(intent: Intent, savedInstanceState: ResultState?) {
         apiKey = intent.getStringExtra(API_PUBLIC_KEY) ?: preferences.getEndpointUrl()
         endpointUrl = intent.getStringExtra(ENDPOINT_URL_KEY) ?: preferences.getPublicApiKey()
-        initPresenter(endpointUrl, apiKey, FPJSProFactory(applicationContext), savedInstanceState)
+        initPresenter(
+            endpointUrl,
+            apiKey,
+            FPJSProFactory(applicationContext),
+            preferences,
+            savedInstanceState
+        )
     }
 
     override fun refresh() {
         presenter.detachRouter()
         presenter.detachView()
-        initPresenter(endpointUrl, apiKey, FPJSProFactory(applicationContext), null)
+        initPresenter(endpointUrl, apiKey, FPJSProFactory(applicationContext), preferences, null)
     }
 
-    private fun initPresenter(endpointUrl: String, apiKey: String, factory: FPJSProFactory, savedInstanceState: ResultState?) {
-        presenter = ResultsPresenter(endpointUrl, apiKey, factory, savedInstanceState)
+    private fun initPresenter(
+        endpointUrl: String,
+        apiKey: String,
+        factory: FPJSProFactory,
+        applicationPreferences: ApplicationPreferences,
+        savedInstanceState: ResultState?
+    ) {
+        presenter = ResultsPresenter(endpointUrl, apiKey, factory, applicationPreferences, savedInstanceState)
         presenter.attachRouter(this)
         presenter.attachView(ResultsViewImpl(this))
     }

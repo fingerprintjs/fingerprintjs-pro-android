@@ -8,11 +8,17 @@ import com.fingerprintjs.android.fpjs_pro_demo.ENDPOINT_URL_KEY
 import com.fingerprintjs.android.fpjs_pro_demo.results_screen.ResultsActivity
 import com.fingerprintjs.android.fpjs_pro_demo.R
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseActivity
+import com.fingerprintjs.android.fpjs_pro_demo.persistence.ApplicationPreferencesImpl
 
 
 class InputScreenActivity : BaseActivity<InputScreenState>(R.layout.activity_input, INPUT_SCREEN_STATE_KEY), InputScreenRouter {
+
+    private val preferences by lazy {
+        ApplicationPreferencesImpl(applicationContext)
+    }
+
     override fun init(intent: Intent, savedInstanceState: InputScreenState?) {
-        presenter = InputPresenter(savedInstanceState)
+        presenter = InputPresenter(preferences, savedInstanceState)
         presenter.attachView(InputViewImpl(this))
         presenter.attachRouter(this)
     }

@@ -1,11 +1,8 @@
-package com.fingerprintjs.android.fpjs_pro.transport
+package com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request
 
 
 import android.os.Build
 import android.util.Log
-import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.ConfidenceScore
-import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.FetchVisitorIdResponse
-import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.IpLocation
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.Request
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.RequestResultType
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.RequestType

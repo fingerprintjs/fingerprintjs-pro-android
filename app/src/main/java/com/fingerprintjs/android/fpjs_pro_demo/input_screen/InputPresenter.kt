@@ -6,6 +6,7 @@ import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro_demo.base.BasePresenter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseRouter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseView
+import com.fingerprintjs.android.fpjs_pro_demo.persistence.ApplicationPreferences
 import kotlinx.parcelize.Parcelize
 
 
@@ -18,13 +19,14 @@ data class InputScreenState(
 
 
 class InputPresenter(
+    applicationPreferences: ApplicationPreferences,
     state: InputScreenState?
 ) : BasePresenter<InputScreenState>() {
 
     private var selectedRegion: Configuration.Region =
         state?.selectedRegion ?: Configuration.Region.US
-    private val endpointUrl: String? = state?.endpointUrl
-    private val apiKey: String? = state?.apiKey
+    private val endpointUrl: String = state?.endpointUrl ?: applicationPreferences.getEndpointUrl()
+    private val apiKey: String = state?.apiKey ?: applicationPreferences.getPublicApiKey()
 
     private var view: InputView? = null
     private var router: InputScreenRouter? = null

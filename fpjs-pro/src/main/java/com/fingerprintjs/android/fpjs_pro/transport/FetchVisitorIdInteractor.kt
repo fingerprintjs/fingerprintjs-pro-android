@@ -4,6 +4,8 @@ package com.fingerprintjs.android.fpjs_pro.transport
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.MediaDrmIdProvider
+import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.FetchVisitorIdRequest
+import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.FetchVisitorIdResult
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.HttpClient
 
 
