@@ -18,4 +18,5 @@
     <string name="ap_endpoint">🇮🇳 India</string>
     <string name="ap_endpoint_url">https://ap.api.fpjs.io</string>
     <string name="try_again_btn_text">Try again?</string>
+    <string name="your_id_label">Your ID:</string>
 </resources>
