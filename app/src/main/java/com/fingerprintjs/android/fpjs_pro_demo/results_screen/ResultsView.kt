@@ -10,12 +10,10 @@ import androidx.core.content.ContextCompat
 import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
 import com.fingerprintjs.android.fpjs_pro_demo.R
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseView
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus
 import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.OverlayItem
 
 
 interface ResultsView {
@@ -64,15 +62,19 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
             val marker = Marker(mapView)
             val point = GeoPoint(
                 latitude,
-                latitude
+                longitude
             )
 
             marker.position = point
             marker.icon = ContextCompat.getDrawable(activity, R.drawable.ic_point_on_map)
-            mapView.controller.setCenter(point)
+            mapView.setTileSource(TileSourceFactory.MAPNIK)
 
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             mapView.overlays.add(marker)
+            mapView.setMultiTouchControls(true)
+            mapView.controller.setZoom(INITIAL_ZOOM)
+            mapView.controller.setCenter(point)
+
 
             mapView.invalidate()
         }
@@ -117,3 +119,5 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
         }
     }
 }
+
+private const val INITIAL_ZOOM = 10.0

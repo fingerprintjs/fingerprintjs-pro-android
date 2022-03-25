@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="ring"
-    android:tint="#9FDF5226">
-    <size
-        android:width="20dp"
-        android:height="20dp" />
-</shape>

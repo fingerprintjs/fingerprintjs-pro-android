@@ -35,8 +35,8 @@ class ResultsPresenter(
     private var visitorId = state?.visitorId
     private var ipAddress = state?.ipAddress
     private var osInfo = state?.osInfo
-    private val latitude = state?.latitude
-    private val longitude = state?.longitude
+    private var latitude = state?.latitude
+    private var longitude = state?.longitude
 
     private var view: ResultsView? = null
     private var router: ResultsRouter? = null
@@ -45,9 +45,18 @@ class ResultsPresenter(
         this.view = view as ResultsView
         subscribeToView()
         initFPJSClient()
+
+        if (visitorId != null) {
+            updateView()
+            return
+        }
+
         this.view?.showProgressBar()
         fpjsClient?.getVisitorId({
+            applicationPreferences.setEndpointUrl(endpointUrl)
+            applicationPreferences.setPublicApiKey(apiToken)
             handleId(it)
+            updateView()
         },
         errorListener = {
             this.view?.showError(it)
@@ -96,17 +105,24 @@ class ResultsPresenter(
     }
 
     private fun handleId(idResponse: FetchVisitorIdResponse) {
-        applicationPreferences.setEndpointUrl(endpointUrl)
-        applicationPreferences.setPublicApiKey(apiToken)
+        visitorId = idResponse.visitorId
+        ipAddress = idResponse.ipAddress
+        latitude = idResponse.ipLocation?.latitude ?: 0.0
+        longitude = idResponse.ipLocation?.longitude ?: 0.0
+
+        osInfo = "${idResponse.osName} ${idResponse.osVersion}"
+    }
+
+    private fun updateView() {
         this.view?.apply {
             hideProgressBar()
-            setVisitorId(idResponse.visitorId)
+            setVisitorId(visitorId ?: "")
             setIpGeolocation(
-                idResponse.ipAddress,
-                idResponse.ipLocation?.latitude ?: 0.0,
-                idResponse.ipLocation?.longitude ?: 0.0
+                ipAddress ?: "",
+                latitude ?: 0.0,
+                longitude ?: 0.0
             )
-            setOsInformation("${idResponse.osName} ${idResponse.osVersion}")
+            setOsInformation(osInfo ?: "")
         }
     }
 }

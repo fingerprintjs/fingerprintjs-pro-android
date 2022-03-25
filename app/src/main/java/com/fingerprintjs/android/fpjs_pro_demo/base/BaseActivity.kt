@@ -5,7 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.fingerprintjs.android.fpjs_pro_demo.R
 
 
 abstract class BaseActivity<T : Parcelable>(
@@ -32,6 +35,20 @@ abstract class BaseActivity<T : Parcelable>(
         saveState(outState)
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_repository -> openLink(Uri.parse(GITHUB_REPO_URL))
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
     override fun openLink(webpage: Uri) {
         val intent = Intent(Intent.ACTION_VIEW, webpage)
         if (intent.resolveActivity(packageManager) != null) {
@@ -49,3 +66,5 @@ abstract class BaseActivity<T : Parcelable>(
 
     abstract fun init(intent: Intent, savedInstanceState: T?)
 }
+
+private const val GITHUB_REPO_URL = "https://github.com/fingerprintjs/fingerprintjs-pro-android"
