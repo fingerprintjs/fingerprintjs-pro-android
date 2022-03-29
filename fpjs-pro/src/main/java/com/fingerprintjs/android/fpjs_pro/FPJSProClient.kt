@@ -18,7 +18,8 @@ class Configuration @JvmOverloads constructor(
     val apiToken: String,
     val region: Region = Region.US,
     val endpointUrl: String = region.endpointUrl,
-    val extendedResponseFormat: Boolean = false
+    val extendedResponseFormat: Boolean = false,
+    val integrationType: List<Pair<String, String>> = emptyList()
 ) {
     enum class Region(val endpointUrl: String) {
         US("https://api.fpjs.io"),

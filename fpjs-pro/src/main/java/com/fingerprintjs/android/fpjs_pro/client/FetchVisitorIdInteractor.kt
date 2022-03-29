@@ -13,7 +13,7 @@ interface FetchVisitorIdInteractor {
     fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResult
 }
 
-class FetchVisitorIdInteractorImpl(
+internal class FetchVisitorIdInteractorImpl(
     private val androidIdProvider: AndroidIdProvider,
     private val gsfIdProvider: GsfIdProvider,
     private val mediaDrmIdProvider: MediaDrmIdProvider,
@@ -22,7 +22,8 @@ class FetchVisitorIdInteractorImpl(
     private val authToken: String,
     private val version: String,
     private val appname: String,
-    private val extendedResponse: Boolean
+    private val extendedResponse: Boolean,
+    private val integrationType: List<Pair<String, String>>
 ) : FetchVisitorIdInteractor {
 
     override fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResult {

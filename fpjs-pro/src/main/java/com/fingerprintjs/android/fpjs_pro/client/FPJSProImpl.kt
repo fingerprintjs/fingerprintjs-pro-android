@@ -8,7 +8,7 @@ import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.Fet
 import java.util.concurrent.Executors
 
 
-class FPJSProKotlinImpl(
+internal class FPJSProKotlinImpl(
     private val interactor: FetchVisitorIdInteractor,
     private val logger: Logger
 ) : FPJSProClient {
