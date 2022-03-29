@@ -37,12 +37,8 @@ class InputPresenter(
 
         this.view?.apply {
             setRegionText(selectedRegion.name)
-            endpointUrl?.let {
-                setEndpointUrl(it)
-            }
-            apiKey?.let {
-                setPublicApiKey(it)
-            }
+            setEndpointUrl(endpointUrl)
+            setPublicApiKey(apiKey)
         }
     }
 

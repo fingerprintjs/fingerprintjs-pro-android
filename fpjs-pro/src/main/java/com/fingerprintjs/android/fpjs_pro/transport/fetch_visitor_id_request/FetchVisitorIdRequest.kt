@@ -106,8 +106,6 @@ class FetchVisitorIdResult(
 
         var requestId = ""
         return try {
-
-            Log.d("BODY", body)
             val jsonBody = JSONObject(body)
             requestId = jsonBody.getString(REQUEST_ID_KEY)
 
