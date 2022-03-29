@@ -24,10 +24,17 @@ class FetchVisitorIdRequest(
     private val tag: Map<String, Any>,
     version: String,
     private val packageName: String,
-    private val extendedFormat: Boolean
+    private val extendedFormat: Boolean,
+    private val integrationType: List<Pair<String, String>>
 ) : Request {
 
-    override val url = "$endpointUrl/?ci=android/$version"
+    init {
+        integrationType.forEach {
+            url="$url&ii=${it.first}/${it.second}"
+        }
+    }
+
+    override var url = "$endpointUrl/?ci=android/$version"
     override val type = RequestType.POST
     override val headers = mapOf(
         "Content-Type" to "application/json"

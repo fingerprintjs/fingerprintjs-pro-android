@@ -9,7 +9,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 
-class FPJSProInterface internal constructor(
+internal class FPJSProInterface internal constructor(
     private val apiToken: String,
     private val endpointUrl: String,
     private val androidIdProvider: AndroidIdProvider,
