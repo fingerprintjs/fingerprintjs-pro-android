@@ -1,8 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request
 
 
-//region: Response Types
-
 data class IpLocation(
     val accuracyRadius: Int,
     val latitude: Double,
@@ -50,5 +48,3 @@ data class FetchVisitorIdResponse(
     val osVersion: String,
     val errorMessage: String? = ""
 )
-
-//endregion

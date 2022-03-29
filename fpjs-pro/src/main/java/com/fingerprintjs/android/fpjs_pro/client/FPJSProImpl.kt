@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro.transport
+package com.fingerprintjs.android.fpjs_pro.client
 
 
 import com.fingerprintjs.android.fpjs_pro.FPJSProClient

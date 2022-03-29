@@ -60,13 +60,13 @@ class NativeHttpClient(
 
                     logger.debug(this, "Response : $response")
 
-                    if (responseCode == 200) {
-                        return RawRequestResult(
+                    return if (responseCode == 200) {
+                        RawRequestResult(
                             RequestResultType.SUCCESS,
                             response.toString().toByteArray()
                         )
                     } else {
-                        return RawRequestResult(
+                        RawRequestResult(
                             RequestResultType.ERROR,
                             "Error: response code is $responseCode".toByteArray()
                         )
