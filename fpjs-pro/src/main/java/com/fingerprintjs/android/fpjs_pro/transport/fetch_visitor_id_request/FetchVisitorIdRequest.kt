@@ -14,31 +14,35 @@ import kotlin.collections.HashMap
 
 
 //region: Request
-class FetchVisitorIdRequest(
-    endpointUrl: String,
+internal class FetchVisitorIdRequest(
+    private val endpointUrl: String,
     private val publicApiKey: String,
     private val androidId: String,
     private val gsfId: String?,
     private val mediaDrmId: String?,
     private val s67: String,
     private val tag: Map<String, Any>,
-    version: String,
+    private val version: String,
     private val packageName: String,
     private val extendedFormat: Boolean,
-    private val integrationType: List<Pair<String, String>>
+    private val integrationType: List<Pair<String, String>> = emptyList()
 ) : Request {
 
-    init {
-        integrationType.forEach {
-            url="$url&ii=${it.first}/${it.second}"
-        }
-    }
+    override val url
+        get() = createUrl()
 
-    override var url = "$endpointUrl/?ci=android/$version"
     override val type = RequestType.POST
     override val headers = mapOf(
         "Content-Type" to "application/json"
     )
+
+    private fun createUrl(): String {
+        var ur = "$endpointUrl/?ci=android/$version"
+        integrationType.forEach {
+            ur = "$ur&ii=${it.first}/${it.second}"
+        }
+        return ur
+    }
 
     override fun bodyAsMap(): Map<String, Any> {
         val resultMap = HashMap<String, Any>()
@@ -189,7 +193,8 @@ class FetchVisitorIdResult(
             continentJson?.optString(CONTINENT_NAME_KEY, UNKNOWN_KEY) ?: UNKNOWN_KEY
         )
 
-        val subdivisionsJson = ipLocationJson.optJSONArray(SUBDIVISIONS_KEY) ?: JSONArray(emptyArray<JSONObject>())
+        val subdivisionsJson =
+            ipLocationJson.optJSONArray(SUBDIVISIONS_KEY) ?: JSONArray(emptyArray<JSONObject>())
         val subdivisions = LinkedList<IpLocation.Subdivisions>()
 
         for (i in 0 until subdivisionsJson.length()) {
@@ -289,17 +294,19 @@ private const val SUBDIVISION_NAME_KEY = "name"
 private const val OS_KEY = "os"
 private const val OS_VERSION_KEY = "osVersion"
 
-private const val CUSTOMER_KEY = "c"
-private const val TAGS_KEY = "t"
-private const val URL_KEY = "url"
+internal const val CUSTOMER_KEY = "c"
+internal const val TAGS_KEY = "t"
+internal const val URL_KEY = "url"
 
-private const val ANDROID_ID_KEY = "a1"
-private const val MEDIA_DRM_KEY = "a2"
-private const val GSF_ID_KEY = "a3"
+internal const val ANDROID_ID_KEY = "a1"
+internal const val MEDIA_DRM_KEY = "a2"
+internal const val GSF_ID_KEY = "a3"
 
-private const val S67_KEY = "s67"
-private const val EXTENDED_FORMAT_SUPPORT = "cbd"
-private const val DEVICE_ID_KEY = "deviceId"
+internal const val S67_KEY = "s67"
+internal const val EXTENDED_FORMAT_SUPPORT = "cbd"
+
+internal const val DEVICE_ID_KEY = "deviceId"
+
 private const val TYPE_KEY = "type"
 private const val REQUEST_ID_KEY = "requestId"
 

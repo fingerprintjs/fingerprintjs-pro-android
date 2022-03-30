@@ -23,7 +23,7 @@ internal class FetchVisitorIdInteractorImpl(
     private val version: String,
     private val appname: String,
     private val extendedResponse: Boolean,
-    private val integrationType: List<Pair<String, String>>
+    private val integrationType: List<Pair<String, String>> = emptyList()
 ) : FetchVisitorIdInteractor {
 
     override fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResult {
