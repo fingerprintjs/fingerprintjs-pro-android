@@ -59,7 +59,7 @@ class ResultsPresenter(
             updateView()
         },
         errorListener = {
-            this.view?.showError(it)
+            this.view?.showError(it.description)
         })
     }
 

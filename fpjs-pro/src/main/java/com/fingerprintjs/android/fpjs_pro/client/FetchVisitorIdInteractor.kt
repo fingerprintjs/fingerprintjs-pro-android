@@ -42,7 +42,8 @@ internal class FetchVisitorIdInteractorImpl(
             tags,
             version,
             appname,
-            extendedResponse
+            extendedResponse,
+            integrationType
         )
 
         val rawRequestResult = httpClient.performRequest(
@@ -50,7 +51,7 @@ internal class FetchVisitorIdInteractorImpl(
         )
 
         return FetchVisitorIdResult(
-            rawRequestResult.type,
+            rawRequestResult.error,
             rawRequestResult.rawResponse,
             extendedResponse
         )

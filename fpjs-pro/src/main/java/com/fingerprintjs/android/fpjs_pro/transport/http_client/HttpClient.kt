@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro.transport.http_client
 
 
+import com.fingerprintjs.android.fpjs_pro.FPJSProClient
 import com.fingerprintjs.android.fpjs_pro.logger.Logger
 import com.fingerprintjs.android.fpjs_pro.tools.executeSafe
 import org.json.JSONObject
@@ -23,7 +24,7 @@ class NativeHttpClient(
     override fun performRequest(request: Request): RawRequestResult {
         return executeSafe({
             sendPostRequest(request)
-        }, RawRequestResult(RequestResultType.ERROR, "Network error".toByteArray()))
+        }, RawRequestResult(FPJSProClient.Error.NETWORK, "Network error".toByteArray()))
     }
 
     private fun sendPostRequest(request: Request): RawRequestResult {
@@ -33,49 +34,44 @@ class NativeHttpClient(
 
         val mURL = URL(request.url)
 
-        try {
-            with(mURL.openConnection() as HttpsURLConnection) {
-                logger.debug(this, "Headers:$")
-                request.headers.keys.forEach {
-                    logger.debug(this, "$it ${request.headers[it]}")
-                    setRequestProperty(it, request.headers[it])
-                }
-
-                doOutput = true
-                val wr = OutputStreamWriter(outputStream)
-                wr.write(reqParamJson.toString())
-                wr.flush()
-
-                logger.debug(this, "URL : $url")
-                logger.debug(this, "Response Code : $responseCode")
-
-                BufferedReader(InputStreamReader(inputStream)).use {
-                    val response = StringBuffer()
-
-                    var inputLine = it.readLine()
-                    while (inputLine != null) {
-                        response.append(inputLine)
-                        inputLine = it.readLine()
-                    }
-
-                    logger.debug(this, "Response : $response")
-
-                    return if (responseCode == 200) {
-                        RawRequestResult(
-                            RequestResultType.SUCCESS,
-                            response.toString().toByteArray()
-                        )
-                    } else {
-                        RawRequestResult(
-                            RequestResultType.ERROR,
-                            "Error: response code is $responseCode".toByteArray()
-                        )
-                    }
-                }
+        with(mURL.openConnection() as HttpsURLConnection) {
+            logger.debug(this, "Headers:$")
+            request.headers.keys.forEach {
+                logger.debug(this, "$it ${request.headers[it]}")
+                setRequestProperty(it, request.headers[it])
             }
-        } catch (throwable: Throwable) {
-            logger.error(this, throwable.message)
-            return RawRequestResult(RequestResultType.ERROR, "${throwable.message}".toByteArray())
+
+            doOutput = true
+            val wr = OutputStreamWriter(outputStream)
+            wr.write(reqParamJson.toString())
+            wr.flush()
+
+            logger.debug(this, "URL : $url")
+            logger.debug(this, "Response Code : $responseCode")
+
+            if (responseCode != 200) {
+                return RawRequestResult(
+                    FPJSProClient.Error.NETWORK,
+                    "Error: response code is $responseCode".toByteArray()
+                )
+            }
+
+            BufferedReader(InputStreamReader(inputStream)).use {
+                val response = StringBuffer()
+
+                var inputLine = it.readLine()
+                while (inputLine != null) {
+                    response.append(inputLine)
+                    inputLine = it.readLine()
+                }
+
+                logger.debug(this, "Response : $response")
+
+                return RawRequestResult(
+                    null,
+                    response.toString().toByteArray()
+                )
+            }
         }
     }
 }
