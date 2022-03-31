@@ -28,8 +28,7 @@ class FPJSProFactory(
                 configuration.endpointUrl,
                 configuration.apiToken,
                 configuration.extendedResponseFormat
-            ),
-            logger
+            )
         )
     }
 

@@ -3,14 +3,13 @@ package com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request
 
 import android.os.Build
 import android.util.Log
+import com.fingerprintjs.android.fpjs_pro.FPJSProClient
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.Request
-import com.fingerprintjs.android.fpjs_pro.transport.http_client.RequestResultType
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.RequestType
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.TypedRequestResult
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
-import kotlin.collections.HashMap
 
 
 //region: Request
@@ -105,7 +104,7 @@ internal class FetchVisitorIdRequest(
 //region: Parse response
 
 class FetchVisitorIdResult(
-    type: RequestResultType,
+    type: FPJSProClient.Error? = null,
     rawResponse: ByteArray?,
     private val extendedFormat: Boolean
 ) : TypedRequestResult<FetchVisitorIdResponse>(type, rawResponse) {
@@ -115,7 +114,7 @@ class FetchVisitorIdResult(
             rawResponse?.toString(Charsets.UTF_8) ?: UNKNOWN_KEY
         )
 
-        var requestId = ""
+        var requestId = UNKNOWN_KEY
         return try {
             val jsonBody = JSONObject(body)
             requestId = jsonBody.getString(REQUEST_ID_KEY)

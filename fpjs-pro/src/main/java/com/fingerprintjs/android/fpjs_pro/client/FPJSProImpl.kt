@@ -2,15 +2,13 @@ package com.fingerprintjs.android.fpjs_pro.client
 
 
 import com.fingerprintjs.android.fpjs_pro.FPJSProClient
-import com.fingerprintjs.android.fpjs_pro.transport.http_client.RequestResultType
-import com.fingerprintjs.android.fpjs_pro.logger.Logger
+import com.fingerprintjs.android.fpjs_pro.tools.executeSafe
 import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.FetchVisitorIdResponse
 import java.util.concurrent.Executors
 
 
 internal class FPJSProKotlinImpl(
-    private val interactor: FetchVisitorIdInteractor,
-    private val logger: Logger
+    private val interactor: FetchVisitorIdInteractor
 ) : FPJSProClient {
 
     private val executor = Executors.newSingleThreadExecutor()
@@ -19,28 +17,41 @@ internal class FPJSProKotlinImpl(
         getVisitorId(emptyMap(), listener) {}
     }
 
-    override fun getVisitorId(listener: (FetchVisitorIdResponse) -> Unit, errorListener: (String) -> Unit) {
+    override fun getVisitorId(
+        listener: (FetchVisitorIdResponse) -> Unit,
+        errorListener: (FPJSProClient.Error) -> Unit
+    ) {
         getVisitorId(emptyMap(), listener, errorListener)
     }
 
     override fun getVisitorId(
         tags: Map<String, Any>,
         listener: (FetchVisitorIdResponse) -> Unit,
-        errorListener: (String) -> Unit
+        errorListener: (FPJSProClient.Error) -> Unit
     ) {
         executor.execute {
             val result = interactor.getVisitorId(tags)
-            when(result.type) {
-                RequestResultType.SUCCESS -> {
-                    listener.invoke(result.typedResult())
+
+            if (result.error == null) {
+                val typedResult = executeSafe(
+                    {
+                        result.typedResult()
+                    }, null
+                )
+
+                if (typedResult == null) {
+                    val error = FPJSProClient.Error.UNRECOGNIZED_RESPONSE
+                    error.requestId = result.typedResult().requestId
+                    errorListener.invoke(error)
                 }
-                RequestResultType.ERROR -> {
-                    result.typedResult().let {
-                        logger.error(this, "Error: ${it.errorMessage}, RequestId: ${it.requestId}")
-                    }
-                    errorListener.invoke(result.typedResult().errorMessage ?: "")
-                }
+                listener.invoke(result.typedResult())
+                return@execute
             }
+
+
+            val error = result.error
+            error.requestId = result.typedResult().requestId
+            errorListener.invoke(result.error)
         }
     }
 }

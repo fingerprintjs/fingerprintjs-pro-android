@@ -6,12 +6,22 @@ import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.Fet
 
 interface FPJSProClient {
     fun getVisitorId(listener: (FetchVisitorIdResponse) -> Unit)
-    fun getVisitorId(listener: (FetchVisitorIdResponse) -> Unit, errorListener: (String) -> (Unit))
+    fun getVisitorId(listener: (FetchVisitorIdResponse) -> Unit, errorListener: (Error) -> (Unit))
     fun getVisitorId(
         tags: Map<String, Any>,
         listener: (FetchVisitorIdResponse) -> Unit,
-        errorListener: (String) -> (Unit)
+        errorListener: (Error) -> (Unit)
     )
+
+    enum class Error(
+        val description: String,
+        var requestId: String = "Unknown"
+    ) {
+        INTERNAL("Failed while collecting data."),
+        NETWORK("Failed while making request to the FingerprintJS API. Check your internet connection and the endpoint URL."),
+        UNRECOGNIZED_RESPONSE("Failed while parsing response. Check if your library version is up to dated."),
+        API_KEY("Your Public API key is not registered. Visit https://dashboard.fingerprintjs.com/ for getting the actual one.");
+    }
 }
 
 class Configuration @JvmOverloads constructor(
