@@ -6,7 +6,7 @@ import android.net.Uri
 import com.fingerprintjs.android.fpjs_pro.tools.executeSafe
 
 
-class GsfIdProvider(
+internal class GsfIdProvider(
     private val contentResolver: ContentResolver
 ) {
 

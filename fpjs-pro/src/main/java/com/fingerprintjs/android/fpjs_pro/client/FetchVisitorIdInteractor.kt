@@ -4,12 +4,12 @@ package com.fingerprintjs.android.fpjs_pro.client
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.MediaDrmIdProvider
-import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.FetchVisitorIdRequest
-import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.FetchVisitorIdResult
+import com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request.FetchVisitorIdRequest
+import com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request.FetchVisitorIdResult
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.HttpClient
 
 
-interface FetchVisitorIdInteractor {
+internal interface FetchVisitorIdInteractor {
     fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResult
 }
 
@@ -23,7 +23,7 @@ internal class FetchVisitorIdInteractorImpl(
     private val version: String,
     private val appname: String,
     private val extendedResponse: Boolean,
-    private val integrationType: List<Pair<String, String>> = emptyList()
+    private val integrationInfo: List<Pair<String, String>> = emptyList()
 ) : FetchVisitorIdInteractor {
 
     override fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResult {
@@ -43,7 +43,7 @@ internal class FetchVisitorIdInteractorImpl(
             version,
             appname,
             extendedResponse,
-            integrationType
+            integrationInfo
         )
 
         val rawRequestResult = httpClient.performRequest(
@@ -51,7 +51,6 @@ internal class FetchVisitorIdInteractorImpl(
         )
 
         return FetchVisitorIdResult(
-            rawRequestResult.error,
             rawRequestResult.rawResponse,
             extendedResponse
         )

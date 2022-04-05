@@ -1,16 +1,16 @@
 package com.fingerprintjs.android.fpjs_pro.transport.http_client
 
-import com.fingerprintjs.android.fpjs_pro.FPJSProClient
+
+import com.fingerprintjs.android.fpjs_pro.Error
 
 
-open class RawRequestResult(
-    val error: FPJSProClient.Error? = null,
+internal open class RawRequestResult(
     val rawResponse: ByteArray?
 )
 
-abstract class TypedRequestResult<T>(
-    type: FPJSProClient.Error? = null,
+internal abstract class TypedRequestResult<T>(
     rawResponse: ByteArray?
-) : RawRequestResult(type, rawResponse) {
+) : RawRequestResult(rawResponse) {
+    abstract fun typedError(): Error?
     abstract fun typedResult(): T?
 }

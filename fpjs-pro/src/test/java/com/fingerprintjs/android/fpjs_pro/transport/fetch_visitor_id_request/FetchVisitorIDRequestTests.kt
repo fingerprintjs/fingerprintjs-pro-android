@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request
 
 
+import com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request.*
 import junit.framework.Assert.*
 import org.junit.Test
 import java.lang.Exception
