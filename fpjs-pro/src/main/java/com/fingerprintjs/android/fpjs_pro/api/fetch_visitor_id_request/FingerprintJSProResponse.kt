@@ -1,5 +1,17 @@
-package com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request
+package com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request
 
+
+data class FingerprintJSProResponse(
+    val requestId: String,
+    val visitorId: String,
+    val confidenceScore: ConfidenceScore,
+    val visitorFound: Boolean,
+    val ipAddress: String,
+    val ipLocation: IpLocation?,
+    val osName: String,
+    val osVersion: String,
+    val errorMessage: String? = null
+)
 
 data class IpLocation(
     val accuracyRadius: Int,
@@ -37,14 +49,3 @@ data class ConfidenceScore(
     val score: Double
 )
 
-data class FetchVisitorIdResponse(
-    val requestId: String,
-    val visitorId: String,
-    val confidenceScore: ConfidenceScore,
-    val visitorFound: Boolean,
-    val ipAddress: String,
-    val ipLocation: IpLocation?,
-    val osName: String,
-    val osVersion: String,
-    val errorMessage: String? = ""
-)

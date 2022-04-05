@@ -95,7 +95,10 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
     override fun showError(message: String) {
         activity.runOnUiThread {
             hideProgressBar()
+            idTextView.visibility = View.VISIBLE
             idTextView.text = message
+            ipTextView.text = UNKNOWN
+            osTextView.text = UNKNOWN
         }
     }
 
@@ -121,3 +124,4 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
 }
 
 private const val INITIAL_ZOOM = 10.0
+private const val UNKNOWN = "Unknown"

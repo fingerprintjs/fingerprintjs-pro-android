@@ -8,7 +8,7 @@ import java.security.MessageDigest
 import java.util.UUID
 
 
-class MediaDrmIdProvider {
+internal class MediaDrmIdProvider {
     fun getMediaDrmId() = executeSafe({
         mediaDrmId()
     }, null)

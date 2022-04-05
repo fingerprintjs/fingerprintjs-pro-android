@@ -2,7 +2,7 @@ package com.fingerprintjs.android.fpjs_pro_demo.results_screen
 
 
 import android.content.Intent
-import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
+import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
 import com.fingerprintjs.android.fpjs_pro_demo.API_PUBLIC_KEY
 import com.fingerprintjs.android.fpjs_pro_demo.ENDPOINT_URL_KEY
 import com.fingerprintjs.android.fpjs_pro_demo.R
@@ -27,7 +27,7 @@ class ResultsActivity :
         initPresenter(
             endpointUrl,
             apiKey,
-            FPJSProFactory(applicationContext),
+            FingerprintJSFactory(applicationContext),
             preferences,
             savedInstanceState
         )
@@ -36,13 +36,13 @@ class ResultsActivity :
     override fun refresh() {
         presenter.detachRouter()
         presenter.detachView()
-        initPresenter(endpointUrl, apiKey, FPJSProFactory(applicationContext), preferences, null)
+        initPresenter(endpointUrl, apiKey, FingerprintJSFactory(applicationContext), preferences, null)
     }
 
     private fun initPresenter(
         endpointUrl: String,
         apiKey: String,
-        factory: FPJSProFactory,
+        factory: FingerprintJSFactory,
         applicationPreferences: ApplicationPreferences,
         savedInstanceState: ResultState?
     ) {

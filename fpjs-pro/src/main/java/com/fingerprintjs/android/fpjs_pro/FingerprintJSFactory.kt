@@ -6,7 +6,7 @@ import com.fingerprintjs.android.fpjs_pro.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.MediaDrmIdProvider
 import com.fingerprintjs.android.fpjs_pro.logger.ConsoleLogger
-import com.fingerprintjs.android.fpjs_pro.client.FPJSProKotlinImpl
+import com.fingerprintjs.android.fpjs_pro.client.FingerprintJSPro
 import com.fingerprintjs.android.fpjs_pro.client.FetchVisitorIdInteractor
 import com.fingerprintjs.android.fpjs_pro.client.FetchVisitorIdInteractorImpl
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.HttpClient
@@ -14,7 +14,7 @@ import com.fingerprintjs.android.fpjs_pro.transport.http_client.NativeHttpClient
 import com.fingerprintjs.android.fpjs_pro.client.FPJSProInterface
 
 
-class FPJSProFactory(
+class FingerprintJSFactory(
     private val applicationContext: Context
 ) {
 
@@ -22,8 +22,8 @@ class FPJSProFactory(
 
     fun createInstance(
         configuration: Configuration
-    ): FPJSProClient {
-        return FPJSProKotlinImpl(
+    ): FingerprintJS {
+        return FingerprintJSPro(
             createApiInteractor(
                 configuration.endpointUrl,
                 configuration.apiToken,

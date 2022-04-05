@@ -3,9 +3,9 @@ package com.fingerprintjs.android.fpjs_pro_demo.results_screen
 
 import android.os.Parcelable
 import com.fingerprintjs.android.fpjs_pro.Configuration
-import com.fingerprintjs.android.fpjs_pro.FPJSProClient
-import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
-import com.fingerprintjs.android.fpjs_pro.transport.fetch_visitor_id_request.FetchVisitorIdResponse
+import com.fingerprintjs.android.fpjs_pro.FingerprintJS
+import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
+import com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request.FingerprintJSProResponse
 import com.fingerprintjs.android.fpjs_pro_demo.base.BasePresenter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseRouter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseView
@@ -26,11 +26,11 @@ data class ResultState(
 class ResultsPresenter(
     private val endpointUrl: String,
     private val apiToken: String,
-    private val fpjsProFactory: FPJSProFactory,
+    private val fpjsProFactory: FingerprintJSFactory,
     private val applicationPreferences: ApplicationPreferences,
     state: ResultState?
 ) : BasePresenter<ResultState>() {
-    private var fpjsClient: FPJSProClient? = null
+    private var fpjsClient: FingerprintJS? = null
 
     private var visitorId = state?.visitorId
     private var ipAddress = state?.ipAddress
@@ -104,7 +104,7 @@ class ResultsPresenter(
         )
     }
 
-    private fun handleId(idResponse: FetchVisitorIdResponse) {
+    private fun handleId(idResponse: FingerprintJSProResponse) {
         visitorId = idResponse.visitorId
         ipAddress = idResponse.ipAddress
         latitude = idResponse.ipLocation?.latitude ?: 0.0

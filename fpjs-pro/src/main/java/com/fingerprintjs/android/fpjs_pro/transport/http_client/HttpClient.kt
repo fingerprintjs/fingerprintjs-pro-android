@@ -1,30 +1,30 @@
 package com.fingerprintjs.android.fpjs_pro.transport.http_client
 
 
-import com.fingerprintjs.android.fpjs_pro.FPJSProClient
 import com.fingerprintjs.android.fpjs_pro.logger.Logger
 import com.fingerprintjs.android.fpjs_pro.tools.executeSafe
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
 
-interface HttpClient {
+internal interface HttpClient {
     fun performRequest(
         request: Request
     ): RawRequestResult
 }
 
-class NativeHttpClient(
+internal class NativeHttpClient(
     private val logger: Logger
 ) : HttpClient {
     override fun performRequest(request: Request): RawRequestResult {
         return executeSafe({
             sendPostRequest(request)
-        }, RawRequestResult(FPJSProClient.Error.NETWORK, "Network error".toByteArray()))
+        }, RawRequestResult(null))
     }
 
     private fun sendPostRequest(request: Request): RawRequestResult {
@@ -49,14 +49,15 @@ class NativeHttpClient(
             logger.debug(this, "URL : $url")
             logger.debug(this, "Response Code : $responseCode")
 
-            if (responseCode != 200) {
-                return RawRequestResult(
-                    FPJSProClient.Error.NETWORK,
-                    "Error: response code is $responseCode".toByteArray()
-                )
+            val status: Int = responseCode
+
+            val resultInputStream = if (status != HttpURLConnection.HTTP_OK) {
+                errorStream
+            } else {
+                inputStream
             }
 
-            BufferedReader(InputStreamReader(inputStream)).use {
+            BufferedReader(InputStreamReader(resultInputStream)).use {
                 val response = StringBuffer()
 
                 var inputLine = it.readLine()
@@ -68,7 +69,6 @@ class NativeHttpClient(
                 logger.debug(this, "Response : $response")
 
                 return RawRequestResult(
-                    null,
                     response.toString().toByteArray()
                 )
             }
