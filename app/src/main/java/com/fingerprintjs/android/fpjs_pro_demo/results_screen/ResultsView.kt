@@ -40,6 +40,11 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
     private val osTextView: TextView = activity.findViewById(R.id.os_text_view)
     private val tryAgainBtn: View = activity.findViewById(R.id.try_again_btn)
 
+    private val errorContainer: View = activity.findViewById(R.id.error_response_container)
+    private val errorDescriptionTextView: TextView = activity.findViewById(R.id.error_description)
+    private val requestIdTextView: TextView = activity.findViewById(R.id.request_id_view)
+    private val goBackBtn: View = activity.findViewById(R.id.go_back_button)
+
     private val mapView: MapView = activity.findViewById(R.id.map_view)
 
     init {
@@ -96,12 +101,13 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
     override fun showError(error: Error) {
         activity.runOnUiThread {
             hideProgressBar()
-            idTextView.visibility = View.VISIBLE
-            idTextView.text = "${error.description} RequestID:${error.requestId}"
+            idContainer.visibility = View.GONE
+            errorContainer.visibility = View.VISIBLE
 
-            ipTextView.visibility = View.GONE
-            osTextView.visibility = View.GONE
-            mapView.visibility = View.GONE
+            errorDescriptionTextView.text = error.description
+            val requestIdString = "Request ID: ${error.requestId}"
+
+            requestIdTextView.text = requestIdString
         }
     }
 
@@ -127,4 +133,3 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
 }
 
 private const val INITIAL_ZOOM = 10.0
-private const val UNKNOWN = "Unknown"

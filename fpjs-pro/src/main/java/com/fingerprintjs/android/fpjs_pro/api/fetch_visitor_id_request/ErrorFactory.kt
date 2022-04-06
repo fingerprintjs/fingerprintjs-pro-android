@@ -115,6 +115,6 @@ private const val INSTALLATION_METHOD_RESTRICTED_KEY = "InstallationMethodRestri
 private const val INSTALLATION_METHOD_RESTRICTED_DESCRIPTION =
     "The installation method of the agent is not allowed for the customer"
 
-internal const val NETWORK_ERROR_DESCRIPTION = "Network error. Check your connection"
+internal const val NETWORK_ERROR_DESCRIPTION = "Network error. Check your connection or the endpoint URL"
 
 private const val UNKNOWN_ERROR_DESCRIPTION = "Unknown error."
