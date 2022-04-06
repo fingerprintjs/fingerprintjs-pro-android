@@ -7,6 +7,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.fingerprintjs.android.fpjs_pro.Error
 import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
 import com.fingerprintjs.android.fpjs_pro_demo.R
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseView
@@ -25,7 +26,7 @@ interface ResultsView {
     fun hideProgressBar()
 
     fun showMessage(message: String)
-    fun showError(message: String)
+    fun showError(error: Error)
 
     fun setOnTryAgainClickedListener(listener: () -> (Unit))
 }
@@ -92,13 +93,15 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
         }
     }
 
-    override fun showError(message: String) {
+    override fun showError(error: Error) {
         activity.runOnUiThread {
             hideProgressBar()
             idTextView.visibility = View.VISIBLE
-            idTextView.text = message
-            ipTextView.text = UNKNOWN
-            osTextView.text = UNKNOWN
+            idTextView.text = "${error.description} RequestID:${error.requestId}"
+
+            ipTextView.visibility = View.GONE
+            osTextView.visibility = View.GONE
+            mapView.visibility = View.GONE
         }
     }
 

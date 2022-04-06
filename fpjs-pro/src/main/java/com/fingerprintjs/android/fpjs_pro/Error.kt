@@ -1,28 +1,61 @@
 package com.fingerprintjs.android.fpjs_pro
 
 
-enum class Error(
-    var errorCode: String = UNKNOWN,
-    var description: String = UNKNOWN,
-    var requestId: String = UNKNOWN
-) {
-    API_REQUIRED,
-    API_NOT_FOUND,
-    API_EXPIRED,
-    REQUEST_CANNOT_BE_PARSED,
-    FAILED,
-    REQUEST_TIMEOUT,
-    TOO_MANY_REQUESTS,
-    ORIGIN_NOT_AVAILABLE,
-    HEADER_RESTRICTED,
-    NOT_AVAILABLE_FOR_CRAWL_BOTS,
-    NOT_AVAILABLE_WITHOUT_UA,
-    WRONG_REGION,
-    SUBSCRIPTION_NOT_ACTIVE,
-    UNSUPPORTED_VERSION,
-    INSTALLATION_METHOD_RESTRICTED,
-    RESPONSE_CANNOT_BE_PARSED,
-    UNKNOWN_ERROR
-}
+import com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request.NETWORK_ERROR_DESCRIPTION
+
+
+sealed class Error(
+    val requestId: String = UNKNOWN,
+    val description: String? = UNKNOWN
+)
+
+class ApiRequired(requestId: String, errorDescription: String?) : Error(requestId, errorDescription)
+
+class ApiNotFound(requestId: String, errorDescription: String?) : Error(requestId, errorDescription)
+
+class ApiExpired(requestId: String, errorDescription: String?) : Error(requestId, errorDescription)
+
+class RequestCannotBeParsed(requestId: String, errorDescription: String?) :
+    Error(requestId, errorDescription)
+
+class Failed(requestId: String, errorDescription: String?) : Error(requestId, errorDescription)
+
+class RequestTimeout(requestId: String, errorDescription: String?) :
+    Error(requestId, errorDescription)
+
+class TooManyRequest(requestId: String, errorDescription: String?) :
+    Error(requestId, errorDescription)
+
+class OriginNotAvailable(requestId: String, errorDescription: String?) :
+    Error(requestId, errorDescription)
+
+class HeaderRestricted(requestId: String, errorDescription: String?) :
+    Error(requestId, errorDescription)
+
+class NotAvailableForCrawlBots(requestId: String, errorDescription: String?) :
+    Error(requestId, errorDescription)
+
+class NotAvailableWithoutUA(requestId: String, errorDescription: String?) :
+    Error(requestId, errorDescription)
+
+class WrongRegion(requestId: String, errorDescription: String?) : Error(requestId, errorDescription)
+
+class SubscriptionNotActive(requestId: String, errorDescription: String?) :
+    Error(requestId, errorDescription)
+
+class UnsupportedVersion(requestId: String, errorDescription: String?) :
+    Error(requestId, errorDescription)
+
+class InstallationMethodRestricted(requestId: String, errorDescription: String?) :
+    Error(requestId, errorDescription)
+
+class ResponseCannotBeParsed(requestId: String, errorDescription: String?) :
+    Error(requestId, errorDescription)
+
+class NetworkError(description: String = NETWORK_ERROR_DESCRIPTION) :
+    Error(description = description)
+
+class UnknownError(requestId: String = UNKNOWN, errorDescription: String? = UNKNOWN) :
+    Error(requestId, errorDescription)
 
 private const val UNKNOWN = "Unknown"

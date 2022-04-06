@@ -1,9 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro
 
 
-import com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request.FingerprintJSProResponse
-
-
 interface FingerprintJS {
     fun getVisitorId(listener: (FingerprintJSProResponse) -> Unit)
     fun getVisitorId(listener: (FingerprintJSProResponse) -> Unit, errorListener: (Error) -> (Unit))

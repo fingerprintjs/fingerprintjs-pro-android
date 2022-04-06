@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FingerprintJS
 import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
-import com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request.FingerprintJSProResponse
+import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
 import com.fingerprintjs.android.fpjs_pro_demo.base.BasePresenter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseRouter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseView
@@ -59,7 +59,7 @@ class ResultsPresenter(
             updateView()
         },
         errorListener = {
-            this.view?.showError(it.description)
+            this.view?.showError(it)
         })
     }
 
