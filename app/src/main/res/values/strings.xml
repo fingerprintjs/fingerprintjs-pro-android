@@ -20,4 +20,6 @@
     <string name="try_again_btn_text">Try again?</string>
     <string name="your_id_label">Your ID:</string>
     <string name="menu_repository_page_title">Repository page</string>
+    <string name="error_title">Failed to get visitorID</string>
+    <string name="go_back_btn">Go back</string>
 </resources>

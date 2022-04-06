@@ -16,10 +16,10 @@
 
         <FrameLayout
             android:id="@+id/id_result_container"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="16dp">
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/progress_indicator"
@@ -30,7 +30,13 @@
                 android:indeterminate="true"
                 android:visibility="gone" />
 
-           <include layout="@layout/extended_response_view" android:visibility="gone"/>
+            <include
+                layout="@layout/extended_response_view"
+                android:visibility="gone" />
+
+            <include
+                layout="@layout/error_results_view"
+                android:visibility="gone" />
 
         </FrameLayout>
     </LinearLayout>

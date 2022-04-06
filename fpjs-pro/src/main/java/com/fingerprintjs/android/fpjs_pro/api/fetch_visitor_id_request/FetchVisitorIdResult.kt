@@ -21,11 +21,12 @@ internal class FetchVisitorIdResult(
 
     init {
         val body = rawResponse?.toString(Charsets.UTF_8) ?: "{}"
-
-        val jsonBody = JSONObject(body)
-        val requestId = jsonBody.optString(REQUEST_ID_KEY)
-
+        var requestId = ""
         try {
+
+            val jsonBody = JSONObject(body)
+            requestId = jsonBody.optString(REQUEST_ID_KEY)
+
             if (jsonBody.has(ERROR_KEY)) {
                 typedError = parseError(requestId, jsonBody)
             } else {
