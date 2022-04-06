@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request
+package com.fingerprintjs.android.fpjs_pro
 
 
 data class FingerprintJSProResponse(

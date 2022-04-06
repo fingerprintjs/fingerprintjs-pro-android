@@ -2,7 +2,7 @@ package com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request
 
 
 import android.os.Build
-import com.fingerprintjs.android.fpjs_pro.Error
+import com.fingerprintjs.android.fpjs_pro.*
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.TypedRequestResult
 import org.json.JSONArray
 import org.json.JSONObject
@@ -33,8 +33,7 @@ internal class FetchVisitorIdResult(
             }
         } catch (exception: Exception) {
             typedResponse = null
-            typedError = Error.RESPONSE_CANNOT_BE_PARSED
-            typedError?.requestId = requestId
+            typedError = RequestCannotBeParsed(requestId, REQUEST_CANNOT_BE_PARSED_DESCRIPTION)
         }
     }
 
@@ -84,7 +83,11 @@ internal class FetchVisitorIdResult(
             .getJSONObject(ERROR_KEY)
             .optString(ERROR_CODE_KEY)
 
-        return errorFactory.getError(errorCode, requestId)
+        val errorMessage = jsonBody
+            .getJSONObject(ERROR_KEY)
+            .optString(ERROR_MESSAGE_KEY)
+
+        return errorFactory.getError(errorCode, errorMessage, requestId)
     }
 
     private fun parseConfidenceScore(resultJson: JSONObject): ConfidenceScore {
