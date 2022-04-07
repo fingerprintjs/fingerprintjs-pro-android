@@ -18,7 +18,7 @@ internal interface HttpClient {
     ): RawRequestResult
 }
 
-internal class NativeHttpClient(
+internal class HttpClientImpl(
     private val logger: Logger
 ) : HttpClient {
     override fun performRequest(request: Request): RawRequestResult {

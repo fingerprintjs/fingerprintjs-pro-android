@@ -11,15 +11,15 @@ internal interface ErrorFactory {
 internal class ErrorFactoryImpl : ErrorFactory {
     override fun getError(errorKey: String, errorDescription: String?, requestId: String): Error {
         return when (errorKey) {
-            API_REQUIRED_KEY -> ApiRequired(
+            API_REQUIRED_KEY -> ApiKeyRequired(
                 requestId,
                 errorDescription ?: API_REQUIRED_DESCRIPTION
             )
-            API_NOT_FOUND_KEY -> ApiNotFound(
+            API_NOT_FOUND_KEY -> ApiKeyNotFound(
                 requestId,
                 errorDescription ?: API_NOT_FOUND_DESCRIPTION
             )
-            API_EXPIRED_KEY -> ApiExpired(requestId, API_EXPIRED_DESCRIPTION)
+            API_EXPIRED_KEY -> ApiKeyExpired(requestId, API_EXPIRED_DESCRIPTION)
             REQUEST_CANNOT_BE_PARSED_KEY -> RequestCannotBeParsed(
                 requestId,
                 errorDescription ?: REQUEST_CANNOT_BE_PARSED_DESCRIPTION

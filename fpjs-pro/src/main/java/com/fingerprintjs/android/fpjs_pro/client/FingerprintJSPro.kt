@@ -6,11 +6,13 @@ import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
 import com.fingerprintjs.android.fpjs_pro.Error
 import com.fingerprintjs.android.fpjs_pro.NetworkError
 import com.fingerprintjs.android.fpjs_pro.UnknownError
+import com.fingerprintjs.android.fpjs_pro.logger.Logger
 import java.util.concurrent.Executors
 
 
 internal class FingerprintJSPro(
-    private val interactor: FetchVisitorIdInteractor
+    private val interactor: FetchVisitorIdInteractor,
+    private val logger: Logger
 ) : FingerprintJS {
 
     private val executor = Executors.newSingleThreadExecutor()
@@ -35,7 +37,12 @@ internal class FingerprintJSPro(
             val result = interactor.getVisitorId(tags)
 
             if (result.rawResponse == null) {
-                errorListener.invoke(NetworkError())
+                val fpjsError = NetworkError()
+                logger.error(
+                    this,
+                    "Error: ${fpjsError.description} Request ID: ${fpjsError.requestId}"
+                )
+                errorListener.invoke(fpjsError)
                 return@execute
             }
 
@@ -46,7 +53,12 @@ internal class FingerprintJSPro(
                 listener.invoke(typedResult)
                 return@execute
             } else {
-                errorListener.invoke(result.typedError() ?: UnknownError())
+                val fpjsError = result.typedError() ?: UnknownError()
+                logger.error(
+                    this,
+                    "Error: ${fpjsError.description} Request ID: ${fpjsError.requestId}"
+                )
+                errorListener.invoke(fpjsError)
             }
         }
     }

@@ -9,11 +9,11 @@ sealed class Error(
     val description: String? = UNKNOWN
 )
 
-class ApiRequired(requestId: String, errorDescription: String?) : Error(requestId, errorDescription)
+class ApiKeyRequired(requestId: String, errorDescription: String?) : Error(requestId, errorDescription)
 
-class ApiNotFound(requestId: String, errorDescription: String?) : Error(requestId, errorDescription)
+class ApiKeyNotFound(requestId: String, errorDescription: String?) : Error(requestId, errorDescription)
 
-class ApiExpired(requestId: String, errorDescription: String?) : Error(requestId, errorDescription)
+class ApiKeyExpired(requestId: String, errorDescription: String?) : Error(requestId, errorDescription)
 
 class RequestCannotBeParsed(requestId: String, errorDescription: String?) :
     Error(requestId, errorDescription)

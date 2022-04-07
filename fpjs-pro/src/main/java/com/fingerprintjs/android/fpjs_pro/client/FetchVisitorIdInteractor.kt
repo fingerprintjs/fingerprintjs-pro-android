@@ -5,12 +5,12 @@ import com.fingerprintjs.android.fpjs_pro.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fpjs_pro.device_id_providers.MediaDrmIdProvider
 import com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request.FetchVisitorIdRequest
-import com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request.FetchVisitorIdResult
+import com.fingerprintjs.android.fpjs_pro.api.fetch_visitor_id_request.FetchVisitorIdResponse
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.HttpClient
 
 
 internal interface FetchVisitorIdInteractor {
-    fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResult
+    fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResponse
 }
 
 internal class FetchVisitorIdInteractorImpl(
@@ -26,7 +26,7 @@ internal class FetchVisitorIdInteractorImpl(
     private val integrationInfo: List<Pair<String, String>> = emptyList()
 ) : FetchVisitorIdInteractor {
 
-    override fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResult {
+    override fun getVisitorId(tags: Map<String, Any>): FetchVisitorIdResponse {
         val androidId = androidIdProvider.getAndroidId()
         val gsfId = gsfIdProvider.getGsfAndroidId()
         val mediaDrmId = mediaDrmIdProvider.getMediaDrmId()
@@ -50,7 +50,7 @@ internal class FetchVisitorIdInteractorImpl(
             fetchTokenRequest
         )
 
-        return FetchVisitorIdResult(
+        return FetchVisitorIdResponse(
             rawRequestResult.rawResponse,
             extendedResponse
         )
