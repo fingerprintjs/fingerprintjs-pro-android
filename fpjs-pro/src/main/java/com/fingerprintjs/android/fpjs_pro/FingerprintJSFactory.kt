@@ -10,8 +10,9 @@ import com.fingerprintjs.android.fpjs_pro.client.FingerprintJSPro
 import com.fingerprintjs.android.fpjs_pro.client.FetchVisitorIdInteractor
 import com.fingerprintjs.android.fpjs_pro.client.FetchVisitorIdInteractorImpl
 import com.fingerprintjs.android.fpjs_pro.transport.http_client.HttpClient
-import com.fingerprintjs.android.fpjs_pro.transport.http_client.NativeHttpClient
+import com.fingerprintjs.android.fpjs_pro.transport.http_client.HttpClientImpl
 import com.fingerprintjs.android.fpjs_pro.client.FPJSProInterface
+import com.fingerprintjs.android.fpjs_pro.logger.Logger
 
 
 class FingerprintJSFactory(
@@ -28,7 +29,8 @@ class FingerprintJSFactory(
                 configuration.endpointUrl,
                 configuration.apiToken,
                 configuration.extendedResponseFormat
-            )
+            ),
+            createLogger()
         )
     }
 
@@ -44,6 +46,10 @@ class FingerprintJSFactory(
             gsfIdProvider,
             mediaDrmIdProvider
         )
+    }
+
+    fun createLogger(): Logger {
+        return ConsoleLogger()
     }
 
     private fun createApiInteractor(
@@ -70,7 +76,7 @@ class FingerprintJSFactory(
     }
 
     private fun createHttpClient(): HttpClient {
-        return NativeHttpClient(logger)
+        return HttpClientImpl(logger)
     }
 
     private fun getAppId(): String {

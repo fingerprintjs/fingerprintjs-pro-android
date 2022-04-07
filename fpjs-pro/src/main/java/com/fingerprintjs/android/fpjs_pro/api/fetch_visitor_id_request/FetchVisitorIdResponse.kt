@@ -10,7 +10,7 @@ import java.util.*
 
 //region: Parse response
 
-internal class FetchVisitorIdResult(
+internal class FetchVisitorIdResponse(
     rawResponse: ByteArray?,
     private val extendedFormat: Boolean,
     private val errorFactory: ErrorFactory = ErrorFactoryImpl()
@@ -34,7 +34,7 @@ internal class FetchVisitorIdResult(
             }
         } catch (exception: Exception) {
             typedResponse = null
-            typedError = RequestCannotBeParsed(requestId, REQUEST_CANNOT_BE_PARSED_DESCRIPTION)
+            typedError = ResponseCannotBeParsed(requestId, REQUEST_CANNOT_BE_PARSED_DESCRIPTION)
         }
     }
 
