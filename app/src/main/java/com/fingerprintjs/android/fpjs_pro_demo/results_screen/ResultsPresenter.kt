@@ -90,6 +90,12 @@ class ResultsPresenter(
             setOnTryAgainClickedListener {
                 router?.refresh()
             }
+            setOnCopyRequestIdClickedListener {
+                router?.copyTextToBuffer(it)
+            }
+            setOnGoBackClickedListener {
+                router?.goBack()
+            }
         }
     }
 

@@ -7,10 +7,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingVertical="120dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             style="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_width="match_parent"
@@ -35,14 +37,15 @@
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:background="@drawable/bg_inputs"
             android:layout_marginVertical="16dp"
+            android:background="@drawable/bg_inputs"
             android:padding="20dp"
-            android:textSize="18sp"
+            android:textAlignment="center"
             android:textColor="@color/black"
-            android:drawableEnd="@drawable/ic_copy"
-            tools:text="Request ID: 1213fadsf1231fds" />
+            android:textIsSelectable="true"
+            android:textSize="18sp"
+            tools:text="Request ID: 1213fadsf1231fds"
+            app:drawableEndCompat="@drawable/ic_copy" />
 
         <FrameLayout
             android:id="@+id/go_back_button"

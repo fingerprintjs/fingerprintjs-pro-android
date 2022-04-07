@@ -28,6 +28,9 @@ interface ResultsView {
     fun showMessage(message: String)
     fun showError(error: Error)
 
+    fun setOnCopyRequestIdClickedListener(listener: (String) -> Unit)
+    fun setOnGoBackClickedListener(listener: () -> Unit)
+
     fun setOnTryAgainClickedListener(listener: () -> (Unit))
 }
 
@@ -43,6 +46,8 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
     private val errorContainer: View = activity.findViewById(R.id.error_response_container)
     private val errorDescriptionTextView: TextView = activity.findViewById(R.id.error_description)
     private val requestIdTextView: TextView = activity.findViewById(R.id.request_id_view)
+    private var requestId: String = ""
+
     private val goBackBtn: View = activity.findViewById(R.id.go_back_button)
 
     private val mapView: MapView = activity.findViewById(R.id.map_view)
@@ -106,9 +111,22 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
 
             errorDescriptionTextView.text = error.description
             val requestIdString = "Request ID: ${error.requestId}"
+            this.requestId = error.requestId
 
             requestIdTextView.text = requestIdString
         }
+    }
+
+    override fun setOnCopyRequestIdClickedListener(listener: (String) -> Unit) {
+        requestIdTextView.setOnClickListener {
+            listener.invoke(this.requestId)
+        }
+    }
+
+    override fun setOnGoBackClickedListener(listener: () -> Unit) {
+       goBackBtn.setOnClickListener {
+           listener.invoke()
+       }
     }
 
     override fun showProgressBar() {
