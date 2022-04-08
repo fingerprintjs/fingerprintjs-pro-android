@@ -25,7 +25,7 @@ import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
 
 // Trust your user's identifiers with the FingerprintJS Pro
 
-val fpjsClient = FPJSProFactory(applicationContext).createInstance(
+val fpjsClient = FingerprintJSFactory(applicationContext).createInstance(
      Configuration(
         apiToken = "MY_API_TOKEN"
   )
@@ -75,7 +75,7 @@ repositories {
 
 ```gradle
 dependencies {
-  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android:v2.0-rc1'
+  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android:v2.0'
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -104,7 +104,7 @@ import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
 ...
 
 // Initialization
-val factory = FPJSProFactory(applicationContext)
+val factory = FingerprintJSFactory(applicationContext)
 val configuration = Configuration(
     apiToken = "TOKEN"
   )
@@ -128,12 +128,12 @@ import com.fingerprintjs.android.fpjs_pro.FPJSProClient;
 import com.fingerprintjs.android.fpjs_pro.FPJSProFactory;
 ...
 
-FPJSProFactory factory = new FPJSProFactory(this.getApplicationContext());
+FingerprintJSFactory factory = new FingerprintJSFactory(this.getApplicationContext());
 Configuration configuration = new Configuration(
     "TOKEN"
     );
 
-FPJSProClient fpjsClient = factory.createInstance(
+FingerprintJS fpjsClient = factory.createInstance(
     configuration
 );
 
