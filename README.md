@@ -75,7 +75,7 @@ repositories {
 
 ```gradle
 dependencies {
-  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android:v1.2.0'
+  implementation 'com.github.fingerprintjs:fingerprintjs-pro-android:v2.0-rc1'
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -114,8 +114,9 @@ val fpjsClient = factory.createInstance(
 )
 
 // Usage
-fpjsClient.getVisitorId { visitorId ->
-    // Use visitorId
+fpjsClient.getVisitorId { visitorIdResponse ->
+    val visitorId = idResponse.visitorId
+    // Use the ID
 }
 
 ```
@@ -136,10 +137,10 @@ FPJSProClient fpjsClient = factory.createInstance(
     configuration
 );
 
-fpjsClient.getVisitorId(new Function1<String, Unit>() {
+fpjsClient.getVisitorId(new Function1<FingerprintJSProResponse, Unit>() {
     @Override
-    public Unit invoke(String visitorId) {
-        // Use visitorId
+    public Unit invoke(FingerprintJSProResponse visitorIdResponse) {
+        String visitorId = visitorIdResponse.visitorId
         return null;
     }
 });
