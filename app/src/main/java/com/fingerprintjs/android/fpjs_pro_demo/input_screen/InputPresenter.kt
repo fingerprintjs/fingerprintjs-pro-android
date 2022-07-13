@@ -6,6 +6,7 @@ import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro_demo.base.BasePresenter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseRouter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseView
+import com.fingerprintjs.android.fpjs_pro_demo.dialogs.IdentificationRequestParams
 import com.fingerprintjs.android.fpjs_pro_demo.persistence.ApplicationPreferences
 import kotlinx.parcelize.Parcelize
 
@@ -14,19 +15,20 @@ import kotlinx.parcelize.Parcelize
 data class InputScreenState(
     val selectedRegion: Configuration.Region?,
     val endpointUrl: String?,
-    val apiKey: String?
+    val apiKey: String?,
+    val identificationRequestParams: IdentificationRequestParams?
 ) : Parcelable
 
-
 class InputPresenter(
-    applicationPreferences: ApplicationPreferences,
+    private val applicationPreferences: ApplicationPreferences,
     state: InputScreenState?
 ) : BasePresenter<InputScreenState>() {
 
     private var selectedRegion: Configuration.Region =
-        state?.selectedRegion ?: Configuration.Region.US
-    private val endpointUrl: String = state?.endpointUrl ?: applicationPreferences.getEndpointUrl()
-    private val apiKey: String = state?.apiKey ?: applicationPreferences.getPublicApiKey()
+        state?.selectedRegion ?: applicationPreferences.getRegion()
+    private var endpointUrl: String = state?.endpointUrl ?: applicationPreferences.getEndpointUrl()
+    private var apiKey: String = state?.apiKey ?: applicationPreferences.getPublicApiKey()
+    private var identificationRequestParams: IdentificationRequestParams? = state?.identificationRequestParams
 
     private var view: InputView? = null
     private var router: InputScreenRouter? = null
@@ -58,20 +60,29 @@ class InputPresenter(
         return InputScreenState(
             selectedRegion,
             view?.getEndpointUrl(),
-            view?.getPublicApiKey()
+            view?.getPublicApiKey(),
+            identificationRequestParams
         )
     }
 
     private fun subscribeToView() {
         this.view?.apply {
             setOnGetVisitorIdBtnClickedListener {
-                router?.openFingerprintResultScreen(
-                    Configuration(
-                        view?.getPublicApiKey() ?: "",
-                        selectedRegion,
-                        view?.getEndpointUrl() ?: selectedRegion.endpointUrl
-                    )
-                )
+                view?.apply {
+                    apiKey = getPublicApiKey()
+                    endpointUrl = getEndpointUrl()
+                }
+
+                applicationPreferences.setPublicApiKey(apiKey)
+                applicationPreferences.setEndpointUrl(endpointUrl)
+                applicationPreferences.setRegion(selectedRegion)
+                router?.openFingerprintResultScreen(identificationRequestParams)
+            }
+
+            setOnRequestSettingsClickedListener {
+                router?.openRequestSettingsDialog(identificationRequestParams) {
+                    handleRequestParams(it)
+                }
             }
             setOnRegionSelectedListener {
                 selectedRegion = it
@@ -79,5 +90,9 @@ class InputPresenter(
                 setRegionText(it.name)
             }
         }
+    }
+
+    private fun handleRequestParams(requestParams: IdentificationRequestParams) {
+        identificationRequestParams = requestParams
     }
 }

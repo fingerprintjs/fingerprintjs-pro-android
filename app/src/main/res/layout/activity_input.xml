@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/bg_main"
         android:orientation="vertical"
         android:paddingVertical="148dp"
@@ -21,7 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="96dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <TextView
                 style="@style/TextAppearance.MaterialComponents.Headline3"
@@ -38,13 +40,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_fingerprint"
-                android:contentDescription="@null" />
+                android:contentDescription="@null"
+                android:src="@drawable/ic_fingerprint" />
         </LinearLayout>
 
         <TextView
-            style="@style/TextAppearance.AppCompat.Button"
             android:id="@+id/btn_region_select"
+            style="@style/TextAppearance.AppCompat.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -66,7 +68,7 @@
             android:minHeight="48dp"
             android:padding="16dp"
             android:text="@string/default_endpoint_url"
-            android:textColor="#AAAAAA" />
+            android:textColor="#000000" />
 
         <EditText
             android:id="@+id/api_key_input"
@@ -79,27 +81,47 @@
             android:inputType="text"
             android:minHeight="48dp"
             android:padding="16dp"
-            android:textColor="#AAAAAA" />
+            android:textColor="#000000" />
 
-        <FrameLayout
-            android:id="@+id/get_visitor_id_button"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
+            android:background="@drawable/bg_run_btn"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="@drawable/btn_ripple">
+            android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/get_visitor_id_button"
                 style="@style/TextAppearance.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_run_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.85"
+                android:foreground="@drawable/btn_ripple"
                 android:padding="16dp"
                 android:text="@string/get_visitor_id_btn_text"
                 android:textAlignment="center"
-                android:textColor="@color/white" />
-        </FrameLayout>
+                android:textColor="@color/white"
+                tools:ignore="UnusedAttribute" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="4dp"
+                android:background="@color/white" />
+
+            <ImageView
+                android:id="@+id/request_settings_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.15"
+                android:contentDescription="@null"
+                android:foreground="@drawable/btn_ripple"
+                android:src="@drawable/ic_settings_white_24px"
+                tools:ignore="UnusedAttribute" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

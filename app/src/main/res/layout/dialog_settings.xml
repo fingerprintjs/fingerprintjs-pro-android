@@ -8,12 +8,23 @@
         android:id="@+id/edit_text_endpoint_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp" />
+        android:layout_marginHorizontal="16dp"
+        android:hint="@string/endpoint_url_input_hint"
+        android:inputType="textUri" />
 
     <EditText
-        android:id="@+id/edit_text_public_api_token"
+        android:id="@+id/edit_text_public_api_key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp" />
+        android:layout_marginHorizontal="16dp"
+        android:hint="@string/api_token_input_hint"
+        android:inputType="text" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_extended_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:text="@string/checkbox_extended_result_description" />
 
 </LinearLayout>
