@@ -1,4 +1,4 @@
-name: Test
+name: Build
 
 on:
   push:
@@ -24,20 +24,12 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Lint
-        run: ./gradlew fpjs-pro:lint
+        run: ./gradlew app:lint
         
-      - name: Build library
-        run: ./gradlew fpjs-pro:assembleRelease
-
-      - name: Save library to artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          path: fpjs-pro/build/outputs/aar/*
-
       - name: Build App
         run: ./gradlew app:assembleRelease
 
       - name: Save application to artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           path: app/build/outputs/apk/release/*
