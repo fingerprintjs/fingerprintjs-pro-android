@@ -18,6 +18,11 @@ interface InputView {
     fun setOnGetVisitorIdBtnClickedListener(listener: () -> (Unit))
 
     fun setOnRegionSelectedListener(selectedRegionListener: (Configuration.Region) -> (Unit))
+
+    fun setOnRequestSettingsClickedListener(
+        onClickListener: () -> (Unit)
+    )
+
     fun setRegionText(text: String)
 
     fun setEndpointUrl(url: String)
@@ -28,39 +33,64 @@ interface InputView {
 }
 
 
-class InputViewImpl(activity: BaseActivity<*>) : BaseView(activity), InputView {
+class InputViewImpl(private val activity: BaseActivity<*>) : BaseView(activity), InputView {
     private val regionSelectButton: TextView = activity.findViewById(R.id.btn_region_select)
 
     private val endpointUrlInput: EditText = activity.findViewById(R.id.endpoint_url_input)
     private val apiKeyInput: EditText = activity.findViewById(R.id.api_key_input)
     private val getVisitorIdButton: View = activity.findViewById(R.id.get_visitor_id_button)
+    private val openRequestSettingsDialogBtn: View =
+        activity.findViewById(R.id.request_settings_btn)
     private val fragmentManager = activity.supportFragmentManager
 
     override fun setOnGetVisitorIdBtnClickedListener(listener: () -> Unit) {
-        getVisitorIdButton.setOnClickListener { listener.invoke() }
+        activity.runOnUiThread {
+            getVisitorIdButton.setOnClickListener { listener.invoke() }
+        }
     }
 
     override fun setEndpointUrl(url: String) {
-        endpointUrlInput.setText(url)
+        activity.runOnUiThread {
+            endpointUrlInput.setText(url)
+        }
     }
 
     override fun getEndpointUrl() = endpointUrlInput.text.toString()
 
     override fun setPublicApiKey(key: String) {
-        apiKeyInput.setText(key)
+        activity.runOnUiThread {
+            apiKeyInput.setText(key)
+        }
     }
 
     override fun getPublicApiKey() = apiKeyInput.text.toString()
 
 
     override fun setOnRegionSelectedListener(selectedRegionListener: (Configuration.Region) -> Unit) {
-        regionSelectButton.setOnClickListener {
-            RegionBottomSheet(selectedRegionListener).show(fragmentManager, RegionBottomSheet.TAG)
+        activity.runOnUiThread {
+            regionSelectButton.setOnClickListener {
+                RegionBottomSheet(selectedRegionListener).show(
+                    fragmentManager,
+                    RegionBottomSheet.TAG
+                )
+            }
+        }
+    }
+
+    override fun setOnRequestSettingsClickedListener(
+        onClickListener: () -> (Unit)
+    ) {
+        activity.runOnUiThread {
+            openRequestSettingsDialogBtn.setOnClickListener {
+                onClickListener.invoke()
+            }
         }
     }
 
     override fun setRegionText(text: String) {
-        regionSelectButton.text = text
+        activity.runOnUiThread {
+            regionSelectButton.text = text
+        }
     }
 }
 
@@ -78,6 +108,7 @@ class RegionBottomSheet(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.bottom_sheet_region_content, container, false)
 
         usRegionButton = view.findViewById(R.id.us_endpoint_btn)
@@ -101,8 +132,7 @@ class RegionBottomSheet(
         return view
     }
 
-
     companion object {
-        const val TAG = "RegionBottomSheet"
+        val TAG: String = this::class.java.simpleName
     }
 }

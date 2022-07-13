@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/colorLightGray</item>
         <item name="colorPrimaryDark">@color/colorDarkGray</item>
         <item name="colorSecondary">@color/black</item>
+        <item name="colorAccent">@color/orange</item>
         <item name="actionBarStyle">@style/Theme.Playground.ActionBar</item>
     </style>
 </resources>

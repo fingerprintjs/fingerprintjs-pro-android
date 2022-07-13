@@ -1,16 +1,18 @@
 <resources>
-    <string name="app_name">FingerprintJS PRO Demo</string>
+    <string name="app_name">Fingerprint PRO Demo</string>
     <string name="get_visitor_id_btn_text">Get visitor ID</string>
     <string name="id_description_text">Your ID:</string>
     <string name="endpoint_url_input_hint">Endpoint URL</string>
     <string name="api_token_input_hint">API token</string>
     <string name="default_endpoint_url">https://api.fpjs.io</string>
     <string name="prefs_endpoint_url_key">endpointUrl</string>
-    <string name="prefs_public_token_key">publicToken</string>
+    <string name="prefs_public_api_key">publicToken</string>
+    <string name="prefs_extended_result_key">extendedResultKey</string>
+    <string name="prefs_region_key">regionKey</string>
     <string name="ip_title">IP:</string>
     <string name="os_title">OS:</string>
     <string name="location_title">Location:</string>
-    <string name="fingerprintjs">FingerprintJS</string>
+    <string name="fingerprintjs">Fingerprint</string>
     <string name="us_endpoint">🇺🇸 United States</string>
     <string name="us_endpoint_url">https://api.fpjs.io</string>
     <string name="eu_endpoint">🇪🇺 Europe</string>
@@ -18,8 +20,16 @@
     <string name="ap_endpoint">🇮🇳 India</string>
     <string name="ap_endpoint_url">https://ap.api.fpjs.io</string>
     <string name="try_again_btn_text">Try again?</string>
-    <string name="your_id_label">Your ID:</string>
+    <string name="your_id_label">Visitor ID:</string>
     <string name="menu_repository_page_title">Repository page</string>
-    <string name="error_title">Failed to get visitorID</string>
+    <string name="error_title">Failed to get visitor ID</string>
     <string name="go_back_btn">Go back</string>
+    <string name="menu_application_preferences_description">Application preferences</string>
+    <string name="checkbox_extended_result_description">Enable extended result</string>
+    <string name="linked_id_edit_text_hint">Linked ID</string>
+    <string name="enable_tags_checkbox_hint">Enable tags</string>
+    <string name="tags_hint">{\n\"tags\":{\n\t\"sessionId\":\"o1dgLPUXdmf4ZRdtAVhA\",\n\t\"meta\":{\n\t\t\"version\":\"v1.1.577+fa6c19a5\"\n\t\t}\n\t}\n}</string>
+    <string name="json_validator_default_hint">Make sure tags is a valid json</string>
+    <string name="last_seen_at_title">Last seen at:</string>
+    <string name="first_seen_at_title">First seen at:</string>
 </resources>

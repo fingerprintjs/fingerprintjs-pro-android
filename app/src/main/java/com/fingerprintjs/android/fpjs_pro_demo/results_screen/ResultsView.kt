@@ -7,6 +7,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fingerprintjs.android.fpjs_pro.Error
 import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
 import com.fingerprintjs.android.fpjs_pro_demo.R
@@ -19,15 +20,26 @@ import org.osmdroid.views.overlay.Marker
 
 interface ResultsView {
     fun setVisitorId(visitorId: String)
+    fun setRequestId(requestId: String)
     fun setIpGeolocation(ipAddress: String, latitude: Double, longitude: Double)
     fun setOsInformation(osInfo: String)
 
     fun showProgressBar()
     fun hideProgressBar()
 
+    fun setOnRequestSettingsClickedListener(
+        onClickListener: () -> (Unit)
+    )
+
+    fun showTryAgainBtn()
+    fun hideTryAgainBtn()
+
     fun showMessage(message: String)
     fun showError(error: Error)
 
+    fun setTimestamps(firstSeen: String, lastSeen: String)
+
+    fun setOnCopyVisitorIdClickedListener(listener: (String) -> Unit)
     fun setOnCopyRequestIdClickedListener(listener: (String) -> Unit)
     fun setOnGoBackClickedListener(listener: () -> Unit)
 
@@ -36,16 +48,24 @@ interface ResultsView {
 
 class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity), ResultsView {
     private val idContainer: View = activity.findViewById(R.id.id_response_container)
+    private val swipeRefreshLayout: SwipeRefreshLayout = activity.findViewById(R.id.swipe_refresh_layout)
     private val progressBar: ProgressBar = activity.findViewById(R.id.progress_indicator)
 
-    private val idTextView: TextView = activity.findViewById(R.id.id_text_view)
+    private val visitorIdTextView: TextView = activity.findViewById(R.id.id_text_view)
     private val ipTextView: TextView = activity.findViewById(R.id.ip_text_view)
     private val osTextView: TextView = activity.findViewById(R.id.os_text_view)
+    private val tryAgainBtnContainer: View = activity.findViewById(R.id.try_again_btn_container)
     private val tryAgainBtn: View = activity.findViewById(R.id.try_again_btn)
+    private val openRequestSettingsDialogBtn: View =
+        activity.findViewById(R.id.request_settings_btn)
+
+    private val firstSeenTv: TextView = activity.findViewById(R.id.first_seen_at_text_view)
+    private val lastSeenTv: TextView = activity.findViewById(R.id.last_seen_at_text_view)
 
     private val errorContainer: View = activity.findViewById(R.id.error_response_container)
     private val errorDescriptionTextView: TextView = activity.findViewById(R.id.error_description)
     private val requestIdTextView: TextView = activity.findViewById(R.id.request_id_view)
+    private val errorRequestIdTextView: TextView = activity.findViewById(R.id.error_request_id_view)
     private var requestId: String = ""
 
     private val goBackBtn: View = activity.findViewById(R.id.go_back_button)
@@ -62,7 +82,15 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
 
     override fun setVisitorId(visitorId: String) {
         activity.runOnUiThread {
-            idTextView.text = visitorId
+            visitorIdTextView.text = visitorId
+        }
+    }
+
+    override fun setRequestId(requestId: String) {
+        activity.runOnUiThread {
+            val requestIdString = "Request ID: $requestId"
+            requestIdTextView.text = requestIdString
+            this.requestId = requestIdString
         }
     }
 
@@ -103,35 +131,79 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
         }
     }
 
+    override fun showTryAgainBtn() {
+        activity.runOnUiThread {
+            tryAgainBtnContainer.visibility = View.VISIBLE
+        }
+    }
+
+    override fun hideTryAgainBtn() {
+        activity.runOnUiThread {
+            tryAgainBtnContainer.visibility = View.GONE
+        }
+    }
+
+    override fun setOnRequestSettingsClickedListener(
+        onClickListener: () -> (Unit)
+    ) {
+        activity.runOnUiThread {
+            openRequestSettingsDialogBtn.setOnClickListener {
+                onClickListener.invoke()
+            }
+        }
+    }
+
     override fun showError(error: Error) {
         activity.runOnUiThread {
             hideProgressBar()
             idContainer.visibility = View.GONE
+            swipeRefreshLayout.visibility = View.GONE
             errorContainer.visibility = View.VISIBLE
 
             errorDescriptionTextView.text = error.description
             val requestIdString = "Request ID: ${error.requestId}"
             this.requestId = error.requestId
 
-            requestIdTextView.text = requestIdString
+            errorRequestIdTextView.text = requestIdString
         }
     }
 
+    override fun setTimestamps(firstSeen: String, lastSeen: String) {
+        activity.runOnUiThread {
+            firstSeenTv.text = firstSeen
+            lastSeenTv.text = lastSeen
+        }
+    }
+
+    override fun setOnCopyVisitorIdClickedListener(listener: (String) -> Unit) {
+        activity.runOnUiThread {
+            visitorIdTextView.setOnClickListener {
+                listener.invoke(visitorIdTextView.text.toString())
+            }
+        }
+    }
+
+
     override fun setOnCopyRequestIdClickedListener(listener: (String) -> Unit) {
-        requestIdTextView.setOnClickListener {
-            listener.invoke(this.requestId)
+        activity.runOnUiThread {
+            requestIdTextView.setOnClickListener {
+                listener.invoke(this.requestId)
+            }
         }
     }
 
     override fun setOnGoBackClickedListener(listener: () -> Unit) {
-       goBackBtn.setOnClickListener {
-           listener.invoke()
-       }
+        activity.runOnUiThread {
+            goBackBtn.setOnClickListener {
+                listener.invoke()
+            }
+        }
     }
 
     override fun showProgressBar() {
         activity.runOnUiThread {
             idContainer.visibility = View.INVISIBLE
+            swipeRefreshLayout.visibility = View.INVISIBLE
             progressBar.visibility = View.VISIBLE
         }
     }
@@ -140,12 +212,19 @@ class ResultsViewImpl(private val activity: ResultsActivity) : BaseView(activity
         activity.runOnUiThread {
             progressBar.visibility = View.GONE
             idContainer.visibility = View.VISIBLE
+            swipeRefreshLayout.visibility = View.VISIBLE
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 
     override fun setOnTryAgainClickedListener(listener: () -> Unit) {
-        tryAgainBtn.setOnClickListener {
-            listener.invoke()
+        activity.runOnUiThread {
+            swipeRefreshLayout.setOnRefreshListener {
+                listener.invoke()
+            }
+            tryAgainBtn.setOnClickListener {
+                listener.invoke()
+            }
         }
     }
 }

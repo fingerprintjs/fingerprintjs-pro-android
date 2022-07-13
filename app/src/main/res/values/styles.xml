@@ -10,4 +10,5 @@
     <style name="Theme.Playground.ActionBar.Text" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/black</item>
     </style>
+
 </resources>

@@ -33,7 +33,7 @@
             tools:text="Bad request: API Key is invalid" />
 
         <TextView
-            android:id="@+id/request_id_view"
+            android:id="@+id/error_request_id_view"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

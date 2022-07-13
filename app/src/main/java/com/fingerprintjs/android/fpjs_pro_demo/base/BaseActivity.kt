@@ -8,7 +8,12 @@ import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
 import com.fingerprintjs.android.fpjs_pro_demo.R
+import com.fingerprintjs.android.fpjs_pro_demo.dialogs.IdentificationRequestParams
+import com.fingerprintjs.android.fpjs_pro_demo.dialogs.IdentificationRequestSettingsDialog
+import com.fingerprintjs.android.fpjs_pro_demo.dialogs.ClientSettingsDialog
+import com.fingerprintjs.android.fpjs_pro_demo.persistence.ApplicationPreferences
 
 
 abstract class BaseActivity<T : Parcelable>(
@@ -18,9 +23,17 @@ abstract class BaseActivity<T : Parcelable>(
 
     protected lateinit var presenter: BasePresenter<T>
 
+    protected val preferences by lazy {
+        ApplicationPreferences.Factory(applicationContext).getInstance()
+    }
+
+    @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
+        supportActionBar?.apply {
+            title = "${this.title} ${BuildConfig.VERSION_NAME}"
+        }
         init(intent, restoreState(savedInstanceState) as? T)
     }
 
@@ -44,6 +57,7 @@ abstract class BaseActivity<T : Parcelable>(
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_repository -> openLink(Uri.parse(GITHUB_REPO_URL))
+            R.id.menu_settings -> openSettings()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -54,6 +68,17 @@ abstract class BaseActivity<T : Parcelable>(
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
         }
+    }
+
+    override fun openRequestSettingsDialog(
+        identificationRequestParams: IdentificationRequestParams?,
+        onSettingsAppliedListener: (IdentificationRequestParams) -> Unit
+    ) {
+        IdentificationRequestSettingsDialog(this, identificationRequestParams).show(onSettingsAppliedListener)
+    }
+
+    private fun openSettings() {
+        ClientSettingsDialog(this, preferences).showSettings()
     }
 
     private fun saveState(outState: Bundle) {

@@ -2,41 +2,51 @@ package com.fingerprintjs.android.fpjs_pro_demo.results_screen
 
 
 import android.os.Parcelable
-import com.fingerprintjs.android.fpjs_pro.Configuration
-import com.fingerprintjs.android.fpjs_pro.FingerprintJS
-import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
-import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
+import com.fingerprintjs.android.fpjs_pro.*
 import com.fingerprintjs.android.fpjs_pro_demo.base.BasePresenter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseRouter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseView
+import com.fingerprintjs.android.fpjs_pro_demo.dialogs.IdentificationRequestParams
 import com.fingerprintjs.android.fpjs_pro_demo.persistence.ApplicationPreferences
+import com.fingerprintjs.android.fpjs_pro_demo.toMap
 import kotlinx.parcelize.Parcelize
+import org.json.JSONException
+import org.json.JSONObject
 
 
 @Parcelize
 data class ResultState(
     val visitorId: String?,
+    val requestId: String?,
     val ipAddress: String?,
     val osInfo: String?,
     val latitude: Double?,
-    val longitude: Double?
+    val longitude: Double?,
+    val firstSeen: String?,
+    val lastSeen: String?,
+    val identificationRequestParams: IdentificationRequestParams?
 ) : Parcelable
 
 
 class ResultsPresenter(
-    private val endpointUrl: String,
-    private val apiToken: String,
     private val fpjsProFactory: FingerprintJSFactory,
     private val applicationPreferences: ApplicationPreferences,
+    identificationRequestParams: IdentificationRequestParams?,
     state: ResultState?
 ) : BasePresenter<ResultState>() {
     private var fpjsClient: FingerprintJS? = null
 
     private var visitorId = state?.visitorId
+    private var requestId = state?.requestId
     private var ipAddress = state?.ipAddress
     private var osInfo = state?.osInfo
     private var latitude = state?.latitude
     private var longitude = state?.longitude
+    private var identificationRequestParams =
+        identificationRequestParams ?: state?.identificationRequestParams
+
+    private var firstSeen: String? = state?.firstSeen
+    private var lastSeen: String? = state?.lastSeen
 
     private var view: ResultsView? = null
     private var router: ResultsRouter? = null
@@ -52,15 +62,26 @@ class ResultsPresenter(
         }
 
         this.view?.showProgressBar()
-        fpjsClient?.getVisitorId({
-            applicationPreferences.setEndpointUrl(endpointUrl)
-            applicationPreferences.setPublicApiKey(apiToken)
-            handleId(it)
-            updateView()
-        },
-        errorListener = {
-            this.view?.showError(it)
-        })
+
+        var requestParamsMap = emptyMap<String, Any>()
+
+        identificationRequestParams?.tags?.let {
+            try {
+                requestParamsMap = JSONObject(it).toMap()
+            } catch (e: JSONException) {
+                // Do nothing
+            }
+        }
+
+        fpjsClient?.getVisitorId(
+            tags = requestParamsMap,
+            linkedId = identificationRequestParams?.linkedId ?: "",
+            listener = { it ->
+                handleId(it)
+                updateView()
+            },
+            errorListener = { it -> this.view?.showError(it) }
+        )
     }
 
     override fun detachView() {
@@ -78,19 +99,34 @@ class ResultsPresenter(
     override fun onSaveState(): ResultState {
         return ResultState(
             visitorId,
+            requestId,
             ipAddress,
             osInfo,
             latitude,
-            longitude
+            longitude,
+            firstSeen,
+            lastSeen,
+            identificationRequestParams
         )
     }
 
     private fun subscribeToView() {
         view?.apply {
             setOnTryAgainClickedListener {
-                router?.refresh()
+                hideTryAgainBtn()
+                router?.refresh(identificationRequestParams)
+            }
+            setOnRequestSettingsClickedListener {
+                router?.openRequestSettingsDialog(
+                    identificationRequestParams = identificationRequestParams
+                ) {
+                    identificationRequestParams = it
+                }
             }
             setOnCopyRequestIdClickedListener {
+                router?.copyTextToBuffer(it)
+            }
+            setOnCopyVisitorIdClickedListener {
                 router?.copyTextToBuffer(it)
             }
             setOnGoBackClickedListener {
@@ -101,9 +137,9 @@ class ResultsPresenter(
 
     private fun initFPJSClient() {
         val configuration = Configuration(
-            apiToken = apiToken,
-            endpointUrl = endpointUrl,
-            extendedResponseFormat = true
+            apiKey = applicationPreferences.getPublicApiKey(),
+            endpointUrl = applicationPreferences.getEndpointUrl(),
+            extendedResponseFormat = applicationPreferences.getExtendedResult()
         )
         fpjsClient = fpjsProFactory.createInstance(
             configuration
@@ -112,23 +148,33 @@ class ResultsPresenter(
 
     private fun handleId(idResponse: FingerprintJSProResponse) {
         visitorId = idResponse.visitorId
+        requestId = idResponse.requestId
         ipAddress = idResponse.ipAddress
         latitude = idResponse.ipLocation?.latitude ?: 0.0
         longitude = idResponse.ipLocation?.longitude ?: 0.0
 
         osInfo = "${idResponse.osName} ${idResponse.osVersion}"
+        firstSeen =
+            "Global:\n${idResponse.firstSeenAt.global}\n\nSubscription:\n${idResponse.firstSeenAt.subscription}"
+        lastSeen =
+            "Global:\n${idResponse.lastSeenAt.global}\n\nSubscription:\n${idResponse.lastSeenAt.subscription}"
     }
 
     private fun updateView() {
         this.view?.apply {
             hideProgressBar()
-            setVisitorId(visitorId ?: "")
+            showTryAgainBtn()
+            setVisitorId(visitorId ?: UNKNOWN)
+            setRequestId(requestId ?: UNKNOWN)
             setIpGeolocation(
-                ipAddress ?: "",
+                ipAddress ?: UNKNOWN,
                 latitude ?: 0.0,
                 longitude ?: 0.0
             )
-            setOsInformation(osInfo ?: "")
+            setOsInformation(osInfo ?: UNKNOWN)
+            setTimestamps(firstSeen ?: UNKNOWN, lastSeen ?: UNKNOWN)
         }
     }
 }
+
+private const val UNKNOWN = "N\\A"
