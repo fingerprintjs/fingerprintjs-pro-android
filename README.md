@@ -93,7 +93,7 @@ Sync gradle settings.
 
 #### Get the visitor identifier
 
-Retrieve the visitor identifier using browser token. You can find your [browser token](https://dev.fingerprint.com/docs) in your [dashboard](https://dashboard.fingerprint.com/subscriptions/).
+Retrieve the visitor identifier using Public API key. You can find your [Public API key](https://dev.fingerprint.com/docs) in your [dashboard](https://dashboard.fingerprint.com/subscriptions/).
 
 ##### Kotlin example
 ```kotlin
