@@ -5,11 +5,109 @@
 
 ```kotlin
 
-interface FPJSProClient {
-    fun getVisitorId(listener: (String) -> Unit)
-    fun getVisitorId(listener: (String) -> Unit, errorListener: (String) -> (Unit))
-    fun getVisitorId(tags: Map<String, Any>, listener: (String) -> Unit, errorListener: (String) -> (Unit))
+interface FingerprintJS {
+    fun getVisitorId(listener: (FingerprintJSProResponse) -> Unit)
+    fun getVisitorId(listener: (FingerprintJSProResponse) -> Unit, errorListener: (Error) -> (Unit))
+    fun getVisitorId(
+        tags: Map<String, Any>,
+        listener: (FingerprintJSProResponse) -> Unit,
+        errorListener: (Error) -> (Unit)
+    )
+    fun getVisitorId(
+        linkedId: String,
+        listener: (FingerprintJSProResponse) -> Unit,
+        errorListener: (Error) -> (Unit)
+    )
+    fun getVisitorId(
+        tags: Map<String, Any>,
+        linkedId: String,
+        listener: (FingerprintJSProResponse) -> Unit,
+        errorListener: (Error) -> (Unit)
+    )
 }
+
+```
+
+
+### Configuration
+
+```kotlin
+
+class Configuration @JvmOverloads constructor(
+    val apiKey: String,
+    val region: Region = Region.US,
+    val endpointUrl: String = region.endpointUrl,
+    val extendedResponseFormat: Boolean = false
+)
+
+```
+
+By default extended result is not returned. Change the flag in configuration to get the extended one.
+
+
+You can find your [Public API key](https://dev.fingerprint.com/docs) in your [dashboard](https://dashboard.fingerprint.com/subscriptions/).
+
+### Response format
+
+```kotlin
+
+package com.fingerprintjs.android.fpjs_pro
+
+
+data class FingerprintJSProResponse(
+    val requestId: String,
+    val visitorId: String,
+    val confidenceScore: ConfidenceScore,
+    val visitorFound: Boolean, // Available with extendedResponseFormat == true
+    val ipAddress: String, // Available with extendedResponseFormat == true
+    val ipLocation: IpLocation?, // Available with extendedResponseFormat == true
+    val osName: String, // Available with extendedResponseFormat == true
+    val osVersion: String, // Available with extendedResponseFormat == true
+    val firstSeenAt: Timestamp,// Available with extendedResponseFormat == true
+    val lastSeenAt: Timestamp, // Available with extendedResponseFormat == true
+    val errorMessage: String? = null
+)
+
+data class IpLocation(
+    val accuracyRadius: Int,
+    val latitude: Double,
+    val longitude: Double,
+    val postalCode: String,
+    val timezone: String,
+    val city: City,
+    val country: Country,
+    val continent: Continent,
+    val subdivisions: List<Subdivisions>
+) {
+
+    data class City(
+        val name: String
+    )
+
+    data class Country(
+        val code: String,
+        val name: String
+    )
+
+    data class Continent(
+        val code: String,
+        val name: String
+    )
+
+    data class Subdivisions(
+        val isoCode: String,
+        val name: String
+    )
+}
+
+data class ConfidenceScore(
+    val score: Double
+)
+
+data class Timestamp(
+    val global: String,
+    val subscription: String
+)
 
 ```
 
@@ -17,15 +115,66 @@ interface FPJSProClient {
 
 ```kotlin
 fpjsClient.getVisitorId(
-          listener = { visitorId ->
-            // Handle ID
-          },
-          errorListener = { error ->
-            // Handle error
-          })
+    listener = { visitorId ->
+        // Handle ID
+    },
+    errorListener = { error ->
+        when(error){
+            is ApiKeyRequired -> {
+                val requestId = error.requestId
+                // Handle error
+            }
+                ...
+        }
+    })
+
 ```
 
-### [Tags](https://dev.fingerprintjs.com/v2/docs/js-agent#tag) support
+Error is a sealed class
+
+```kotlin
+sealed class Error(
+    val requestId: String = UNKNOWN,
+    val description: String? = UNKNOWN
+)
+```
+
+and it might me one of:
+
+- ApiKeyRequired
+- ApiKeyNotFound
+- ApiKeyExpired
+- RequestCannotBeParsed
+- Failed
+- RequestTimeout
+- TooManyRequest
+- OriginNotAvailable
+- HeaderRestricted
+- NotAvailableForCrawlBots
+- NotAvailableWithoutUA
+- WrongRegion
+- SubscriptionNotActive
+- UnsupportedVersion
+- InstallationMethodRestricted
+- ResponseCannotBeParsed
+- NetworkError
+- UnknownError
+
+### [Linked ID](https://dev.fingerprint.com/docs/js-agent#linkedid) support
+
+```kotlin
+ fpjsClient.getVisitorId(
+      linkedId = "your_linked_id",
+      listener = { visitorId ->
+          // Handle ID
+      },
+      errorListener = { error ->
+          // Handle error
+      })
+```
+
+
+### [Tags](https://dev.fingerprint.com/v2/docs/js-agent#tag) support
 
 ```kotlin
  fpjsClient.getVisitorId(
@@ -38,105 +187,20 @@ fpjsClient.getVisitorId(
       })
 ```
 
+Tags are returned in the webhook response so make sure the map you are passing to the library represents a valid JSON.
 
-
-## Using inside a webview with JavaScript
-
-This approach uses signals from [FingerprintJS Pro browser agent](https://dev.fingerprintjs.com/docs/quick-start-guide#js-agent) together with signals provided by [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android). The identifier collected by [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) is added to the [`tag` field](https://dev.fingerprintjs.com/docs#tagging-your-requests) in the given format. FingerprintJS Pro browser agent adds an additional set of signals and sends them to the FingerprintJS Pro API. Eventually, the API returns an accurate visitor identifier.
-
-#### Add a JavaScript interface to your webview
-
-##### Kotlin example
+You can use both tags and linked id:
 
 ```kotlin
-import com.fingerprintjs.android.fpjs_pro.Configuration
-import com.fingerprintjs.android.fpjs_pro.FPJSProFactory
-...
 
-val myWebView: WebView = findViewById(R.id.webview)
+ fpjsClient.getVisitorId(
+     tags = mapOf("sessionId" to sessionId),
+     linkedId = "your_linked_id",
+     listener = { visitorId ->
+          // Handle ID
+      },
+      errorListener = { error ->
+          // Handle error
+      })
 
-// Init interface
-val factory = FPJSProFactory(myWebView.context.applicationContext)
-val configuration = Configuration(
-    apiToken = "BROWSER_TOKEN",
-    region = Configuration.Region.US, // optional
-    endpointUrl = "https://endpoint.url" // optional
-)
-val fpjsInterface = factory.createInterface(configuration)
-
-// Add interface to the webview
-myWebView.addJavascriptInterface(
-    fpjsInterface,
-    "fpjs-pro-android"
-)
-
-// Use embedded webview in the app instead of the default new app
-myWebView.setWebViewClient(WebViewClient())
-
-// Enable javascript inside the webview
-val webSettings: WebSettings = myWebView.getSettings()
-webSettings.javaScriptEnabled = true
-
-// Load url with the injected and configured FingerprintJS Pro agent
-myWebView.loadUrl("https://site-with-injected-agent.com")
 ```
-
-##### Java example
-```java
-import com.fingerprintjs.android.fpjs_pro.Configuration;
-import com.fingerprintjs.android.fpjs_pro.FPJSProFactory;
-import com.fingerprintjs.android.fpjs_pro.FPJSProInterface;
-...
-
-WebView myWebView = findViewById(R.id.webview);
-
-// Init interface
-FPJSProFactory factory = new FPJSProFactory(this.getApplicationContext());
-Configuration configuration = new Configuration(
-  "BROWSER_TOKEN"
-  );
-
-FPJSProInterface fpjsInterface = factory.createInterface(configuration);
-
-// Add interface to the webview
-myWebView.addJavascriptInterface(
-    fpjsInterface,
-    "fpjs-pro-android"
-    );
-
-// Use embedded webview in the app instead of the default new app
-myWebView.setWebViewClient(new WebViewClient());
-
-// Enable javascript inside the webview
-WebSettings webSettings = myWebView.getSettings();
-webSettings.setJavaScriptEnabled(true);
-
-// Load url with the injected and configured FingerprintJS Pro agent
-myWebView.loadUrl("https://site-with-injected-agent.com");
-```
-
-### Setup the JavaScript FingerprintJS Pro integration in your webview
-
-```js
-function initFingerprintJS() {
-  // Initialize an agent at application startup
-  const fpPromise = FingerprintJS.load({
-    token: 'your-browser-token',
-    endpoint: 'your-endpoint', // optional
-    region: 'your-region' // optional
-  });
-  
-  var androidDeviceId = window['fpjs-pro-android'].getDeviceId();
-
-  // Get the visitor identifier when you need it
-  fpPromise
-    .then(fp => fp.get({
-     environment: {
-      deviceId: androidDeviceId,
-      type: 'android',
-     }
-    }))
-    .then(result => console.log(result.visitorId));
-}
-```
-You can find your [browser token](https://dev.fingerprintjs.com/docs) in your [dashboard](https://dashboard.fingerprintjs.com/subscriptions/).

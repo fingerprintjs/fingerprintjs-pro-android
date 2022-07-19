@@ -60,8 +60,8 @@ class ClientSettingsDialog(
 
             .create()
 
-        dialog?.window?.decorView?.setBackgroundResource(R.drawable.bg_main)
         dialog?.show()
+        dialog?.window?.decorView?.setBackgroundResource(R.drawable.bg_main)
 
         val negativeButton = dialog?.getButton(DialogInterface.BUTTON_NEGATIVE)
         negativeButton?.setTextColor(accentColor)

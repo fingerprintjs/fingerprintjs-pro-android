@@ -1,7 +1,9 @@
 <p align="center">
-  <a href="https://fingerprint.com">
-    <img src="res/logo.svg" alt="Fingerprint" width="312px" />
-  </a>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="res/logo_light.svg" />
+      <source media="(prefers-color-scheme: light)" srcset="res/logo_dark.svg" />
+      <img src="resources/logo_dark.svg" alt="Fingerprint logo" width="312px" />
+    </picture>
 </p>
 <p align="center">
   <a href="https://discord.gg/39EpE2neBg">
@@ -12,7 +14,7 @@
   </a>
 </p>
 
-# Fingerprint Pro Android 
+# Fingerprint Pro Android
 ### Official Android library for 100% accurate device identification, created for the Fingerprint Pro API.
 
 ```kotlin
@@ -38,9 +40,9 @@ fpjsClient.getVisitorId { result ->
 
 Fingerprint Pro is a professional visitor identification service that processes all information server-side and transmits it securely to your servers using server-to-server APIs.
 
-This identification library generates an accurate, sticky, and stable [Fingerprint Pro](https://fingerprint.com/) visitor identifier in Android apps. The identifier is linked to a device, i.e. it is the same in all the apps on a device, even if you reinstall or clone them. This library requires a [free API key](https://dashboard.fingerprintjs.com/signup) to connect to the Fingerprint Pro API. 
+This identification library generates an accurate, sticky, and stable [Fingerprint Pro](https://fingerprint.com/) visitor identifier in Android apps. The identifier is linked to a device, i.e. it is the same in all the apps on a device, even if you reinstall or clone them. This library requires a [free API key](https://dashboard.fingerprintjs.com/signup) to connect to the Fingerprint Pro API.
 
-For local Android fingerprinting and identifying without making requests to API take a look at the [fingerprintjs-android](https://github.com/fingerprintjs/fingerprintjs-android) repository. 
+For local Android fingerprinting and identifying without making requests to API take a look at the [fingerprintjs-android](https://github.com/fingerprintjs/fingerprintjs-android) repository.
 
 If you are interested in the iOS platform, you can also check our [Fingerprint Pro iOS](https://github.com/fingerprintjs/fingerprintjs-pro-ios).
 
@@ -71,7 +73,7 @@ repositories {
 
 ```gradle
 dependencies {
-  implementation "com.fingerprint.android:pro:2.1.0-alpha"
+  implementation "com.fingerprint.android:pro:2.1.0"
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -133,12 +135,10 @@ FingerprintJS fpjsClient = factory.createInstance(
     configuration
 );
 
-fpjsClient.getVisitorId(new Function1<FingerprintJSProResponse, Unit>() {
-    @Override
-    public Unit invoke(FingerprintJSProResponse visitorIdResponse) {
-        String visitorId = visitorIdResponse.visitorId
-        return null;
-    }
+fpjsClient.getVisitorId(visitorIdResponse -> {
+    // Use the ID
+    String visitorId = visitorIdResponse.getVisitorId();
+    return null;
 });
 ```
 
@@ -154,7 +154,7 @@ When publishing to the Play Market make sure you've noted the following informat
 ## Additional Resources
 - [Full API reference](docs/client_api.md).
 - [Server-to-Server API](https://dev.fingerprint.com/docs/server-api)
-- [FingerprintJS Pro documentation](https://dev.fingerprint.com/docs)
+- [Fingerprint Pro documentation](https://dev.fingerprint.com/docs)
 
 ## License
 This application is MIT licensed. Copyright FingerprintJS, Inc 2021-2022 (c)

@@ -9,7 +9,6 @@ import androidx.security.crypto.MasterKey
 import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro_demo.R
 
-
 interface ApplicationPreferences {
     fun getEndpointUrl(): String
     fun getPublicApiKey(): String
