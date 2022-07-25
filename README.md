@@ -2,7 +2,7 @@
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="res/logo_light.svg" />
       <source media="(prefers-color-scheme: light)" srcset="res/logo_dark.svg" />
-      <img src="resources/logo_dark.svg" alt="Fingerprint logo" width="312px" />
+      <img src="res/logo_dark.svg" alt="Fingerprint logo" width="312px" />
     </picture>
 </p>
 <p align="center">
