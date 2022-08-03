@@ -14,6 +14,12 @@
   </a>
 </p>
 
+<p align="center">
+ 	<a href='https://play.google.com/store/apps/details?id=com.fingerprintjs.android.fpjs_pro_demo'>
+ 		<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="240px"/>
+ 	</a>
+ </p>
+
 # Fingerprint Pro Android
 ### Official Android library for 100% accurate device identification, created for the Fingerprint Pro API.
 
