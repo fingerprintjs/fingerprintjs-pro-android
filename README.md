@@ -79,7 +79,7 @@ repositories {
 
 ```gradle
 dependencies {
-  implementation "com.fingerprint.android:pro:2.1.0"
+  implementation "com.fingerprint.android:pro:2.1.1"
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
