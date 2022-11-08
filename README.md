@@ -65,6 +65,8 @@ allprojects {
   repositories {
   ...
   maven { url 'https://maven.fpregistry.io/releases' }	
+  maven { url 'https://jitpack.io' }	
+
 }}
 ```
 
@@ -73,13 +75,19 @@ If your version of Gradle is 7 or newer, add these lines to your `settings.gradl
 repositories {
   ...
   maven { url 'https://maven.fpregistry.io/releases' }	
+  maven { url 'https://jitpack.io' }	
+
 }
 ```
-#### Add a dependency to your `build.gradle` file
+#### Add dependencies to your `build.gradle` file.
+
+Fingerprint PRO Android uses FingerprintJS Android as a dependency.
 
 ```gradle
 dependencies {
-  implementation "com.fingerprint.android:pro:2.1.1"
+  implementation "com.fingerprint.android:pro:2.2.0"
+  implementation "com.github.fingerprintjs:fingerprint-android:1.3.0"
+
 
   // If you use Java for you project, add also this line
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
