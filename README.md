@@ -85,8 +85,8 @@ Fingerprint PRO Android uses FingerprintJS Android as a dependency.
 
 ```gradle
 dependencies {
-  implementation "com.fingerprint.android:pro:2.2.0"
-  implementation "com.github.fingerprintjs:fingerprint-android:1.3.0"
+  implementation "com.fingerprint.android:pro:2.2.1"
+  implementation "com.github.fingerprintjs:fingerprint-android:2.0.0"
 
 
   // If you use Java for you project, add also this line
