@@ -25,6 +25,12 @@ android {
             keyAlias System.getenv('RELEASE_SIGN_KEY_ALIAS')
             keyPassword System.getenv('RELEASE_SIGN_KEY_PASSWORD')
         }
+        releaseLocalSign {
+            storeFile file("release_local.jks")
+            storePassword "password"
+            keyAlias "key0"
+            keyPassword "password"
+        }
     }
 
     buildTypes {
@@ -32,6 +38,12 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+        }
+        releaseLocalSign {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseLocalSign
+            matchingFallbacks = ['release']
         }
     }
 
