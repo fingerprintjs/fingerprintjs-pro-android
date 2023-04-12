@@ -52,6 +52,10 @@ For local Android fingerprinting and identifying without making requests to API 
 
 If you are interested in the iOS platform, you can also check our [Fingerprint Pro iOS](https://github.com/fingerprintjs/fingerprintjs-pro-ios).
 
+## AEV (Application Environment Verification)
+
+- Fingerprint PRO now supports AEV functionality, including Root Detection and Emulator detection. The results are available in the response of the `GET /events` [Server API method](https://dev.fingerprint.com/docs/server-api#get-events-identification--bot-detection--aev).
+- Access to the AEV functionality is currently limited and only available upon request. Contact Support ([support@fingerprint.com](mailto:support@fingerprint.com)) to enable it for your subscription.
 
 ## Quick start
 
