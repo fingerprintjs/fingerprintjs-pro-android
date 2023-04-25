@@ -83,31 +83,19 @@ repositories {
 
 }
 ```
-#### Add dependencies to your `build.gradle` file.
-
-Fingerprint PRO Android uses FingerprintJS Android as a dependency.
+#### Add the dependency to your `build.gradle` file.
 
 ```gradle
 dependencies {
-  implementation "com.fingerprint.android:pro:2.3.0"
-  implementation "com.github.fingerprintjs:fingerprint-android:2.0.0"
-
-
-  // If you use Java for you project, add also this line
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-```
-
-When using Kotlin, also make sure you have specified Kotlin version in your `build.gradle` file:
-```gradle
-buildscript {
-    ext.kotlin_version = 'your-kotlin-version'
     ...
+  implementation "com.fingerprint.android:pro:2.3.1"
+}
 ```
-*Note: You can find your Kotlin version in Android Studio > File > Settings > Languages & Frameworks > Kotlin.*
 
-Sync gradle settings.
+Note: Fingerprint PRO Android uses [FingerprintJS Android](https://github.com/fingerprintjs/fingerprintjs-android) and [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/) as dependencies.
 
-*Note: The library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/). If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).*
+#### Sync gradle settings.
+
 
 #### Get the visitor identifier
 
