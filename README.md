@@ -88,7 +88,7 @@ repositories {
 ```gradle
 dependencies {
     ...
-  implementation "com.fingerprint.android:pro:2.3.1"
+  implementation "com.fingerprint.android:pro:2.3.2"
 }
 ```
 
