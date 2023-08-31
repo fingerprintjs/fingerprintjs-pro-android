@@ -59,6 +59,10 @@ If you are interested in the iOS platform, you can also check our [Fingerprint P
 
 ## Quick start
 
+#### Requirements
+
+The Android SDK requires Android 5.0 (API level 21+) or higher.
+
 #### Add the repository to the gradle.
 
 If your version of Gradle is earlier than 7, add these lines to your `build.gradle`.
