@@ -6,7 +6,6 @@ plugins {
 
 android {
     compileSdk 34
-    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.fingerprintjs.android.fpjs_pro_demo"
@@ -45,6 +44,15 @@ android {
             signingConfig signingConfigs.releaseLocalSign
             matchingFallbacks = ['release']
         }
+    }
+    namespace 'com.fingerprintjs.android.fpjs_pro_demo'
+
+    compileOptions {
+        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     applicationVariants.all { variant ->
