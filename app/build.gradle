@@ -70,7 +70,12 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.security:security-crypto-ktx:1.1.0-alpha05'
+
+    // see https://github.com/google/tink/issues/702
+    implementation("androidx.security:security-crypto-ktx:1.1.0-alpha06") {
+        exclude group: "com.google.crypto.tink", module: "tink-android"
+    }
+    implementation("com.google.crypto.tink:tink-android:1.9.0")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
