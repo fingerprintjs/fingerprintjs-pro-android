@@ -96,7 +96,7 @@ dependencies {
 }
 ```
 
-Note: Fingerprint PRO Android uses [FingerprintJS Android](https://github.com/fingerprintjs/fingerprintjs-android) and [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/) as dependencies.
+Note: Fingerprint PRO Android uses [FingerprintJS Android](https://github.com/fingerprintjs/fingerprintjs-android), [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/) and [androidx.core:core](https://developer.android.com/jetpack/androidx/releases/core) as dependencies.
 
 #### Sync gradle settings.
 
