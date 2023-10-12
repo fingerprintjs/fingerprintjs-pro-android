@@ -1,5 +1,10 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 
+@Suppress("PropertyName")
+val VERSION_NAME="2.3.3"
+@Suppress("PropertyName")
+val VERSION_CODE=16
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -13,8 +18,8 @@ android {
         applicationId = "com.fingerprintjs.android.fpjs_pro_demo"
         minSdk = 21
         targetSdk = 33
-        versionCode = Integer.parseInt(project.property("VERSION_CODE") as String)
-        versionName  = project.property("VERSION_NAME") as String
+        versionCode = VERSION_CODE
+        versionName  = VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -71,7 +76,7 @@ android {
 }
 
 dependencies {
-    implementation("com.fingerprint.android:pro:${project.findProperty("VERSION_NAME")}")
+    implementation("com.fingerprint.android:pro:$VERSION_NAME")
 
     implementation("org.osmdroid:osmdroid-android:6.1.11")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
