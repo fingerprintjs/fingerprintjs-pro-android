@@ -3,9 +3,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://jitpack.io" }
-        maven { url "https://maven.fpregistry.io/releases" }
+
+        maven { url = uri("https://jitpack.io") }
+        maven { url = uri("https://maven.fpregistry.io/releases") }
     }
 }
 rootProject.name = "fingerprintjs-pro-android-demo"
-include ':app'
+include(":app")
