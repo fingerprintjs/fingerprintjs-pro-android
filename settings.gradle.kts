@@ -3,6 +3,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        mavenLocal {
+            mavenContent {
+                includeVersionByRegex("com.fingerprint.android", "pro", ".*-debug")
+            }
+        }
 
         maven { url = uri("https://jitpack.io") }
         maven { url = uri("https://maven.fpregistry.io/releases") }

@@ -76,7 +76,8 @@ android {
 }
 
 dependencies {
-    implementation("com.fingerprint.android:pro:$VERSION_NAME")
+    val useFpProDebugVersion = false // switch to true when needed to debug the library
+    implementation("com.fingerprint.android:pro:$VERSION_NAME${if (useFpProDebugVersion) "-debug" else ""}")
 
     implementation("org.osmdroid:osmdroid-android:6.1.11")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
