@@ -9,6 +9,7 @@
     <string name="prefs_public_api_key">publicToken</string>
     <string name="prefs_extended_result_key">extendedResultKey</string>
     <string name="prefs_region_key">regionKey</string>
+    <string name="prefs_is_default_api_key_used_key">isDefaultApiKeyUsedKey</string>
     <string name="ip_title">IP:</string>
     <string name="os_title">OS:</string>
     <string name="location_title">Location:</string>
@@ -25,6 +26,7 @@
     <string name="error_title">Failed to get visitor ID</string>
     <string name="go_back_btn">Go back</string>
     <string name="menu_application_preferences_description">Application preferences</string>
+    <string name="checkbox_is_default_api_key_used_description">Use default settings</string>
     <string name="checkbox_extended_result_description">Enable extended result</string>
     <string name="linked_id_edit_text_hint">Linked ID</string>
     <string name="enable_tags_checkbox_hint">Enable tags</string>

@@ -16,6 +16,8 @@ data class InputScreenState(
     val selectedRegion: Configuration.Region?,
     val endpointUrl: String?,
     val apiKey: String?,
+    val isDefaultApiKeyUsed: Boolean,
+    val isExtendedResult: Boolean,
     val identificationRequestParams: IdentificationRequestParams?
 ) : Parcelable
 
@@ -28,6 +30,8 @@ class InputPresenter(
         state?.selectedRegion ?: applicationPreferences.getRegion()
     private var endpointUrl: String = state?.endpointUrl ?: applicationPreferences.getEndpointUrl()
     private var apiKey: String = state?.apiKey ?: applicationPreferences.getPublicApiKey()
+    private var isDefaultApiKeyUsed: Boolean = state?.isDefaultApiKeyUsed ?: applicationPreferences.getIsDefaultApiKeyUsed()
+    private var isExtendedResult: Boolean = state?.isExtendedResult ?: applicationPreferences.getExtendedResult()
     private var identificationRequestParams: IdentificationRequestParams? = state?.identificationRequestParams
 
     private var view: InputView? = null
@@ -41,6 +45,8 @@ class InputPresenter(
             setRegionText(selectedRegion.name)
             setEndpointUrl(endpointUrl)
             setPublicApiKey(apiKey)
+            setIsDefaultApiKeyUsed(isDefaultApiKeyUsed)
+            setExtendedResult(isExtendedResult)
         }
     }
 
@@ -58,10 +64,12 @@ class InputPresenter(
 
     override fun onSaveState(): InputScreenState {
         return InputScreenState(
-            selectedRegion,
-            view?.getEndpointUrl(),
-            view?.getPublicApiKey(),
-            identificationRequestParams
+            selectedRegion = selectedRegion,
+            endpointUrl = view?.getEndpointUrl(),
+            apiKey = view?.getPublicApiKey(),
+            isDefaultApiKeyUsed = isDefaultApiKeyUsed,
+            isExtendedResult = isExtendedResult,
+            identificationRequestParams = identificationRequestParams,
         )
     }
 
@@ -71,11 +79,15 @@ class InputPresenter(
                 view?.apply {
                     apiKey = getPublicApiKey()
                     endpointUrl = getEndpointUrl()
+                    isDefaultApiKeyUsed = getIsDefaultApiKeyUsed()
+                    isExtendedResult = getExtendedResult()
                 }
 
                 applicationPreferences.setPublicApiKey(apiKey)
                 applicationPreferences.setEndpointUrl(endpointUrl)
                 applicationPreferences.setRegion(selectedRegion)
+                applicationPreferences.setIsDefaultApiKeyUsed(isDefaultApiKeyUsed)
+                applicationPreferences.setExtendedResult(isExtendedResult)
                 router?.openFingerprintResultScreen(identificationRequestParams)
             }
 

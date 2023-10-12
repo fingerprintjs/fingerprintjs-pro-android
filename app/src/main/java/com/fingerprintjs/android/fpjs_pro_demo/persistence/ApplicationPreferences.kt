@@ -19,6 +19,8 @@ interface ApplicationPreferences {
     fun setPublicApiKey(apiToken: String): Boolean
     fun setExtendedResult(extendedResult: Boolean): Boolean
     fun setRegion(region: Configuration.Region)
+    fun getIsDefaultApiKeyUsed(): Boolean
+    fun setIsDefaultApiKeyUsed(used: Boolean)
 
     class Factory(private val context: Context) {
 
@@ -51,6 +53,7 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
     private val ENDPOINT_URL_KEY = context.getString(R.string.prefs_endpoint_url_key)
     private val EXTENDED_RESULT_SUPPORT_KEY = context.getString(R.string.prefs_extended_result_key)
     private val REGION_KEY = context.getString(R.string.prefs_region_key)
+    private val IS_DEFAULT_API_KEY_USED_KEY = context.getString(R.string.prefs_is_default_api_key_used_key)
 
     override fun getEndpointUrl() =
         preferences.getString(ENDPOINT_URL_KEY, null) ?: defaultEndpointUrl
@@ -69,6 +72,10 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
         }
     }
 
+    override fun getIsDefaultApiKeyUsed(): Boolean {
+        return preferences.getBoolean(IS_DEFAULT_API_KEY_USED_KEY, true)
+    }
+
     override fun setEndpointUrl(endpointUrl: String) =
         preferences.edit().putString(ENDPOINT_URL_KEY, endpointUrl).commit()
 
@@ -80,6 +87,10 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
 
     override fun setRegion(region: Configuration.Region) {
         preferences.edit().putString(REGION_KEY, region.name).apply()
+    }
+
+    override fun setIsDefaultApiKeyUsed(used: Boolean) {
+        preferences.edit().putBoolean(IS_DEFAULT_API_KEY_USED_KEY, used).apply()
     }
 
     private fun createPreferences(context: Context) =
