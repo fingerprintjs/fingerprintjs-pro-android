@@ -12,7 +12,6 @@ import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
 import com.fingerprintjs.android.fpjs_pro_demo.R
 import com.fingerprintjs.android.fpjs_pro_demo.dialogs.IdentificationRequestParams
 import com.fingerprintjs.android.fpjs_pro_demo.dialogs.IdentificationRequestSettingsDialog
-import com.fingerprintjs.android.fpjs_pro_demo.dialogs.ClientSettingsDialog
 import com.fingerprintjs.android.fpjs_pro_demo.persistence.ApplicationPreferences
 
 
@@ -57,7 +56,6 @@ abstract class BaseActivity<T : Parcelable>(
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_repository -> openLink(Uri.parse(GITHUB_REPO_URL))
-            R.id.menu_settings -> openSettings()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -75,10 +73,6 @@ abstract class BaseActivity<T : Parcelable>(
         onSettingsAppliedListener: (IdentificationRequestParams) -> Unit
     ) {
         IdentificationRequestSettingsDialog(this, identificationRequestParams).show(onSettingsAppliedListener)
-    }
-
-    private fun openSettings() {
-        ClientSettingsDialog(this, preferences).showSettings()
     }
 
     private fun saveState(outState: Bundle) {

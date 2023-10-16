@@ -22,6 +22,11 @@ android {
         versionName  = VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "DEFAULT_API_KEY",
+            (project.properties.get("defaultApiKey") as? String)?.let { "\"$it\"" } ?: "null")
+        buildConfigField("String", "DEFAULT_ENDPOINT_URL",
+            (project.properties.get("defaultEndpointUrl") as? String)?.let { "\"$it\"" } ?: "null")
     }
 
     signingConfigs {

@@ -33,7 +33,7 @@ jobs:
         run: ./gradlew app:lint
         
       - name: Build App
-        run: ./gradlew app:assembleRelease
+        run: ./gradlew app:assembleRelease -PdefaultApiKey=${{ secrets.DEFAULT_PUBLIC_API_KEY }} -PdefaultEndpointUrl=https://ap.api.fpjs.io
 
       - name: Save application to artifacts
         uses: actions/upload-artifact@v3

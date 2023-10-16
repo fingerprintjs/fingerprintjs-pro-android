@@ -3,6 +3,7 @@ package com.fingerprintjs.android.fpjs_pro_demo.results_screen
 
 import android.os.Parcelable
 import com.fingerprintjs.android.fpjs_pro.*
+import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
 import com.fingerprintjs.android.fpjs_pro_demo.base.BasePresenter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseRouter
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseView
@@ -136,9 +137,17 @@ class ResultsPresenter(
     }
 
     private fun initFPJSClient() {
+        val apiKey = when(applicationPreferences.getIsDefaultApiKeyUsed()) {
+            true -> BuildConfig.DEFAULT_API_KEY.orEmpty()
+            false -> applicationPreferences.getPublicApiKey()
+        }
+        val endpointUrl = when(applicationPreferences.getIsDefaultApiKeyUsed()) {
+            true -> BuildConfig.DEFAULT_ENDPOINT_URL.orEmpty()
+            false -> applicationPreferences.getEndpointUrl()
+        }
         val configuration = Configuration(
-            apiKey = applicationPreferences.getPublicApiKey(),
-            endpointUrl = applicationPreferences.getEndpointUrl(),
+            apiKey = apiKey,
+            endpointUrl = endpointUrl,
             extendedResponseFormat = applicationPreferences.getExtendedResult()
         )
         fpjsClient = fpjsProFactory.createInstance(

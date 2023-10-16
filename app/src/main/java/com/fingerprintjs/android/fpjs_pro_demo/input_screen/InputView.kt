@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
 import com.fingerprintjs.android.fpjs_pro_demo.R
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseActivity
 import com.fingerprintjs.android.fpjs_pro_demo.base.BaseView
@@ -30,6 +32,12 @@ interface InputView {
 
     fun setPublicApiKey(key: String)
     fun getPublicApiKey(): String
+
+    fun getIsDefaultApiKeyUsed(): Boolean
+    fun setIsDefaultApiKeyUsed(used: Boolean)
+
+    fun getExtendedResult(): Boolean
+    fun setExtendedResult(extendedResult: Boolean)
 }
 
 
@@ -41,7 +49,21 @@ class InputViewImpl(private val activity: BaseActivity<*>) : BaseView(activity),
     private val getVisitorIdButton: View = activity.findViewById(R.id.get_visitor_id_button)
     private val openRequestSettingsDialogBtn: View =
         activity.findViewById(R.id.request_settings_btn)
+    private val isDefaultApiKeyUsedCheckbox: CheckBox =
+        activity.findViewById(R.id.checkbox_is_default_api_key_used)
+    private val isExtendedResultCheckbox: CheckBox =
+        activity.findViewById(R.id.checkbox_is_extended_result)
     private val fragmentManager = activity.supportFragmentManager
+
+    init {
+        if (BuildConfig.DEFAULT_API_KEY == null || BuildConfig.DEFAULT_ENDPOINT_URL == null) {
+            isDefaultApiKeyUsedCheckbox.text = isDefaultApiKeyUsedCheckbox.text.toString() + " (empty in this build)"
+        }
+
+        isDefaultApiKeyUsedCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            setIsDefaultApiKeyUsed(isChecked)
+        }
+    }
 
     override fun setOnGetVisitorIdBtnClickedListener(listener: () -> Unit) {
         activity.runOnUiThread {
@@ -91,6 +113,29 @@ class InputViewImpl(private val activity: BaseActivity<*>) : BaseView(activity),
         activity.runOnUiThread {
             regionSelectButton.text = text
         }
+    }
+
+    override fun getIsDefaultApiKeyUsed(): Boolean {
+        return isDefaultApiKeyUsedCheckbox.isChecked
+    }
+
+    override fun setIsDefaultApiKeyUsed(used: Boolean) {
+        isDefaultApiKeyUsedCheckbox.isChecked = used
+        listOf(
+            regionSelectButton,
+            apiKeyInput,
+            endpointUrlInput
+        ).forEach {
+            it.isEnabled = !used
+        }
+    }
+
+    override fun getExtendedResult(): Boolean {
+        return isExtendedResultCheckbox.isChecked
+    }
+
+    override fun setExtendedResult(extendedResult: Boolean) {
+        isExtendedResultCheckbox.isChecked = extendedResult
     }
 }
 
