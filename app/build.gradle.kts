@@ -3,7 +3,7 @@ import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 @Suppress("PropertyName")
 val VERSION_NAME="2.3.3"
 @Suppress("PropertyName")
-val VERSION_CODE=16
+val VERSION_CODE=17
 
 plugins {
     id("com.android.application")
