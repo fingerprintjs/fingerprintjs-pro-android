@@ -92,7 +92,7 @@ repositories {
 ```gradle
 dependencies {
     ...
-  implementation "com.fingerprint.android:pro:2.3.3"
+  implementation "com.fingerprint.android:pro:2.3.4"
 }
 ```
 
