@@ -96,7 +96,7 @@ dependencies {
 }
 ```
 
-Note: Fingerprint PRO Android uses [FingerprintJS Android](https://github.com/fingerprintjs/fingerprintjs-android), [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/) and [androidx.core:core](https://developer.android.com/jetpack/androidx/releases/core) as dependencies.
+Note: Fingerprint PRO Android uses [FingerprintJS Android](https://github.com/fingerprintjs/fingerprintjs-android), [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/) and [androidx.core:core](https://developer.android.com/jetpack/androidx/releases/core) as dependencies. Additionally, [com.google.android.gms:play-services-location](https://developers.google.com/android/reference/com/google/android/gms/location/package-summary) is required when [Geolocation Spoofing Detection Smart Signal](https://dev.fingerprint.com/docs/smart-signals-overview#geolocation-spoofing-detection) functionality is used.
 
 #### Sync gradle settings.
 
