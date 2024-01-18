@@ -1,9 +1,9 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 
 @Suppress("PropertyName")
-val VERSION_NAME="2.3.4"
+val VERSION_NAME="2.4.0"
 @Suppress("PropertyName")
-val VERSION_CODE=18
+val VERSION_CODE=19
 
 plugins {
     id("com.android.application")
