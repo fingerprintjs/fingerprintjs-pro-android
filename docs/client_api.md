@@ -149,6 +149,7 @@ and it might me one of:
 - RequestTimeout
 - TooManyRequest
 - OriginNotAvailable
+- PackageNotAuthorized
 - HeaderRestricted
 - NotAvailableForCrawlBots
 - NotAvailableWithoutUA
