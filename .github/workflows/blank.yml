@@ -6,7 +6,7 @@ on:
   pull_request:
     paths-ignore:
       - '**.md'
-      - app/**
+  workflow_dispatch:
 
 env:
   KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
