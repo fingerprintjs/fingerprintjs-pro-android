@@ -14,12 +14,6 @@
   </a>
 </p>
 
-<p align="center">
- 	<a href='https://play.google.com/store/apps/details?id=com.fingerprintjs.android.fpjs_pro_demo'>
- 		<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="240px"/>
- 	</a>
- </p>
-
 # Fingerprint Pro Android
 ### Official Android library for 100% accurate device identification, created for the Fingerprint Pro API.
 
@@ -42,20 +36,26 @@ fpjsClient.getVisitorId { result ->
 }
 ```
 
+
 ## Introduction
 
 Fingerprint Pro is a professional visitor identification service that processes all information server-side and transmits it securely to your servers using server-to-server APIs.
 
 This identification library generates an accurate, sticky, and stable [Fingerprint Pro](https://fingerprint.com/) visitor identifier in Android apps. The identifier is linked to a device, i.e. it is the same in all the apps on a device, even if you reinstall or clone them. This library requires a [free API key](https://dashboard.fingerprintjs.com/signup) to connect to the Fingerprint Pro API.
 
+> [!TIP]
+> Check out the [Fingerprint Pro Demo App](https://github.com/fingerprintjs/fingerprint-device-intelligence-android-demo) to better understand and experience the capabilities of our device intelligence platform.
+
 For local Android fingerprinting and identifying without making requests to API take a look at the [fingerprintjs-android](https://github.com/fingerprintjs/fingerprintjs-android) repository.
 
 If you are interested in the iOS platform, you can also check our [Fingerprint Pro iOS](https://github.com/fingerprintjs/fingerprintjs-pro-ios).
+
 
 ## Smart Signals
 
 - Fingerprint PRO now supports a Smart Signals functionality, including Root Detection and Emulator detection. The results are available in the response of the `GET /events` [Server API method](https://dev.fingerprint.com/docs/native-android-integration#smart-signals).
 - Access to the Smart Signals functionality is currently only available upon request for Enterprise customers. Contact Support ([support@fingerprint.com](mailto:support@fingerprint.com)) to enable it for your subscription.
+
 
 ## Quick start
 
