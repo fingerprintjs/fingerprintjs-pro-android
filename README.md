@@ -165,6 +165,3 @@ When publishing to the Play Market make sure you've noted the following informat
 - [Full API reference](docs/client_api.md).
 - [Server-to-Server API](https://dev.fingerprint.com/docs/server-api)
 - [Fingerprint Pro documentation](https://dev.fingerprint.com/docs)
-
-## License
-This application is MIT licensed. Copyright FingerprintJS, Inc 2021-2022 (c)
