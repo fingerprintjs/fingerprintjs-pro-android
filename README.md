@@ -12,9 +12,12 @@
     <a href="https://android-arsenal.com/api?level=21">
     <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg" alt="Android minAPI status">
   </a>
+  <a href="https://github.com/fingerprintjs/fingerprint-device-intelligence-android-demo">
+    <img src="https://img.shields.io/badge/Fingerprint%20Pro%20Demo%20App-red" alt="Fingerprint Pro Demo App">
+  </a>
 </p>
 
-# Fingerprint Pro Android
+# Fingerprint Identification SDK for Android
 ### Official Android library for 100% accurate device identification, created for the Fingerprint Pro API.
 
 ```kotlin
@@ -63,7 +66,7 @@ If you are interested in the iOS platform, you can also check our [Fingerprint P
 
 The Android SDK requires Android 5.0 (API level 21+) or higher.
 
-#### Add the repository to the gradle.
+#### Add the repository to the gradle
 
 If your version of Gradle is earlier than 7, add these lines to your `build.gradle`.
 
@@ -87,7 +90,7 @@ repositories {
 
 }
 ```
-#### Add the dependency to your `build.gradle` file.
+#### Add the dependency to your `build.gradle` file
 
 ```gradle
 dependencies {
@@ -98,7 +101,7 @@ dependencies {
 
 Note: Fingerprint PRO Android uses [FingerprintJS Android](https://github.com/fingerprintjs/fingerprintjs-android), [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/) and [androidx.core:core](https://developer.android.com/jetpack/androidx/releases/core) as dependencies. Additionally, [com.google.android.gms:play-services-location](https://developers.google.com/android/reference/com/google/android/gms/location/package-summary) is required when [Geolocation Spoofing Detection Smart Signal](https://dev.fingerprint.com/docs/smart-signals-overview#geolocation-spoofing-detection) functionality is used.
 
-#### Sync gradle settings.
+#### Sync gradle settings
 
 
 #### Get the visitor identifier
@@ -162,6 +165,6 @@ When publishing to the Play Market make sure you've noted the following informat
 
 
 ## Additional Resources
-- [Full API reference](docs/client_api.md).
+- [Full API reference](docs/client_api.md)
 - [Server-to-Server API](https://dev.fingerprint.com/docs/server-api)
 - [Fingerprint Pro documentation](https://dev.fingerprint.com/docs)
