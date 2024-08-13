@@ -17,34 +17,11 @@
   </a>
 </p>
 
+
 # Fingerprint Identification SDK for Android
-### Official Android library for 100% accurate device identification, created for the Fingerprint Pro API.
 
-```kotlin
-import com.fingerprintjs.android.fpjs_pro.Configuration
-import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
-...
+[Fingerprint’s Device Intelligence platform for Android](https://dev.fingerprint.com/docs/android-sdk) helps you to accurately identify the devices on which your mobile app is being used. The platform also provides high-quality [Smart Signals](https://dev.fingerprint.com/docs/smart-signals-overview#smart-signals-for-mobile-devices) that will help you identify risky transactions before they happen.
 
-// Trust your user's identifiers with the Fingerprint Pro
-
-val fpjsClient = FingerprintJSFactory(applicationContext).createInstance(
-     Configuration(
-        apiKey = "your-public-api-key"
-  )
-)
-
-fpjsClient.getVisitorId { result ->
-    val visitorId = result.visitorId
-    // Use the visitorId
-}
-```
-
-
-## Introduction
-
-Fingerprint Pro is a professional visitor identification service that processes all information server-side and transmits it securely to your servers using server-to-server APIs.
-
-This identification library generates an accurate, sticky, and stable [Fingerprint Pro](https://fingerprint.com/) visitor identifier in Android apps. The identifier is linked to a device, i.e. it is the same in all the apps on a device, even if you reinstall or clone them. This library requires a [free API key](https://dashboard.fingerprintjs.com/signup) to connect to the Fingerprint Pro API.
 
 > [!TIP]
 > Check out the [Fingerprint Pro Demo App](https://github.com/fingerprintjs/fingerprint-device-intelligence-android-demo) to better understand and experience the capabilities of our device intelligence platform.
@@ -54,19 +31,14 @@ For local Android fingerprinting and identifying without making requests to API 
 If you are interested in the iOS platform, you can also check our [Fingerprint Pro iOS](https://github.com/fingerprintjs/fingerprintjs-pro-ios).
 
 
-## Smart Signals
-
-- Fingerprint PRO now supports a Smart Signals functionality, including Root Detection and Emulator detection. The results are available in the response of the `GET /events` [Server API method](https://dev.fingerprint.com/docs/native-android-integration#smart-signals).
-- Access to the Smart Signals functionality is currently only available upon request for Enterprise customers. Contact Support ([support@fingerprint.com](mailto:support@fingerprint.com)) to enable it for your subscription.
-
-
 ## Quick start
 
-#### Requirements
+### Requirements
 
 The Android SDK requires Android 5.0 (API level 21+) or higher.
 
-#### Add the repository to the gradle
+### Installation steps
+#### 1. Add the repository to the gradle
 
 If your version of Gradle is earlier than 7, add these lines to your `build.gradle`.
 
@@ -90,7 +62,7 @@ repositories {
 
 }
 ```
-#### Add the dependency to your `build.gradle` file
+#### 2. Add the dependency to your `build.gradle` file
 
 ```gradle
 dependencies {
@@ -101,10 +73,10 @@ dependencies {
 
 Note: Fingerprint PRO Android uses [FingerprintJS Android](https://github.com/fingerprintjs/fingerprintjs-android), [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/) and [androidx.core:core](https://developer.android.com/jetpack/androidx/releases/core) as dependencies. Additionally, [com.google.android.gms:play-services-location](https://developers.google.com/android/reference/com/google/android/gms/location/package-summary) is required when [Geolocation Spoofing Detection Smart Signal](https://dev.fingerprint.com/docs/smart-signals-overview#geolocation-spoofing-detection) functionality is used.
 
-#### Sync gradle settings
+#### 3. Sync gradle settings
 
 
-#### Get the visitor identifier
+#### 4. Get the visitor identifier
 
 Retrieve the visitor identifier using Public API key. You can find your [Public API key](https://dev.fingerprint.com/docs) in your [dashboard](https://dashboard.fingerprint.com/subscriptions/).
 
@@ -154,6 +126,153 @@ fpjsClient.getVisitorId(visitorIdResponse -> {
     return null;
 });
 ```
+## Region and Domain configuration
+
+It is possible to manually select an endpoint from a predefined set of regions. The library uses the `Region.US` region by default. The list of existing regions can be found in our [developer documentation](https://dev.fingerprint.com/docs/regions).
+
+Besides selecting a region from the predefined set, it's possible to point the library to a custom endpoint that has the correct API interface with the `endpointUrl` field value. If the endpoint isn't a valid URL, the library throws a specific error during API calls.
+
+Note: API keys are region-specific so make sure you have selected the correct region during initialization. 
+
+### Selecting a Region
+
+```kotlin
+import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
+...
+
+// Initialize and configure the SDK
+val factory = FingerprintJSFactory(applicationContext)
+val configuration = Configuration(
+  apiKey = "YOUR_PUBLIC_API_KEY",
+  // The 'region' must match the region associated with your API key, in this example it's EU
+  region = Configuration.Region.EU
+)
+ 
+val fpjsClient = factory.createInstance(
+  configuration
+)
+
+// Get a 'visitorId'
+fpjsClient.getVisitorId { visitorIdResponse ->
+  val visitorId = visitorIdResponse.visitorId
+  // Use the visitorId
+}
+```
+### Using Custom Endpoint Domain
+
+```kotlin
+import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
+...
+
+// Initialize and configure the SDK
+val factory = FingerprintJSFactory(applicationContext)
+val configuration = Configuration(
+  apiKey = "YOUR_PUBLIC_API_KEY",
+  // For custom subdomain or proxy integration, use this option to specify a custom endpoint. If a region parameter is set – it will be ignored.
+  endpointUrl = "custom-endpoint-URL",
+)
+ 
+val fpjsClient = factory.createInstance(
+  configuration
+)
+
+// Get a 'visitorId'
+fpjsClient.getVisitorId { visitorIdResponse ->
+  val visitorId = visitorIdResponse.visitorId
+  // Use the visitorId
+}
+```
+
+## Default and Extended Response Formats
+
+The backend can return either a default or an extended response. Extended response contains more metadata that further explain the fingerprinting process. Both default and extended responses are captured in the `FingerprintJSProResponse` object. To set up the format use the `extendedResponseFormat` parameter of the `Configuration` class.
+
+```kotlin
+import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
+...
+
+// Initialize and configure the SDK
+val factory = FingerprintJSFactory(applicationContext)
+val configuration = Configuration(
+  apiKey = "YOUR_PUBLIC_API_KEY",
+  endpointUrl = "custom-endpoint-URL",
+  // Use this to get the extended response, explained below
+  extendedResponseFormat = false
+)
+ 
+val fpjsClient = factory.createInstance(
+  configuration
+)
+
+// Get a 'visitorId'
+fpjsClient.getVisitorId { visitorIdResponse ->
+  val visitorId = visitorIdResponse.visitorId
+  // Use the visitorId
+}
+```
+
+### Default Response
+
+```kotlin
+data class FingerprintJSProResponse(
+    val requestId: String,
+    val visitorId: String,
+    val confidenceScore: ConfidenceScore,
+    val errorMessage: String? = null
+)
+```
+
+### Extended Result
+
+```kotlin
+data class FingerprintJSProResponse(
+    val requestId: String,
+    val visitorId: String,
+    val confidenceScore: ConfidenceScore,
+    val visitorFound: Boolean, // Available with extendedResponseFormat == true
+    val ipAddress: String, // Available with extendedResponseFormat == true
+    val ipLocation: IpLocation?, // Available with extendedResponseFormat == true
+    val osName: String, // Available with extendedResponseFormat == true
+    val osVersion: String, // Available with extendedResponseFormat == true
+    val firstSeenAt: Timestamp,// Available with extendedResponseFormat == true
+    val lastSeenAt: Timestamp, // Available with extendedResponseFormat == true
+    val errorMessage: String? = null
+)
+```
+
+## Errors
+
+The library parses backend errors and introduces its own error sealed class called `Error`.
+
+```kotlin
+sealed class Error(
+  // The request ID of the identification request
+  val requestId: String
+  // A self-explanatory description of the error
+  val description: String?
+)
+```
+
+It's a sealed class, which can be one of:
+
+- ApiKeyRequired
+- ApiKeyNotFound
+- ApiKeyExpired
+- RequestCannotBeParsed
+- Failed
+- RequestTimeout
+- TooManyRequest
+- OriginNotAvailable
+- HeaderRestricted
+- PackageNotAuthorized
+- WrongRegion
+- SubscriptionNotActive
+- UnsupportedVersion
+- ResponseCannotBeParsed
+- NetworkError
 
 ## Privacy notes
 
